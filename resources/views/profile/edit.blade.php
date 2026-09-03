@@ -830,6 +830,7 @@
 
         /* Subida de Archivo Foto */
         .file-upload-zone {
+            display: block;
             border: 2px dashed rgba(255, 74, 16, 0.35);
             border-radius: var(--r-md);
             padding: 24px;

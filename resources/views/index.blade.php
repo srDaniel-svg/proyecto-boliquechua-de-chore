@@ -1147,7 +1147,7 @@
     <svg class="chakana-bg" viewBox="0 0 100 100" fill="none"><path d="M33 0H67V33H100V67H67V100H33V67H0V33H33V0Z" fill="#E8450A"/><circle cx="50" cy="50" r="10" fill="none" stroke="#E8450A" stroke-width="2"/></svg>
     <div class="sp-cont" id="spCont"></div>
     <div class="splash-content">
-        <img src="{{ asset('condorio saludando.png') }}" class="splash-llama" alt="Condorio">
+        <img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="splash-llama" alt="Mascota animada">
         <div class="splash-title">BOLI<span>QUECHUA</span></div>
         <div class="splash-sub">Sistema de aprendizaje · v2.0</div>
     </div>
@@ -1157,7 +1157,7 @@
 </div>
 
 <!-- ========== GAME LOADER ========== -->
-<div id="gameLoader"><div class="gl-rings"><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div></div><div class="gl-content"><img src="{{ asset('condorio saludando.png') }}" class="gl-icon" alt="Condorio"><div class="gl-title" id="glTitle">Cargando...</div><div class="gl-sub">BOLIQUECHUA</div><div class="gl-bar-wrap"><div class="gl-track"><div class="gl-bar" id="glBar"></div></div></div></div></div>
+<div id="gameLoader"><div class="gl-rings"><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div></div><div class="gl-content"><img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="gl-icon" alt="Mascota animada"><div class="gl-title" id="glTitle">Cargando...</div><div class="gl-sub">BOLIQUECHUA</div><div class="gl-bar-wrap"><div class="gl-track"><div class="gl-bar" id="glBar"></div></div></div></div></div>
 
 <!-- ========== APP ========== -->
 <div id="app">
@@ -1221,6 +1221,8 @@
             </div>
             @endforeach
         </div>
+        <!-- Mascota animada en bucle en el dashboard -->
+        <img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="dashboard-llama" alt="Condorio animado" style="position: absolute; bottom: -10px; right: 20px; width: clamp(180px, 20vw, 250px); pointer-events: none; z-index: 0; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
     </main>
     <nav id="navbar">
         <button class="nb-btn" onclick="window.location.href='{{ url('/categorias') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
@@ -1296,6 +1298,36 @@
 </div>
 
 <script>
+    // Animación de mascota ping-pong
+    const animFrames = [];
+    for (let i = 1; i <= 40; i++) {
+        if (i <= 10) {
+            animFrames.push(`{{ asset('frames de saludo sin fondo/frame_') }}${i}.png`);
+        } else {
+            animFrames.push(`{{ asset('frames de saludo sin fondo/frame_') }}${i}-removebg-preview.png`);
+        }
+    }
+    const splashImg = document.querySelector('.splash-llama');
+    const glImg = document.querySelector('.gl-icon');
+    const dashboardImg = document.querySelector('.dashboard-llama');
+    let frameIdx = 0;
+    let animDir = 1;
+    setInterval(() => {
+        if (splashImg && document.getElementById('splash').style.display !== 'none') {
+            splashImg.src = animFrames[frameIdx];
+        }
+        if (glImg && document.getElementById('gameLoader').style.display !== 'none') {
+            glImg.src = animFrames[frameIdx];
+        }
+        if (dashboardImg) {
+            dashboardImg.src = animFrames[frameIdx];
+        }
+        
+        frameIdx += animDir;
+        if (frameIdx >= 39) { animDir = -1; frameIdx = 39; }
+        if (frameIdx <= 0) { animDir = 1; frameIdx = 0; }
+    }, 45); // ~22fps
+
     // Partículas splash
     for (let i = 0; i < 40; i++) {
         let p = document.createElement('div');
