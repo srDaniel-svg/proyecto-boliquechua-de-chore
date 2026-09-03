@@ -16,7 +16,7 @@ class QuechuaController extends Controller
      */
     public function index(): View
     {
-        $categorias = Categoria::orderBy('orden')->get();
+        $categorias = Categoria::orderBy('id')->get();
         $usuario = auth()->user();
 
         $racha = $usuario->racha_dias ?? 0;
@@ -39,7 +39,14 @@ class QuechuaController extends Controller
             return redirect()->route('categorias')->with('error', 'La categoría no existe.');
         }
 
-        $palabras = $categoria->palabras;
+        $palabras = $categoria->palabras->map(function ($p) {
+            return [
+                'id' => $p->id,
+                'palabra_quechua' => $p->quechua ?? $p->palabra_quechua,
+                'palabra_espanol' => $p->espanol ?? $p->palabra_espanol,
+                'puntos' => $p->puntos ?? 10,
+            ];
+        });
         $usuario = auth()->user();
         $vidas = $usuario->vidas ?? 5;
         $puntuacion = $usuario->puntuacion_total ?? 0;

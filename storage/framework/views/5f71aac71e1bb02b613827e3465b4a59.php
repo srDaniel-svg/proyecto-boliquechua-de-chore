@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $categoria->nombre }} - BOLIQUECHUA</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo e($categoria->nombre); ?> - BOLIQUECHUA</title>
     <script>
         (function() {
             var theme = localStorage.getItem('boliquechua_theme') || 'dark';
@@ -645,18 +645,18 @@
 <div class="app-wrapper">
     <div class="header">
         <div style="display: flex; align-items: center; gap: 8px;">
-            <a href="{{ url('/categorias') }}" class="back-btn">← Volver</a>
+            <a href="<?php echo e(url('/categorias')); ?>" class="back-btn">← Volver</a>
             <button class="theme-toggle-btn" id="gameThemeToggleBtn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
                 <span class="theme-icon">☀️</span>
                 <span class="theme-lbl">Modo</span>
             </button>
         </div>
         <div class="category-info">
-            <div class="category-icon">{{ $categoria->icono }}</div>
-            <div class="category-name">{{ $categoria->nombre }}</div>
+            <div class="category-icon"><?php echo e($categoria->icono); ?></div>
+            <div class="category-name"><?php echo e($categoria->nombre); ?></div>
         </div>
         <div class="stats-mini">
-            <div class="stat-mini">❤️ <span id="vidasDisplay">{{ $vidas }}</span></div>
+            <div class="stat-mini">❤️ <span id="vidasDisplay"><?php echo e($vidas); ?></span></div>
             <div class="stat-mini">⭐ <span id="puntosDisplay">0</span></div>
         </div>
     </div>
@@ -679,7 +679,7 @@
 
     <div class="bottom-nav">
         <button onclick="location.reload()">🔄 Reiniciar</button>
-        <button onclick="window.location.href='{{ route('categorias') }}'">🏠 Inicio</button>
+        <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'">🏠 Inicio</button>
     </div>
 </div>
 
@@ -688,17 +688,17 @@
         <h2>🏁 Juego completado</h2>
         <p id="modalMessage"></p>
         <button onclick="cerrarModalYReiniciar()">🔄 Jugar de nuevo</button>
-        <button onclick="window.location.href='{{ route('categorias') }}'">🏠 Ir a inicio</button>
+        <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'">🏠 Ir a inicio</button>
     </div>
 </div>
 
 <script>
     // Datos desde PHP
-    const palabras = @json($palabras);
+    const palabras = <?php echo json_encode($palabras, 15, 512) ?>;
     let currentIndex = 0;
     let puntos = 0;
-    let vidas = {{ $vidas }};
-    const vidasIniciales = {{ $vidas }};
+    let vidas = <?php echo e($vidas); ?>;
+    const vidasIniciales = <?php echo e($vidas); ?>;
     let waitingResponse = false;
     let progresoGuardado = false;
 
@@ -904,7 +904,7 @@
         progresoGuardado = true;
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         
-        fetch('{{ route("guardar.progreso") }}', {
+        fetch('<?php echo e(route("guardar.progreso")); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1314,4 +1314,4 @@
     cargarJuego();
 </script>
 </body>
-</html>
+</html><?php /**PATH C:\Users\HP\Desktop\boliquechua2.0\resources\views/juego.blade.php ENDPATH**/ ?>

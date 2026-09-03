@@ -45,6 +45,8 @@
             width: 100%;
             max-width: 450px;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Recuadro blanco semitransparente */
@@ -61,35 +63,49 @@
             transform: translateY(-5px);
         }
 
-        /* Logo */
-        .logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .logo-img {
-            width: 100px;
-            height: 100px;
-            background: #8B5A2B;
-            border-radius: 50%;
+        /* Header Logo Area */
+        .top-logo-area {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            font-size: 3.5em;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            gap: 15px;
+            margin-bottom: 30px;
+            text-align: left;
         }
 
-        .logo h2 {
-            margin-top: 15px;
-            color: #5D3A1A;
+        .logo-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text h2 {
+            color: #fff;
             font-size: 1.8em;
-            font-weight: bold;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            line-height: 1.1;
         }
 
-        .logo p {
-            color: #8B5A2B;
+        .logo-text p {
+            color: #FFE0B2;
             font-size: 0.9em;
+            font-weight: 600;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.3);
         }
 
         /* Título */
@@ -99,13 +115,13 @@
         }
 
         .title h3 {
-            color: #5D3A1A;
+            color: #DD4E00;
             font-size: 1.5em;
             font-weight: 600;
         }
 
         .title p {
-            color: #8B5A2B;
+            color: #FB7900;
             font-size: 0.9em;
         }
 
@@ -117,7 +133,7 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            color: #5D3A1A;
+            color: #DD4E00;
             font-weight: 600;
             font-size: 0.9em;
         }
@@ -125,7 +141,7 @@
         .input-group input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #E8D5B7;
+            border: 2px solid #FFE0B2;
             border-radius: 16px;
             font-size: 1em;
             transition: all 0.3s;
@@ -134,8 +150,8 @@
 
         .input-group input:focus {
             outline: none;
-            border-color: #8B5A2B;
-            box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.1);
+            border-color: #FB7900;
+            box-shadow: 0 0 0 3px rgba(251, 121, 0, 0.2);
         }
 
         /* Checkbox */
@@ -150,11 +166,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #5D3A1A;
+            color: #DD4E00;
         }
 
         .forgot-link {
-            color: #8B5A2B;
+            color: #FB7900;
             text-decoration: none;
             font-size: 0.9em;
         }
@@ -166,7 +182,7 @@
         /* Botón */
         .btn-login {
             width: 100%;
-            background: linear-gradient(135deg, #8B5A2B, #5D3A1A);
+            background: linear-gradient(135deg, #FB7900, #DD4E00);
             color: white;
             padding: 14px;
             border: none;
@@ -180,18 +196,18 @@
 
         .btn-login:hover {
             transform: scale(1.02);
-            background: linear-gradient(135deg, #9B6A3B, #6D4A2A);
-            box-shadow: 0 5px 15px rgba(139, 90, 43, 0.3);
+            background: linear-gradient(135deg, #FF8C00, #E65100);
+            box-shadow: 0 5px 15px rgba(251, 121, 0, 0.3);
         }
 
         /* Link de registro */
         .register-link {
             text-align: center;
-            color: #5D3A1A;
+            color: #DD4E00;
         }
 
         .register-link a {
-            color: #8B5A2B;
+            color: #FB7900;
             text-decoration: none;
             font-weight: bold;
         }
@@ -205,8 +221,8 @@
             text-align: center;
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid #E8D5B7;
-            color: #8B5A2B;
+            border-top: 1px solid #FFE0B2;
+            color: #FB7900;
             font-style: italic;
             font-size: 0.85em;
         }
@@ -214,15 +230,18 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="login-card">
-            <div class="logo">
-                <div class="logo-img">
-                    🦙🏔️
-                </div>
+        <!-- Logo en la parte superior -->
+        <div class="top-logo-area">
+            <div class="logo-img">
+                <img src="{{ asset('boliquechua.svg') }}" alt="Boliquechua Logo">
+            </div>
+            <div class="logo-text">
                 <h2>BOLIQUECHUA</h2>
                 <p>Aprende jugando</p>
             </div>
+        </div>
 
+        <div class="login-card">
             <div class="title">
                 <h3>¡Sumaq kawsay!</h3>
                 <p>Inicia sesión para continuar</p>
