@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOLIQUECHUA - Iniciar Sesión</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <style>
         * {
             margin: 0;
@@ -232,7 +232,7 @@
         <!-- Logo en la parte superior -->
         <div class="top-logo-area">
             <div class="logo-img">
-                <img src="{{ asset('nuevo icono.png') }}" alt="Boliquechua Logo">
+                <img src="<?php echo e(asset('nuevo icono.png')); ?>" alt="Boliquechua Logo">
             </div>
             <div class="logo-text">
                 <h2>BOLIQUECHUA</h2>
@@ -246,23 +246,37 @@
                 <p>Inicia sesión para continuar</p>
             </div>
 
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('login')); ?>">
+                <?php echo csrf_field(); ?>
 
                 <div class="input-group">
                     <label>📧 Correo electrónico</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required autofocus>
-                    @error('email')
-                        <small style="color: #dc2626; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <input type="email" name="email" value="<?php echo e(old('email')); ?>" required autofocus>
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #dc2626; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="input-group">
                     <label>🔒 Contraseña</label>
                     <input type="password" name="password" required>
-                    @error('password')
-                        <small style="color: #dc2626; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #dc2626; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="checkbox-group">
@@ -270,11 +284,11 @@
                         <input type="checkbox" name="remember">
                         Recordarme
                     </label>
-                    @if (Route::has('password.request'))
-                        <a class="forgot-link" href="{{ route('password.request') }}">
+                    <?php if(Route::has('password.request')): ?>
+                        <a class="forgot-link" href="<?php echo e(route('password.request')); ?>">
                             ¿Olvidaste tu contraseña?
                         </a>
-                    @endif
+                    <?php endif; ?>
                 </div>
 
                 <button type="submit" class="btn-login">
@@ -283,7 +297,7 @@
 
                 <div class="register-link">
                     ¿No tienes cuenta?
-                    <a href="{{ route('register') }}">
+                    <a href="<?php echo e(route('register')); ?>">
                         Regístrate aquí
                     </a>
                 </div>
@@ -295,4 +309,4 @@
         </div>
     </div>
 </body>
-</html>
+</html><?php /**PATH C:\Users\HP\Desktop\boliquechua2.0\resources\views/auth/login.blade.php ENDPATH**/ ?>

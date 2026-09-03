@@ -630,15 +630,163 @@
             color: #6b5344;
         }
 
+        .mascota-animada {
+            position: absolute;
+            top: 35%;
+            left: 2%;
+            width: clamp(180px, 22vw, 280px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (max-width: 850px) {
+            .game-container {
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            .mascota-animada {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: 150px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .duo-banner-wrapper {
+            position: fixed;
+            bottom: -300px;
+            left: 0;
+            width: 100%;
+            z-index: 900;
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Sombra para diferenciarlo del contenido de fondo */
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+        }
+        .duo-banner-wrapper.show {
+            bottom: 50px; /* Queda justo sobre el bottom-nav */
+        }
+        .duo-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 10%;
+            font-family: 'Rajdhani', sans-serif;
+            box-sizing: border-box;
+        }
+        .duo-banner.correct {
+            background-color: #d7ffb8;
+            color: #58a700;
+            border-top: 2px solid #58a700;
+        }
+        .duo-banner.correct .duo-btn-siguiente {
+            background-color: #58a700;
+            color: white;
+            box-shadow: 0 4px 0 #468500;
+        }
+        .duo-banner.incorrect {
+            background-color: #ffdfe0;
+            color: #ea2b2b;
+            border-top: 2px solid #ea2b2b;
+        }
+        .duo-banner.incorrect .duo-btn-siguiente {
+            background-color: #ea2b2b;
+            color: white;
+            box-shadow: 0 4px 0 #cc2020;
+        }
+
+        .duo-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .duo-banner-left img {
+            width: 90px;
+            height: auto;
+            animation: floatUp 0.5s ease-out;
+        }
+        .duo-banner-text {
+            display: flex;
+            flex-direction: column;
+        }
+        #duo-banner-title {
+            font-size: 2em;
+            font-weight: 800;
+            margin: 0;
+        }
+        #duo-banner-subtitle {
+            font-size: 1.2em;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .duo-btn-siguiente {
+            border: none;
+            border-radius: 16px;
+            padding: 15px 50px;
+            font-size: 1.2em;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .duo-btn-siguiente:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 transparent !important;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
         @media (max-width: 600px) {
             .game-card { padding: 20px; }
             .question-word { font-size: 1.8em; padding: 15px; }
             .audio-banner { border-radius: 18px; }
             .theme-lbl { display: none; }
+            
+            .duo-banner {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+            .duo-banner-left {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .duo-banner-left img {
+                width: 70px;
+            }
+            .duo-banner-right {
+                width: 100%;
+            }
+            .duo-btn-siguiente {
+                width: 100%;
+            }
+            .duo-banner-wrapper.show {
+                bottom: 45px; 
+            }
         }
     </style>
 </head>
 <body>
+
+<!-- Banner estilo Duolingo -->
+<div id="duo-banner-wrapper" class="duo-banner-wrapper">
+    <div id="duo-banner" class="duo-banner correct">
+        <div class="duo-banner-left">
+            <img id="duo-banner-img" src="<?php echo e(asset('animaciones condorio en gif/correcto.svg')); ?>" alt="Icono">
+            <div id="duo-banner-text" class="duo-banner-text">
+                <div id="duo-banner-title">¡Correcto!</div>
+                <div id="duo-banner-subtitle"></div>
+            </div>
+        </div>
+        <div class="duo-banner-right">
+            <button id="duo-banner-btn" class="duo-btn-siguiente">Continuar</button>
+        </div>
+    </div>
+</div>
 
 <div class="game-particles" id="particles"></div>
 
@@ -673,11 +821,14 @@
         <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     </div>
 
-    <div class="game-container" id="gameContainer">
+    <div class="game-container" id="gameContainer" style="position: relative;">
+        <!-- Mascota esperando animada (procesada sin fondo) -->
+        <img id="mascotaAnimada" class="mascota-animada" src="<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>" alt="Condorio animado">
+        
         <div class="game-card" id="gameContent">Cargando...</div>
     </div>
 
-    <div class="bottom-nav">
+    <div class="bottom-nav" style="position: relative; z-index: 1000;">
         <button onclick="location.reload()">🔄 Reiniciar</button>
         <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'">🏠 Inicio</button>
     </div>
@@ -727,6 +878,38 @@
     let matchBatchIndex = 0;
     let matchSelected = null;
     let matchMatched = 0;
+
+    // ===================== POPUPS ANIMADOS =====================
+    function mostrarFeedbackBanner(esCorrecto, extraMensaje = '', onContinue = null) {
+        const wrapper = document.getElementById('duo-banner-wrapper');
+        const banner = document.getElementById('duo-banner');
+        const img = document.getElementById('duo-banner-img');
+        const title = document.getElementById('duo-banner-title');
+        const subtitle = document.getElementById('duo-banner-subtitle');
+        const btn = document.getElementById('duo-banner-btn');
+
+        if (esCorrecto) {
+            banner.className = 'duo-banner correct';
+            img.src = "<?php echo e(asset('animaciones condorio en gif/correcto.svg')); ?>";
+            title.innerText = '¡Correcto!';
+            subtitle.innerText = extraMensaje;
+        } else {
+            banner.className = 'duo-banner incorrect';
+            img.src = "<?php echo e(asset('animaciones condorio en gif/incorrecto.svg')); ?>";
+            title.innerText = 'Incorrecto';
+            subtitle.innerText = extraMensaje;
+        }
+
+        btn.onclick = () => {
+            wrapper.classList.remove('show');
+            if (onContinue) onContinue();
+        };
+
+        // Limpiar botones antiguos si existen
+        document.querySelectorAll('#nextBtn, #nextFlashBtn, #nextMatchBtn, #nextEscribirBtn').forEach(el => el.innerHTML = '');
+
+        wrapper.classList.add('show');
+    }
 
     // ===================== AUDIO (Web Speech API) =====================
     const AUDIO = {
@@ -787,6 +970,11 @@
     function stopSpeech() {
         if (!AUDIO.supported) return;
         try { window.speechSynthesis.cancel(); } catch (e) {}
+        
+        const mascota = document.getElementById('mascotaAnimada');
+        if (mascota) {
+            mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>";
+        }
     }
 
     function speakText(text, opts = {}) {
@@ -811,6 +999,19 @@
         if (voice) utter.voice = voice;
 
         AUDIO.last = { text: t, lang: utter.lang, rate: utter.rate, pitch: utter.pitch };
+
+        const mascota = document.getElementById('mascotaAnimada');
+        if (mascota) {
+            utter.onstart = () => {
+                mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio_hablando_processed.gif')); ?>";
+            };
+            utter.onend = () => {
+                mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>";
+            };
+            utter.onerror = () => {
+                mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>";
+            };
+        }
 
         try { window.speechSynthesis.speak(utter); }
         catch (e) { showAudioUnsupportedOnce(); }
@@ -996,21 +1197,19 @@
         const feedbackDiv = document.getElementById('feedbackMultiple');
         if (selected === palabra.palabra_espanol) {
             puntos += palabra.puntos;
-            feedbackDiv.innerHTML = '<div class="feedback feedback-correct">✅ ¡Correcto!</div>';
             el.classList.add('correct');
             waitingResponse = true;
-            document.getElementById('nextBtn').innerHTML = '<button class="next-btn" onclick="siguientePalabra()">Siguiente →</button>';
+            mostrarFeedbackBanner(true, '', siguientePalabra);
         } else {
             vidas--;
             actualizarUI();
-            feedbackDiv.innerHTML = `<div class="feedback feedback-incorrect">❌ Incorrecto. Era: ${escapeHtml(palabra.palabra_espanol)}</div>`;
             el.classList.add('incorrect');
             document.querySelectorAll('.option-btn').forEach(btn => {
                 if (btn.innerText.trim() === palabra.palabra_espanol) btn.classList.add('correct');
             });
             waitingResponse = true;
-            if (vidas <= 0) gameOver();
-            else document.getElementById('nextBtn').innerHTML = '<button class="next-btn" onclick="siguientePalabra()">Siguiente →</button>';
+            if (vidas <= 0) mostrarFeedbackBanner(false, `Era: ${palabra.palabra_espanol}`, gameOver);
+            else mostrarFeedbackBanner(false, `Era: ${palabra.palabra_espanol}`, siguientePalabra);
         }
         actualizarUI();
         document.querySelectorAll('.option-btn').forEach(btn => btn.style.pointerEvents = 'none');
@@ -1056,16 +1255,14 @@
         const feedback = document.getElementById('feedbackFlash');
         if (input === correcta) {
             puntos += palabra.puntos;
-            feedback.innerHTML = '<div class="feedback feedback-correct">✅ ¡Correcto!</div>';
             waitingResponse = true;
-            document.getElementById('nextFlashBtn').innerHTML = '<button class="next-btn" onclick="siguientePalabra()">Siguiente →</button>';
+            mostrarFeedbackBanner(true, '', siguientePalabra);
         } else {
             vidas--;
             actualizarUI();
-            feedback.innerHTML = `<div class="feedback feedback-incorrect">❌ Incorrecto. Era: ${escapeHtml(palabra.palabra_espanol)}</div>`;
             waitingResponse = true;
-            if (vidas <= 0) gameOver();
-            else document.getElementById('nextFlashBtn').innerHTML = '<button class="next-btn" onclick="siguientePalabra()">Siguiente →</button>';
+            if (vidas <= 0) mostrarFeedbackBanner(false, `Era: ${palabra.palabra_espanol}`, gameOver);
+            else mostrarFeedbackBanner(false, `Era: ${palabra.palabra_espanol}`, siguientePalabra);
         }
         actualizarUI();
         document.getElementById('flashInput').disabled = true;
@@ -1160,20 +1357,21 @@
                 matchMatched++;
                 currentIndex++;
                 actualizarUI();
-                document.getElementById('matchFeedback').innerHTML = '<div class="feedback feedback-correct">✅ Pareja correcta</div>';
                 if (matchMatched === batchSize) {
                     matchBatchIndex++;
                     if (matchBatchIndex < matchBatches.length) {
-                        document.getElementById('nextMatchBtn').innerHTML = '<button class="next-btn" onclick="cargarMatch()">Siguiente ronda →</button>';
+                        mostrarFeedbackBanner(true, 'Ronda completada', cargarMatch);
                     } else {
-                        document.getElementById('nextMatchBtn').innerHTML = '<button class="next-btn" onclick="gameOver()">Ver resultados →</button>';
+                        mostrarFeedbackBanner(true, '¡Todas las rondas completadas!', gameOver);
                     }
+                } else {
+                    mostrarFeedbackBanner(true, '¡Sigue así!', () => {});
                 }
             } else {
                 vidas--;
                 actualizarUI();
-                document.getElementById('matchFeedback').innerHTML = '<div class="feedback feedback-incorrect">❌ Pareja incorrecta</div>';
-                if (vidas <= 0) gameOver();
+                if (vidas <= 0) mostrarFeedbackBanner(false, 'Pareja incorrecta', gameOver);
+                else mostrarFeedbackBanner(false, 'Pareja incorrecta', () => {});
             }
             matchSelected = null;
             document.querySelectorAll('.match-item').forEach(i => i.classList.remove('selected'));
@@ -1216,26 +1414,16 @@
         const feedback = document.getElementById('feedbackEscribir');
         if (input === correcta) {
             puntos += palabra.puntos;
-            feedback.innerHTML = `<div class="feedback feedback-correct">✅ ¡Correcto!</div>
-                <div class="audio-pill">
-                    <button class="audio-btn small" ${AUDIO.supported ? '' : 'disabled'} onclick="speakQuechua('${palabra.palabra_quechua.replace(/'/g, "\\'")}')">🔊 Escuchar respuesta</button>
-                    <button class="audio-btn small" ${AUDIO.supported ? '' : 'disabled'} onclick="repeatLastAudio()">⟲ Repetir</button>
-                </div>`;
             waitingResponse = true;
-            document.getElementById('nextEscribirBtn').innerHTML = '<button class="next-btn" onclick="siguientePalabra()">Siguiente →</button>';
             speakQuechua(palabra.palabra_quechua);
+            mostrarFeedbackBanner(true, '', siguientePalabra);
         } else {
             vidas--;
             actualizarUI();
-            feedback.innerHTML = `<div class="feedback feedback-incorrect">❌ Incorrecto. Era: ${escapeHtml(palabra.palabra_quechua)}</div>
-                <div class="audio-pill">
-                    <button class="audio-btn small" ${AUDIO.supported ? '' : 'disabled'} onclick="speakQuechua('${palabra.palabra_quechua.replace(/'/g, "\\'")}')">🔊 Escuchar respuesta</button>
-                    <button class="audio-btn small" ${AUDIO.supported ? '' : 'disabled'} onclick="repeatLastAudio()">⟲ Repetir</button>
-                </div>`;
             waitingResponse = true;
-            if (vidas <= 0) gameOver();
-            else document.getElementById('nextEscribirBtn').innerHTML = '<button class="next-btn" onclick="siguientePalabra()">Siguiente →</button>';
             speakQuechua(palabra.palabra_quechua);
+            if (vidas <= 0) mostrarFeedbackBanner(false, `Era: ${palabra.palabra_quechua}`, gameOver);
+            else mostrarFeedbackBanner(false, `Era: ${palabra.palabra_quechua}`, siguientePalabra);
         }
         actualizarUI();
         document.getElementById('escribirInput').disabled = true;
