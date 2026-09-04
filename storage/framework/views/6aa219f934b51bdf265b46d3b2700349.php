@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOLIQUECHUA - Registro</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,7 @@
             font-family: 'Quicksand', 'Poppins', sans-serif;
             min-height: 100vh;
             /* Aquí cargamos tu imagen */
-            background-image: url("{{ asset('images/fondo-boli.jpg') }}");
+            background-image: url("<?php echo e(asset('images/fondo-boli.jpg')); ?>");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -209,7 +209,7 @@
         <!-- Logo en la parte superior -->
         <div class="top-logo-area">
             <div class="logo-img">
-                <img src="{{ asset('imagen-login.jpg') }}" alt="Boliquechua Logo">
+                <img src="<?php echo e(asset('imagen-login.jpg')); ?>" alt="Boliquechua Logo">
             </div>
             <div class="logo-text">
                 <h2>BOLIQUECHUA</h2>
@@ -223,39 +223,67 @@
                 <p>Únete y empieza a jugar</p>
             </div>
 
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('register')); ?>">
+                <?php echo csrf_field(); ?>
 
                 <div class="input-group">
                     <label>👤 Nombre completo</label>
-                    <input type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
-                    @error('name')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <input type="text" name="name" value="<?php echo e(old('name')); ?>" required autofocus autocomplete="name">
+                    <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #ef4444; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="input-group">
                     <label>📧 Correo electrónico</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required autocomplete="username">
-                    @error('email')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <input type="email" name="email" value="<?php echo e(old('email')); ?>" required autocomplete="username">
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #ef4444; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="input-group">
                     <label>🔒 Contraseña</label>
                     <input type="password" name="password" required autocomplete="new-password">
-                    @error('password')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #ef4444; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="input-group">
                     <label>🔒 Confirmar Contraseña</label>
                     <input type="password" name="password_confirmation" required autocomplete="new-password">
-                    @error('password_confirmation')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #ef4444; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <button type="submit" class="btn-login">
@@ -264,7 +292,7 @@
 
                 <div class="register-link">
                     ¿Ya tienes una cuenta?
-                    <a href="{{ route('login') }}">
+                    <a href="<?php echo e(route('login')); ?>">
                         Inicia sesión aquí
                     </a>
                 </div>
@@ -273,3 +301,4 @@
     </div>
 </body>
 </html>
+<?php /**PATH D:\proyecto-boliquechua-de-chore-main (1)\proyecto-boliquechua-de-chore-main\resources\views/auth/register.blade.php ENDPATH**/ ?>

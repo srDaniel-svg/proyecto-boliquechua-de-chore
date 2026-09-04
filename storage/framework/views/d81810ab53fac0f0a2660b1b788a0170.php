@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOLIQUECHUA - Registro</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>BOLIQUECHUA - Iniciar Sesión</title>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Quicksand', 'Poppins', sans-serif;
             min-height: 100vh;
             /* Aquí cargamos tu imagen */
-            background-image: url("{{ asset('images/fondo-boli.jpg') }}");
+            background-image: url("<?php echo e(asset('images/fondo-boli.jpg')); ?>");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -37,8 +36,6 @@
             z-index: 0;
             pointer-events: none;
         }
-
-
         @keyframes gridPulse {
             0%, 100% { transform: scale(1); opacity: 0.5; }
             50% { transform: scale(1.02); opacity: 0.8; }
@@ -96,8 +93,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scale(1.22) translateX(0%); /* Centra y recorta totalmente el blanco */
             transform: scale(1.22) translateY(3.5px); /* El translateY baja la imagen */
+            translate: translateX(0%);
         }
 
         .logo-text h2 {
@@ -164,6 +161,32 @@
             box-shadow: 0 0 0 3px rgba(255, 74, 16, 0.2);
         }
 
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #f3e6d3;
+            opacity: 0.8;
+        }
+
+        .forgot-link {
+            color: #ff4a10;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
         /* Botón */
         .btn-login {
             width: 100%;
@@ -177,7 +200,6 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-bottom: 20px;
-            margin-top: 10px;
         }
 
         .btn-login:hover {
@@ -202,6 +224,17 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+
+        /* Frase en quechua */
+        .quechua-phrase {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 74, 16, 0.2);
+            color: #ff7a3e;
+            font-style: italic;
+            font-size: 0.85em;
+        }
     </style>
 </head>
 <body>
@@ -209,7 +242,7 @@
         <!-- Logo en la parte superior -->
         <div class="top-logo-area">
             <div class="logo-img">
-                <img src="{{ asset('imagen-login.jpg') }}" alt="Boliquechua Logo">
+                <img src="<?php echo e(asset('imagen-login.jpg')); ?>" alt="Boliquechua Logo">
             </div>
             <div class="logo-text">
                 <h2>BOLIQUECHUA</h2>
@@ -219,57 +252,71 @@
 
         <div class="login-card">
             <div class="title">
-                <h3>Crear cuenta</h3>
-                <p>Únete y empieza a jugar</p>
+                <h3>¡Sumaq kawsay!</h3>
+                <p>Inicia sesión para continuar</p>
             </div>
 
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
-
-                <div class="input-group">
-                    <label>👤 Nombre completo</label>
-                    <input type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
-                    @error('name')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
-                </div>
+            <form method="POST" action="<?php echo e(route('login')); ?>">
+                <?php echo csrf_field(); ?>
 
                 <div class="input-group">
                     <label>📧 Correo electrónico</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required autocomplete="username">
-                    @error('email')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <input type="email" name="email" value="<?php echo e(old('email')); ?>" required autofocus>
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #dc2626; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="input-group">
                     <label>🔒 Contraseña</label>
-                    <input type="password" name="password" required autocomplete="new-password">
-                    @error('password')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                    <input type="password" name="password" required>
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small style="color: #dc2626; font-size: 0.8em;"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
-                <div class="input-group">
-                    <label>🔒 Confirmar Contraseña</label>
-                    <input type="password" name="password_confirmation" required autocomplete="new-password">
-                    @error('password_confirmation')
-                        <small style="color: #ef4444; font-size: 0.8em;">{{ $message }}</small>
-                    @enderror
+                <div class="checkbox-group">
+                    <label class="remember">
+                        <input type="checkbox" name="remember">
+                        Recordarme
+                    </label>
+                    <?php if(Route::has('password.request')): ?>
+                        <a class="forgot-link" href="<?php echo e(route('password.request')); ?>">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    <?php endif; ?>
                 </div>
 
                 <button type="submit" class="btn-login">
-                    ✨ REGISTRARSE
+                    🚀 INICIAR SESIÓN
                 </button>
 
                 <div class="register-link">
-                    ¿Ya tienes una cuenta?
-                    <a href="{{ route('login') }}">
-                        Inicia sesión aquí
+                    ¿No tienes cuenta?
+                    <a href="<?php echo e(route('register')); ?>">
+                        Regístrate aquí
                     </a>
+                </div>
+
+                <div class="quechua-phrase">
+                    "Imaynallam kashanki" - ¿Cómo estás?
                 </div>
             </form>
         </div>
     </div>
 </body>
-</html>
+</html><?php /**PATH D:\proyecto-boliquechua-de-chore-main (1)\proyecto-boliquechua-de-chore-main\resources\views/auth/login.blade.php ENDPATH**/ ?>
