@@ -47,6 +47,27 @@
             --ease: cubic-bezier(.22, 1, .36, 1);
         }
 
+        html[data-theme="light"] {
+            --bg0: #fdfbf7;
+            --bg1: #f3eee6;
+            --card: rgba(0, 0, 0, 0.04);
+            --card2: rgba(0, 0, 0, 0.08);
+            --text: #2b1c14;
+            --muted: rgba(43, 28, 20, 0.7);
+            --muted2: rgba(43, 28, 20, 0.5);
+            --border: rgba(255, 74, 16, 0.3);
+            --border2: rgba(255, 209, 102, 0.4);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow2: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        html[data-theme="light"] body {
+            background: radial-gradient(1200px 700px at 20% 10%, rgba(255, 74, 16, 0.12), transparent 55%),
+                        radial-gradient(900px 520px at 85% 22%, rgba(0, 230, 195, 0.1), transparent 60%),
+                        radial-gradient(900px 650px at 55% 92%, rgba(255, 209, 102, 0.15), transparent 62%),
+                        linear-gradient(180deg, var(--bg0), var(--bg1) 55%, #e9e1d5);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
         body {
@@ -1125,6 +1146,7 @@
             .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .sm-grid { grid-template-columns: repeat(2, 1fr); }
             .cc-arrow { display: none; }
+            .dashboard-llama { display: none !important; }
         }
         @media (max-width: 480px) {
             #topbar { padding: 12px 14px; }
@@ -1134,6 +1156,24 @@
             .theme-lbl { display: none; }
             .theme-toggle-btn { padding: 7px 10px; border-radius: 50%; }
         }
+        
+        /* ====== CUENTOS VIEW ====== */
+        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: url('<?php echo e(asset("images/fondo de cuentos.svg")); ?>'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
+        #cuentos-view.active { display: flex; }
+        .cuentos-header { position: absolute; top: clamp(16px, 2.5vh, 28px); left: clamp(16px, 3vw, 54px); z-index: 20; }
+        .nodo-cuento { position: absolute; width: clamp(20px, 4vw, 30px); height: clamp(20px, 4vw, 30px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: clamp(0.5em, 1vw, 0.8em); font-weight: 900; cursor: pointer; transition: transform 0.2s, filter 0.2s; transform: translate(-50%, -50%); z-index: 10; }
+        .nodo-cuento:hover { transform: translate(-50%, -50%) scale(1.1); }
+        .nodo-bloqueado { background: rgba(30, 30, 30, 0.9); color: #777; border: 2px solid #555; cursor: not-allowed; pointer-events: none; }
+        .nodo-completado { background: rgba(30, 30, 30, 0.9); color: var(--gold); border: 2px solid var(--gold); }
+        .nodo-actual { background: rgba(30, 30, 30, 0.9); color: #fff; border: 2px solid var(--gold); animation: pulse-nodo 1.5s infinite alternate; }
+        .nodo-actual span { text-align: center; line-height: 1.1; font-size: 0.8em; margin-top: 5px; }
+        .indicador-pajaro { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; animation: bounce 1.5s infinite; pointer-events: none; z-index: 20; }
+        @keyframes pulse-nodo { 0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px rgba(255, 209, 102, 0.4); } 100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 20px rgba(255, 209, 102, 0.8), 0 0 10px rgba(255, 209, 102, 0.6) inset; } }
+        #proximamente-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        #proximamente-view.active { display: flex; }
+        .proximamente-text { font-family: 'Rajdhani', sans-serif; font-size: clamp(2em, 8vw, 4em); font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--pri); margin-top: 20px; animation: bounce 2s infinite; }
+        .proximamente-icon { width: clamp(100px, 30vw, 200px); height: clamp(100px, 30vw, 200px); }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
     </style>
 </head>
 <body>
@@ -1208,7 +1248,7 @@
         <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Elige una categoría</div><div class="sec-line" style="background:linear-gradient(270deg,var(--border),transparent)"></div></div>
         <div class="cat-grid" id="catGrid">
             <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="cat-card" onclick="openSubmenu(<?php echo e($cat->id); ?>, '<?php echo e($cat->nombre); ?>', '<?php echo e($cat->icono ?? ''); ?>')">
+            <div class="cat-card" onclick="window.location.href='<?php echo e(route('niveles', ['id' => $cat->id])); ?>'">
                 <div class="cc-topbar"></div>
                 <div class="cc-body">
                     <div class="cc-img-wrap">
@@ -1222,13 +1262,55 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <!-- Mascota animada en bucle en el dashboard -->
-        <img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="dashboard-llama" alt="Condorio animado" style="position: absolute; bottom: -10px; right: 20px; width: clamp(180px, 20vw, 250px); pointer-events: none; z-index: 0; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
+        <img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="dashboard-llama" alt="Condorio animado" style="position: fixed; bottom: 80px; right: 10px; width: clamp(120px, 25vw, 200px); pointer-events: none; z-index: 10; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
     </main>
     <nav id="navbar">
         <button class="nb-btn" onclick="window.location.href='<?php echo e(url('/categorias')); ?>'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
+        <button class="nb-btn" onclick="showCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span class="nb-lbl">Cuentos</span></button>
         <button class="nb-btn" onclick="showLogros()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg><span class="nb-lbl">Logros</span></button>
+        <button class="nb-btn" onclick="alert('Práctica próximamente')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="nb-lbl">Práctica</span></button>
         <button class="nb-btn" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="nb-lbl">Perfil</span></button>
     </nav>
+</div>
+
+<!-- ========== CUENTOS VIEW ========== -->
+<div id="cuentos-view">
+    <div class="sm-back" onclick="hideCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+    
+    <div style="position: absolute; inset: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; pointer-events: none;">
+        <div style="position: relative; width: 100%; max-width: 1200px; min-width: 800px; aspect-ratio: 1843 / 2261; pointer-events: auto; margin-bottom: -5%;">
+            <img src="<?php echo e(asset('arbol cuentos (2).svg')); ?>" style="width: 100%; height: auto; display: block; pointer-events: none;">
+            
+            <!-- Centro -->
+            <div class="nodo-cuento nodo-actual" style="top: 72.8%; left: 48.8%;" onclick="showProximamente()">
+                <img src="<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>" class="indicador-pajaro" alt="Indicador">
+                <span>NIVEL<br>INICIAL<br><span style="font-size: 1.4em; line-height: 0.5;">&gt;</span></span>
+            </div>
+            
+            <!-- Izquierda (8 nodos) -->
+            <div class="nodo-cuento nodo-bloqueado" style="top: 52.2%; left: 39.6%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 59.8%; left: 26.1%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 66.2%; left: 38.4%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 72.4%; left: 13.1%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 71.1%; left: 25.3%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 81.4%; left: 10.9%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 78.2%; left: 31.0%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 84.0%; left: 35.7%;"></div>
+
+            <!-- Derecha (5 nodos) -->
+            <div class="nodo-cuento nodo-bloqueado" style="top: 55.8%; left: 56.2%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 63.3%; left: 71.7%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 70.0%; left: 69.7%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 78.7%; left: 63.1%;"></div>
+            <div class="nodo-cuento nodo-bloqueado" style="top: 77.2%; left: 82.2%;"></div>
+        </div>
+    </div>
+
+    <div id="proximamente-view">
+        <img src="<?php echo e(asset('condorio saludando animado.gif')); ?>" class="proximamente-icon" alt="Correcto">
+        <div class="proximamente-text">¡PRÓXIMAMENTE!</div>
+        <button class="sh-btn" style="margin-top: 30px;" onclick="hideProximamente()">Volver atrás</button>
+    </div>
 </div>
 
 <!-- ========== SUBMENÚ ========== -->
@@ -1392,6 +1474,21 @@
         const theme = localStorage.getItem('boliquechua_theme') || 'dark';
         updateThemeUI(theme);
     });
+
+    function showCuentos() {
+        document.getElementById('app').style.display = 'none';
+        document.getElementById('cuentos-view').classList.add('active');
+    }
+    function hideCuentos() {
+        document.getElementById('cuentos-view').classList.remove('active');
+        document.getElementById('app').style.display = 'flex';
+    }
+    function showProximamente() {
+        document.getElementById('proximamente-view').classList.add('active');
+    }
+    function hideProximamente() {
+        document.getElementById('proximamente-view').classList.remove('active');
+    }
 </script>
 </body>
 </html><?php /**PATH C:\Users\HP\Desktop\boliquechua2.0\resources\views/index.blade.php ENDPATH**/ ?>

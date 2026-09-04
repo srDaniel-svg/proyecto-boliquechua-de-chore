@@ -1161,33 +1161,33 @@
     <svg class="chakana-bg" viewBox="0 0 100 100" fill="none"><path d="M33 0H67V33H100V67H67V100H33V67H0V33H33V0Z" fill="#E8450A"/><circle cx="50" cy="50" r="10" fill="none" stroke="#E8450A" stroke-width="2"/></svg>
     <div class="sp-cont" id="spCont"></div>
     <div class="splash-content">
-        <img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="splash-llama" alt="Mascota animada">
+        <img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="splash-llama" alt="Mascota animada">
         <div class="splash-title">BOLI<span>QUECHUA</span></div>
         <div class="splash-sub">Sistema de aprendizaje · v2.0</div>
     </div>
     <div class="s-lines"><div class="s-line"></div><div class="s-dia"></div><div class="s-line"></div></div>
-    <div class="splash-welcome"><div class="sw-lbl">Bienvenido de vuelta</div><div class="sw-name">{{ $nombreUsuario }}</div></div>
+    <div class="splash-welcome"><div class="sw-lbl">Bienvenido de vuelta</div><div class="sw-name"><?php echo e($nombreUsuario); ?></div></div>
     <div class="splash-loader"><div class="l-track"><div class="l-bar"></div></div><div class="l-pct" id="lPct">0%</div></div>
 </div>
 
 <!-- ========== GAME LOADER ========== -->
-<div id="gameLoader"><div class="gl-rings"><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div></div><div class="gl-content"><img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="gl-icon" alt="Mascota animada"><div class="gl-title" id="glTitle">Cargando...</div><div class="gl-sub">BOLIQUECHUA</div><div class="gl-bar-wrap"><div class="gl-track"><div class="gl-bar" id="glBar"></div></div></div></div></div>
+<div id="gameLoader"><div class="gl-rings"><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div></div><div class="gl-content"><img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="gl-icon" alt="Mascota animada"><div class="gl-title" id="glTitle">Cargando...</div><div class="gl-sub">BOLIQUECHUA</div><div class="gl-bar-wrap"><div class="gl-track"><div class="gl-bar" id="glBar"></div></div></div></div></div>
 
 <!-- ========== APP ========== -->
 <div id="app">
     <div id="lp"></div>
     <header id="topbar">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <button onclick="window.location.href='{{ route('categorias') }}'" class="sh-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+            <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'" class="sh-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; display: flex; align-items: center; gap: 5px; cursor: pointer;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
                 Volver
             </button>
-            <div class="logo">{{ $categoria->nombre ?? 'Niveles' }}</div>
+            <div class="logo"><?php echo e($categoria->nombre ?? 'Niveles'); ?></div>
         </div>
         <div class="topbar-center">
-            <div class="stat-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="stat-chip-val">{{ $vidas }}</span></div>
-            <div class="stat-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="stat-chip-val">{{ $racha }}</span></div>
-            <div class="stat-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="stat-chip-val">{{ $puntuacion }}</span></div>
+            <div class="stat-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="stat-chip-val"><?php echo e($vidas); ?></span></div>
+            <div class="stat-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="stat-chip-val"><?php echo e($racha); ?></span></div>
+            <div class="stat-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="stat-chip-val"><?php echo e($puntuacion); ?></span></div>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
@@ -1264,59 +1264,59 @@
     });
 </script>
             </button>
-            <button class="avatar-btn" onclick="window.location.href='{{ route('profile.edit') }}'" title="Ver mi perfil">
-                @if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http')))
-                    <img src="{{ asset($avatar) }}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                @elseif(isset($avatar) && $avatar === 'llama')
+            <button class="avatar-btn" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'" title="Ver mi perfil">
+                <?php if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http'))): ?>
+                    <img src="<?php echo e(asset($avatar)); ?>" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                <?php elseif(isset($avatar) && $avatar === 'llama'): ?>
                     <span style="font-size: 24px;">🦙</span>
-                @elseif(isset($avatar) && $avatar === 'condor')
+                <?php elseif(isset($avatar) && $avatar === 'condor'): ?>
                     <span style="font-size: 24px;">🦅</span>
-                @elseif(isset($avatar) && $avatar === 'inca')
+                <?php elseif(isset($avatar) && $avatar === 'inca'): ?>
                     <span style="font-size: 24px;">👑</span>
-                @elseif(isset($avatar) && $avatar === 'coya')
+                <?php elseif(isset($avatar) && $avatar === 'coya'): ?>
                     <span style="font-size: 24px;">👸</span>
-                @elseif(isset($avatar) && $avatar === 'inti')
+                <?php elseif(isset($avatar) && $avatar === 'inti'): ?>
                     <span style="font-size: 24px;">☀️</span>
-                @elseif(isset($avatar) && $avatar === 'chakana')
+                <?php elseif(isset($avatar) && $avatar === 'chakana'): ?>
                     <span style="font-size: 24px;">🏔️</span>
-                @elseif(isset($avatar) && $avatar === 'puma')
+                <?php elseif(isset($avatar) && $avatar === 'puma'): ?>
                     <span style="font-size: 24px;">🏹</span>
-                @elseif(isset($avatar) && $avatar === 'diablada')
+                <?php elseif(isset($avatar) && $avatar === 'diablada'): ?>
                     <span style="font-size: 24px;">🎭</span>
-                @else
+                <?php else: ?>
                     <svg viewBox="0 0 24 24" fill="none" stroke="#F0DCC0" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                @endif
+                <?php endif; ?>
             </button>
         </div>
     </header>
     <div class="stats-mobile" id="statsMobile">
-        <div class="sm-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="sm-chip-val">{{ $vidas }}</span></div>
-        <div class="sm-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="sm-chip-val">{{ $racha }}</span></div>
-        <div class="sm-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="sm-chip-val">{{ $puntuacion }}</span></div>
+        <div class="sm-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="sm-chip-val"><?php echo e($vidas); ?></span></div>
+        <div class="sm-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="sm-chip-val"><?php echo e($racha); ?></span></div>
+        <div class="sm-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="sm-chip-val"><?php echo e($puntuacion); ?></span></div>
     </div>
     <main id="main">
         <div class="mountain-path" id="mountainPath">
-            @foreach($nodos as $i => $nodo)
-            @php
+            <?php $__currentLoopData = $nodos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $nodo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
                 // Alternar izquierda y derecha en el zigzag
                 $isLeft = $i % 2 == 0;
                 $isUnlocked = $nodo->estado !== 'locked';
                 $isCurrent = $nodo->estado === 'active';
                 $isCompleted = $nodo->estado === 'completed';
-            @endphp
-            <div class="mountain-node-wrap {{ $isLeft ? 'node-left' : 'node-right' }}" id="node-wrap-{{ $nodo->orden }}">
+            ?>
+            <div class="mountain-node-wrap <?php echo e($isLeft ? 'node-left' : 'node-right'); ?>" id="node-wrap-<?php echo e($nodo->orden); ?>">
                 
-                @if($i < count($nodos) - 1)
+                <?php if($i < count($nodos) - 1): ?>
                 <svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    @if($isLeft)
-                        <path class="path-line {{ $isCompleted ? 'unlocked' : '' }}" d="M 20,100 Q 50,50 80,0" />
-                    @else
-                        <path class="path-line {{ $isCompleted ? 'unlocked' : '' }}" d="M 80,100 Q 50,50 20,0" />
-                    @endif
+                    <?php if($isLeft): ?>
+                        <path class="path-line <?php echo e($isCompleted ? 'unlocked' : ''); ?>" d="M 20,100 Q 50,50 80,0" />
+                    <?php else: ?>
+                        <path class="path-line <?php echo e($isCompleted ? 'unlocked' : ''); ?>" d="M 80,100 Q 50,50 20,0" />
+                    <?php endif; ?>
                 </svg>
-                @endif
+                <?php endif; ?>
 
-                @if($nodo->orden == 10)
+                <?php if($nodo->orden == 10): ?>
                     <!-- Llama pastando a la izquierda del nivel 10 -->
                     <style>
                         #kevin-text span {
@@ -1340,7 +1340,7 @@
                         <div id="kevin-text" style="font-family: 'Rajdhani', sans-serif; font-size: clamp(0.8em, 1.6vw, 1.4em); font-weight: 900; color: #fff; text-shadow: 0 0 10px #E8450A, 0 0 15px #FFD166; white-space: nowrap; margin-bottom: 5px; pointer-events: none;">
                             <span>¡</span><span>H</span><span>o</span><span>l</span><span>a</span><span>&nbsp;</span><span>s</span><span>o</span><span>y</span><span>&nbsp;</span><span>k</span><span>e</span><span>v</span><span>i</span><span>n</span><span>!</span>
                         </div>
-                        <img src="{{ asset('animaciones condorio en gif/llamin comiendo pasto_processed.gif') }}" alt="Llama pastando" style="width: 100%; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));" onclick="triggerKevin()">
+                        <img src="<?php echo e(asset('animaciones condorio en gif/llamin comiendo pasto_processed.gif')); ?>" alt="Llama pastando" style="width: 100%; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));" onclick="triggerKevin()">
                     </div>
                     <script>
                         function triggerKevin() {
@@ -1370,38 +1370,38 @@
                             }, 3000);
                         }
                     </script>
-                @endif
+                <?php endif; ?>
 
-                @if($isUnlocked)
-                    <a href="{{ $nodo->subNivelUrl }}" class="mountain-node {{ $isCurrent ? 'current' : '' }}">
-                @else
+                <?php if($isUnlocked): ?>
+                    <a href="<?php echo e($nodo->subNivelUrl); ?>" class="mountain-node <?php echo e($isCurrent ? 'current' : ''); ?>">
+                <?php else: ?>
                     <div class="mountain-node locked" onclick="alert('¡Completa el nivel anterior para desbloquear este!')">
-                @endif
+                <?php endif; ?>
                     <div class="mn-icon">
-                        @if($isUnlocked) 🏔️ @else 🔒 @endif
+                        <?php if($isUnlocked): ?> 🏔️ <?php else: ?> 🔒 <?php endif; ?>
                     </div>
-                    <div class="mn-name">Nivel {{ $nodo->orden }}</div>
+                    <div class="mn-name">Nivel <?php echo e($nodo->orden); ?></div>
                     <div class="mn-stars">
-                        @for($s = 1; $s <= 3; $s++)
-                            @if($s <= $nodo->estrellas)
+                        <?php for($s = 1; $s <= 3; $s++): ?>
+                            <?php if($s <= $nodo->estrellas): ?>
                                 <span class="star filled">★</span>
-                            @else
+                            <?php else: ?>
                                 <span class="star">☆</span>
-                            @endif
-                        @endfor
+                            <?php endif; ?>
+                        <?php endfor; ?>
                     </div>
-                @if($isUnlocked) </a> @else </div> @endif
+                <?php if($isUnlocked): ?> </a> <?php else: ?> </div> <?php endif; ?>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <!-- Mascota animada en bucle en el dashboard -->
-        <img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="dashboard-llama" alt="Condorio animado" style="position: fixed; bottom: 80px; right: 10px; width: clamp(120px, 25vw, 200px); pointer-events: none; z-index: 10; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
+        <img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="dashboard-llama" alt="Condorio animado" style="position: fixed; bottom: 80px; right: 10px; width: clamp(120px, 25vw, 200px); pointer-events: none; z-index: 10; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
     </main>
     <nav id="navbar">
-        <button class="nb-btn" onclick="window.location.href='{{ url('/categorias') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
+        <button class="nb-btn" onclick="window.location.href='<?php echo e(url('/categorias')); ?>'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
         <button class="nb-btn" onclick="showLogros()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg><span class="nb-lbl">Logros</span></button>
         <button class="nb-btn" onclick="alert('Práctica próximamente')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="nb-lbl">Práctica</span></button>
-        <button class="nb-btn" onclick="window.location.href='{{ route('profile.edit') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="nb-lbl">Perfil</span></button>
+        <button class="nb-btn" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="nb-lbl">Perfil</span></button>
     </nav>
 </div>
 
@@ -1428,9 +1428,9 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="profile-ava"><svg viewBox="0 0 24 24" fill="#FFD166"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
         <div class="profile-name">Mis Logros</div>
-        <div class="profile-stats"><div class="ps-item"><span class="ps-val">6</span><span class="ps-lbl">Categorías</span></div><div class="ps-item"><span class="ps-val">{{ $puntuacion }}</span><span class="ps-lbl">Puntos</span></div></div>
+        <div class="profile-stats"><div class="ps-item"><span class="ps-val">6</span><span class="ps-lbl">Categorías</span></div><div class="ps-item"><span class="ps-val"><?php echo e($puntuacion); ?></span><span class="ps-lbl">Puntos</span></div></div>
         <hr class="sh-divider">
-        <div class="logro-list"><div class="logro-item"><svg viewBox="0 0 24 24" fill="#FFD166"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div><div class="logro-name">Primera lección</div><div class="logro-desc">Completaste tu primera lección</div></div></div><div class="logro-item {{ $racha >= 7 ? '' : 'logro-locked' }}"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><div><div class="logro-name">Racha de 7 días</div><div class="logro-desc">Juega 7 días seguidos</div></div></div><div class="logro-item {{ $puntuacion >= 100 ? '' : 'logro-locked' }}"><svg viewBox="0 0 24 24" fill="none" stroke="#00C9A7" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><div><div class="logro-name">100 Puntos</div><div class="logro-desc">Alcanza 100 puntos en quechua</div></div></div></div>
+        <div class="logro-list"><div class="logro-item"><svg viewBox="0 0 24 24" fill="#FFD166"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div><div class="logro-name">Primera lección</div><div class="logro-desc">Completaste tu primera lección</div></div></div><div class="logro-item <?php echo e($racha >= 7 ? '' : 'logro-locked'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><div><div class="logro-name">Racha de 7 días</div><div class="logro-desc">Juega 7 días seguidos</div></div></div><div class="logro-item <?php echo e($puntuacion >= 100 ? '' : 'logro-locked'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="#00C9A7" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><div><div class="logro-name">100 Puntos</div><div class="logro-desc">Alcanza 100 puntos en quechua</div></div></div></div>
         <button class="sh-btn" onclick="closeModal('logrosModal')">Cerrar</button>
     </div>
 </div>
@@ -1439,34 +1439,34 @@
 <div class="overlay" id="profileModal" onclick="closeModal('profileModal')">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="profile-ava">
-            @if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http')))
-                <img src="{{ asset($avatar) }}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-            @elseif(isset($avatar) && $avatar === 'llama')
+            <?php if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http'))): ?>
+                <img src="<?php echo e(asset($avatar)); ?>" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            <?php elseif(isset($avatar) && $avatar === 'llama'): ?>
                 <span style="font-size: 38px;">🦙</span>
-            @elseif(isset($avatar) && $avatar === 'condor')
+            <?php elseif(isset($avatar) && $avatar === 'condor'): ?>
                 <span style="font-size: 38px;">🦅</span>
-            @elseif(isset($avatar) && $avatar === 'inca')
+            <?php elseif(isset($avatar) && $avatar === 'inca'): ?>
                 <span style="font-size: 38px;">👑</span>
-            @elseif(isset($avatar) && $avatar === 'coya')
+            <?php elseif(isset($avatar) && $avatar === 'coya'): ?>
                 <span style="font-size: 38px;">👸</span>
-            @elseif(isset($avatar) && $avatar === 'inti')
+            <?php elseif(isset($avatar) && $avatar === 'inti'): ?>
                 <span style="font-size: 38px;">☀️</span>
-            @elseif(isset($avatar) && $avatar === 'chakana')
+            <?php elseif(isset($avatar) && $avatar === 'chakana'): ?>
                 <span style="font-size: 38px;">🏔️</span>
-            @elseif(isset($avatar) && $avatar === 'puma')
+            <?php elseif(isset($avatar) && $avatar === 'puma'): ?>
                 <span style="font-size: 38px;">🏹</span>
-            @elseif(isset($avatar) && $avatar === 'diablada')
+            <?php elseif(isset($avatar) && $avatar === 'diablada'): ?>
                 <span style="font-size: 38px;">🎭</span>
-            @else
+            <?php else: ?>
                 <svg viewBox="0 0 24 24" fill="none" stroke="#F0DCC0" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            @endif
+            <?php endif; ?>
         </div>
-        <div class="profile-name">{{ $nombreUsuario }}</div>
-        <div class="profile-stats"><div class="ps-item"><span class="ps-val">{{ $puntuacion }}</span><span class="ps-lbl">Puntos</span></div><div class="ps-item"><span class="ps-val">{{ $racha }}</span><span class="ps-lbl">Racha</span></div><div class="ps-item"><span class="ps-val">{{ $vidas }}</span><span class="ps-lbl">Vidas</span></div></div>
+        <div class="profile-name"><?php echo e($nombreUsuario); ?></div>
+        <div class="profile-stats"><div class="ps-item"><span class="ps-val"><?php echo e($puntuacion); ?></span><span class="ps-lbl">Puntos</span></div><div class="ps-item"><span class="ps-val"><?php echo e($racha); ?></span><span class="ps-lbl">Racha</span></div><div class="ps-item"><span class="ps-val"><?php echo e($vidas); ?></span><span class="ps-lbl">Vidas</span></div></div>
         <hr class="sh-divider">
         <button type="button" class="sh-btn" onclick="toggleTheme()">🌓 Alternar Modo Claro / Oscuro</button>
-        <button type="button" class="sh-btn" style="background: linear-gradient(135deg, var(--pri), var(--pri-dk)); color: #fff; font-weight: 700;" onclick="window.location.href='{{ route('profile.edit') }}'">🌟 Ver Perfil Completo y Avatar</button>
-        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="sh-btn" style="color: #ff7676;">Cerrar sesión</button></form>
+        <button type="button" class="sh-btn" style="background: linear-gradient(135deg, var(--pri), var(--pri-dk)); color: #fff; font-weight: 700;" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'">🌟 Ver Perfil Completo y Avatar</button>
+        <form method="POST" action="<?php echo e(route('logout')); ?>"><?php echo csrf_field(); ?><button type="submit" class="sh-btn" style="color: #ff7676;">Cerrar sesión</button></form>
         <button class="sh-btn" onclick="closeModal('profileModal')">Cerrar</button>
     </div>
 </div>
@@ -1476,9 +1476,9 @@
     const animFrames = [];
     for (let i = 1; i <= 40; i++) {
         if (i <= 10) {
-            animFrames.push(`{{ asset('frames de saludo sin fondo/frame_') }}${i}.png`);
+            animFrames.push(`<?php echo e(asset('frames de saludo sin fondo/frame_')); ?>${i}.png`);
         } else {
-            animFrames.push(`{{ asset('frames de saludo sin fondo/frame_') }}${i}-removebg-preview.png`);
+            animFrames.push(`<?php echo e(asset('frames de saludo sin fondo/frame_')); ?>${i}-removebg-preview.png`);
         }
     }
     const splashImg = document.querySelector('.splash-llama');
@@ -1583,7 +1583,7 @@
         let currentVidas = parseInt(vidasEl.innerText);
         if (currentVidas >= 5) return;
         
-        fetch('{{ route("check.vidas") }}')
+        fetch('<?php echo e(route("check.vidas")); ?>')
             .then(res => res.json())
             .then(data => {
                 if (data.regeneradas > 0) {
@@ -1612,4 +1612,4 @@
     }, 15000);
 </script>
 </body>
-</html>
+</html><?php /**PATH C:\Users\HP\Desktop\boliquechua2.0\resources\views/niveles.blade.php ENDPATH**/ ?>

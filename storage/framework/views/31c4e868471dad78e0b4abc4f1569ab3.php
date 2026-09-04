@@ -11,31 +11,34 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Quicksand', 'Poppins', sans-serif;
             min-height: 100vh;
-            background-image: url('https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            /* Aquí cargamos tu imagen */
+            background-image: url("<?php echo e(asset('images/fondo-boli.jpg')); ?>");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            color: #f3e6d3;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
         }
 
-        /* Capa de blur detrás del recuadro */
+        /* Esta capa negra semitransparente aplicará el efecto de desenfoque */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6); /* Oscurece un poco la imagen */
+            backdrop-filter: blur(10px);    /* Aquí está el desenfoque (blur). Cambia el 10px si lo quieres más o menos borroso */
             z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes gridPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.02); opacity: 0.8; }
         }
 
         /* Contenedor principal */
@@ -49,13 +52,14 @@
             flex-direction: column;
         }
 
-        /* Recuadro blanco semitransparente */
+        /* Recuadro blanco semitransparente oscuro */
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 244, 230, 0.04);
+            border: 1px solid rgba(255, 74, 16, 0.18);
             border-radius: 32px;
             padding: 40px 35px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(2px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
             transition: transform 0.3s ease;
         }
 
@@ -66,11 +70,12 @@
         /* Header Logo Area */
         .top-logo-area {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 30px;
-            text-align: left;
+            text-align: center;
         }
 
         .logo-img {
@@ -88,7 +93,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scale(1.22) translateX(-2%); /* Centra y recorta totalmente el blanco */
+            transform: scale(1.22) translateY(3.5px); /* El translateY baja la imagen */
+            translate: translateX(0%);
         }
 
         .logo-text h2 {
@@ -114,13 +120,14 @@
         }
 
         .title h3 {
-            color: #DD4E00;
+            color: #ff7a3e;
             font-size: 1.5em;
             font-weight: 600;
         }
 
         .title p {
-            color: #FB7900;
+            color: #f3e6d3;
+            opacity: 0.8;
             font-size: 0.9em;
         }
 
@@ -132,7 +139,7 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            color: #DD4E00;
+            color: #ff4a10;
             font-weight: 600;
             font-size: 0.9em;
         }
@@ -140,17 +147,18 @@
         .input-group input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #FFE0B2;
+            border: 1px solid rgba(255, 74, 16, 0.3);
             border-radius: 16px;
             font-size: 1em;
             transition: all 0.3s;
-            background: white;
+            background: rgba(255, 244, 230, 0.06);
+            color: #f3e6d3;
         }
 
         .input-group input:focus {
             outline: none;
-            border-color: #FB7900;
-            box-shadow: 0 0 0 3px rgba(251, 121, 0, 0.2);
+            border-color: #ff4a10;
+            box-shadow: 0 0 0 3px rgba(255, 74, 16, 0.2);
         }
 
         /* Checkbox */
@@ -165,11 +173,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #DD4E00;
+            color: #f3e6d3;
+            opacity: 0.8;
         }
 
         .forgot-link {
-            color: #FB7900;
+            color: #ff4a10;
             text-decoration: none;
             font-size: 0.9em;
         }
@@ -202,11 +211,12 @@
         /* Link de registro */
         .register-link {
             text-align: center;
-            color: #DD4E00;
+            color: #f3e6d3;
+            opacity: 0.9;
         }
 
         .register-link a {
-            color: #FB7900;
+            color: #ff4a10;
             text-decoration: none;
             font-weight: bold;
         }
@@ -220,8 +230,8 @@
             text-align: center;
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid #FFE0B2;
-            color: #FB7900;
+            border-top: 1px solid rgba(255, 74, 16, 0.2);
+            color: #ff7a3e;
             font-style: italic;
             font-size: 0.85em;
         }
@@ -232,7 +242,7 @@
         <!-- Logo en la parte superior -->
         <div class="top-logo-area">
             <div class="logo-img">
-                <img src="<?php echo e(asset('nuevo icono.png')); ?>" alt="Boliquechua Logo">
+                <img src="<?php echo e(asset('imagen-login.jpg')); ?>" alt="Boliquechua Logo">
             </div>
             <div class="logo-text">
                 <h2>BOLIQUECHUA</h2>

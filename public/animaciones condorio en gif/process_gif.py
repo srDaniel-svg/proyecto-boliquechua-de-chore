@@ -38,4 +38,7 @@ def process_gif(input_path, output_path, speed_factor=2.0):
     frames[0].save(output_path, save_all=True, append_images=frames[1:], loop=0, duration=durations, transparency=0, disposal=2)
 
 if __name__ == '__main__':
-    process_gif(sys.argv[1], sys.argv[2])
+    speed = 2.0
+    if len(sys.argv) > 3:
+        speed = float(sys.argv[3])
+    process_gif(sys.argv[1], sys.argv[2], speed)
