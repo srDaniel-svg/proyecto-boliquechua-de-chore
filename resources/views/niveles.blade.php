@@ -494,7 +494,7 @@
             flex-direction: column-reverse; /* El primer nivel empieza abajo */
             align-items: center;
             gap: 0;
-            padding: 40px 0 100px;
+            padding: 280px 0 100px; /* Aumentado padding superior para ver la animación */
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
@@ -1306,6 +1306,13 @@
             @endphp
             <div class="mountain-node-wrap {{ $isLeft ? 'node-left' : 'node-right' }}" id="node-wrap-{{ $nodo->orden }}">
                 
+                @if($nodo->orden == 20)
+                    <!-- Animación de celebración final anclada al Nivel 20 (Fondo Negro Puro) -->
+                    <div style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: -15px; z-index: 10; pointer-events: none; width: 320px; display: flex; justify-content: center; mix-blend-mode: screen;">
+                        <img src="{{ asset('animaciones condorio en gif/condorio bailando fondo negro.gif') }}" alt="Celebracion final" style="width: 100%; max-width: 90vw; transform: scale(0.95);">
+                    </div>
+                @endif
+
                 @if($i < count($nodos) - 1)
                 <svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                     @if($isLeft)

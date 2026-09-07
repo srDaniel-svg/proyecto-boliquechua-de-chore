@@ -1158,7 +1158,7 @@
         }
         
         /* ====== CUENTOS VIEW ====== */
-        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: url('{{ asset("images/fondo de cuentos.svg") }}'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
+        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: url('<?php echo e(asset("images/fondo de cuentos.svg")); ?>'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
         #cuentos-view.active { display: flex; }
         .cuentos-header { position: absolute; top: clamp(16px, 2.5vh, 28px); left: clamp(16px, 3vw, 54px); z-index: 20; }
         .nodo-cuento { position: absolute; width: clamp(20px, 4vw, 30px); height: clamp(20px, 4vw, 30px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: clamp(0.5em, 1vw, 0.8em); font-weight: 900; cursor: pointer; transition: transform 0.2s, filter 0.2s; transform: translate(-50%, -50%); z-index: 10; }
@@ -1187,17 +1187,17 @@
     <svg class="chakana-bg" viewBox="0 0 100 100" fill="none"><path d="M33 0H67V33H100V67H67V100H33V67H0V33H33V0Z" fill="#E8450A"/><circle cx="50" cy="50" r="10" fill="none" stroke="#E8450A" stroke-width="2"/></svg>
     <div class="sp-cont" id="spCont"></div>
     <div class="splash-content">
-        <img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="splash-llama" alt="Mascota animada">
+        <img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="splash-llama" alt="Mascota animada">
         <div class="splash-title">BOLI<span>QUECHUA</span></div>
         <div class="splash-sub">Sistema de aprendizaje · v2.0</div>
     </div>
     <div class="s-lines"><div class="s-line"></div><div class="s-dia"></div><div class="s-line"></div></div>
-    <div class="splash-welcome"><div class="sw-lbl">Bienvenido de vuelta</div><div class="sw-name">{{ $nombreUsuario }}</div></div>
+    <div class="splash-welcome"><div class="sw-lbl">Bienvenido de vuelta</div><div class="sw-name"><?php echo e($nombreUsuario); ?></div></div>
     <div class="splash-loader"><div class="l-track"><div class="l-bar"></div></div><div class="l-pct" id="lPct">0%</div></div>
 </div>
 
 <!-- ========== GAME LOADER ========== -->
-<div id="gameLoader"><div class="gl-rings"><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div></div><div class="gl-content"><img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="gl-icon" alt="Mascota animada"><div class="gl-title" id="glTitle">Cargando...</div><div class="gl-sub">BOLIQUECHUA</div><div class="gl-bar-wrap"><div class="gl-track"><div class="gl-bar" id="glBar"></div></div></div></div></div>
+<div id="gameLoader"><div class="gl-rings"><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div><div class="gl-ring"></div></div><div class="gl-content"><img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="gl-icon" alt="Mascota animada"><div class="gl-title" id="glTitle">Cargando...</div><div class="gl-sub">BOLIQUECHUA</div><div class="gl-bar-wrap"><div class="gl-track"><div class="gl-bar" id="glBar"></div></div></div></div></div>
 
 <!-- ========== APP ========== -->
 <div id="app">
@@ -1205,50 +1205,50 @@
     <header id="topbar">
         <div><div class="logo">BOLI<span>QUECHUA</span></div><div class="tagline">Aprende quechua jugando</div></div>
         <div class="topbar-center">
-            <div class="stat-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="stat-chip-val">{{ $vidas }}</span></div>
-            <div class="stat-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="stat-chip-val">{{ $racha }}</span></div>
-            <div class="stat-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="stat-chip-val">{{ $puntuacion }}</span></div>
+            <div class="stat-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="stat-chip-val"><?php echo e($vidas); ?></span></div>
+            <div class="stat-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="stat-chip-val"><?php echo e($racha); ?></span></div>
+            <div class="stat-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="stat-chip-val"><?php echo e($puntuacion); ?></span></div>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
                 <span class="theme-icon">☀️</span>
                 <span class="theme-lbl">Modo</span>
             </button>
-            <button class="avatar-btn" onclick="window.location.href='{{ route('profile.edit') }}'" title="Ver mi perfil">
-                @if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http')))
-                    <img src="{{ asset($avatar) }}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                @elseif(isset($avatar) && $avatar === 'llama')
+            <button class="avatar-btn" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'" title="Ver mi perfil">
+                <?php if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http'))): ?>
+                    <img src="<?php echo e(asset($avatar)); ?>" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                <?php elseif(isset($avatar) && $avatar === 'llama'): ?>
                     <span style="font-size: 24px;">🦙</span>
-                @elseif(isset($avatar) && $avatar === 'condor')
+                <?php elseif(isset($avatar) && $avatar === 'condor'): ?>
                     <span style="font-size: 24px;">🦅</span>
-                @elseif(isset($avatar) && $avatar === 'inca')
+                <?php elseif(isset($avatar) && $avatar === 'inca'): ?>
                     <span style="font-size: 24px;">👑</span>
-                @elseif(isset($avatar) && $avatar === 'coya')
+                <?php elseif(isset($avatar) && $avatar === 'coya'): ?>
                     <span style="font-size: 24px;">👸</span>
-                @elseif(isset($avatar) && $avatar === 'inti')
+                <?php elseif(isset($avatar) && $avatar === 'inti'): ?>
                     <span style="font-size: 24px;">☀️</span>
-                @elseif(isset($avatar) && $avatar === 'chakana')
+                <?php elseif(isset($avatar) && $avatar === 'chakana'): ?>
                     <span style="font-size: 24px;">🏔️</span>
-                @elseif(isset($avatar) && $avatar === 'puma')
+                <?php elseif(isset($avatar) && $avatar === 'puma'): ?>
                     <span style="font-size: 24px;">🏹</span>
-                @elseif(isset($avatar) && $avatar === 'diablada')
+                <?php elseif(isset($avatar) && $avatar === 'diablada'): ?>
                     <span style="font-size: 24px;">🎭</span>
-                @else
+                <?php else: ?>
                     <svg viewBox="0 0 24 24" fill="none" stroke="#F0DCC0" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                @endif
+                <?php endif; ?>
             </button>
         </div>
     </header>
     <div class="stats-mobile" id="statsMobile">
-        <div class="sm-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="sm-chip-val">{{ $vidas }}</span></div>
-        <div class="sm-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="sm-chip-val">{{ $racha }}</span></div>
-        <div class="sm-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="sm-chip-val">{{ $puntuacion }}</span></div>
+        <div class="sm-chip hp"><svg viewBox="0 0 24 24" fill="#e74c3c"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span class="sm-chip-val"><?php echo e($vidas); ?></span></div>
+        <div class="sm-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="sm-chip-val"><?php echo e($racha); ?></span></div>
+        <div class="sm-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="sm-chip-val"><?php echo e($puntuacion); ?></span></div>
     </div>
     <main id="main">
         <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Elige una categoría</div><div class="sec-line" style="background:linear-gradient(270deg,var(--border),transparent)"></div></div>
         <div class="cat-grid" id="catGrid">
-            @foreach($categorias as $cat)
-            @php
+            <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
                 $catKey = strtolower(trim($cat->nombre));
                 $catNameMap = [
                     'saludos' => 'saludos.png',
@@ -1259,29 +1259,29 @@
                     'expresiones' => 'expresiones.png'
                 ];
                 $imgSrc = isset($catNameMap[$catKey]) ? asset('imagenes_botones/' . $catNameMap[$catKey]) : '';
-            @endphp
-            <div class="cat-card" onclick="window.location.href='{{ route('niveles', ['id' => $cat->id]) }}'">
-                @if($imgSrc)
-                <div style="position: absolute; inset: 0; background-image: url('{{ $imgSrc }}'); background-size: cover; background-position: center; z-index: 1;"></div>
-                @endif
+            ?>
+            <div class="cat-card" onclick="window.location.href='<?php echo e(route('niveles', ['id' => $cat->id])); ?>'">
+                <?php if($imgSrc): ?>
+                <div style="position: absolute; inset: 0; background-image: url('<?php echo e($imgSrc); ?>'); background-size: cover; background-position: center; z-index: 1;"></div>
+                <?php endif; ?>
                 <div class="cc-topbar"></div>
                 <div class="cc-body" style="height: 100%; justify-content: flex-end; padding-top: 45%;">
-                    <div class="cc-name" style="text-shadow: 0 2px 8px rgba(0,0,0,1);">{{ $cat->nombre }}</div>
+                    <div class="cc-name" style="text-shadow: 0 2px 8px rgba(0,0,0,1);"><?php echo e($cat->nombre); ?></div>
                     <div class="cc-cta" style="text-shadow: 0 2px 6px rgba(0,0,0,1);">Seleccionar ▶</div>
                 </div>
                 <div class="cc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <!-- Mascota animada en bucle en el dashboard -->
-        <img src="{{ asset('frames de saludo sin fondo/frame_1.png') }}" class="dashboard-llama" alt="Condorio animado" style="position: fixed; bottom: 80px; right: 10px; width: clamp(120px, 25vw, 200px); pointer-events: none; z-index: 10; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
+        <img src="<?php echo e(asset('frames de saludo sin fondo/frame_1.png')); ?>" class="dashboard-llama" alt="Condorio animado" style="position: fixed; bottom: 80px; right: 10px; width: clamp(120px, 25vw, 200px); pointer-events: none; z-index: 10; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));">
     </main>
     <nav id="navbar">
-        <button class="nb-btn" onclick="window.location.href='{{ url('/categorias') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
+        <button class="nb-btn" onclick="window.location.href='<?php echo e(url('/categorias')); ?>'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
         <button class="nb-btn" onclick="showCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span class="nb-lbl">Cuentos</span></button>
         <button class="nb-btn" onclick="showLogros()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg><span class="nb-lbl">Logros</span></button>
         <button class="nb-btn" onclick="alert('Práctica próximamente')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="nb-lbl">Práctica</span></button>
-        <button class="nb-btn" onclick="window.location.href='{{ route('profile.edit') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="nb-lbl">Perfil</span></button>
+        <button class="nb-btn" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="nb-lbl">Perfil</span></button>
     </nav>
 </div>
 
@@ -1291,11 +1291,11 @@
     
     <div style="position: absolute; inset: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; pointer-events: none;">
         <div style="position: relative; width: 100%; max-width: 1200px; min-width: 800px; aspect-ratio: 1843 / 2261; pointer-events: auto; margin-bottom: -5%;">
-            <img src="{{ asset('arbol cuentos (2).svg') }}" style="width: 100%; height: auto; display: block; pointer-events: none;">
+            <img src="<?php echo e(asset('arbol cuentos (2).svg')); ?>" style="width: 100%; height: auto; display: block; pointer-events: none;">
             
             <!-- Centro -->
             <div class="nodo-cuento nodo-actual" style="top: 72.8%; left: 48.8%;" onclick="showProximamente()">
-                <img src="{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}" class="indicador-pajaro" alt="Indicador">
+                <img src="<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>" class="indicador-pajaro" alt="Indicador">
                 <span>NIVEL<br>INICIAL<br><span style="font-size: 1.4em; line-height: 0.5;">&gt;</span></span>
             </div>
             
@@ -1319,7 +1319,7 @@
     </div>
 
     <div id="proximamente-view">
-        <img src="{{ asset('condorio saludando animado.gif') }}" class="proximamente-icon" alt="Correcto">
+        <img src="<?php echo e(asset('condorio saludando animado.gif')); ?>" class="proximamente-icon" alt="Correcto">
         <div class="proximamente-text">¡PRÓXIMAMENTE!</div>
         <button class="sh-btn" style="margin-top: 30px;" onclick="hideProximamente()">Volver atrás</button>
     </div>
@@ -1348,9 +1348,9 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="profile-ava"><svg viewBox="0 0 24 24" fill="#FFD166"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
         <div class="profile-name">Mis Logros</div>
-        <div class="profile-stats"><div class="ps-item"><span class="ps-val">6</span><span class="ps-lbl">Categorías</span></div><div class="ps-item"><span class="ps-val">{{ $puntuacion }}</span><span class="ps-lbl">Puntos</span></div></div>
+        <div class="profile-stats"><div class="ps-item"><span class="ps-val">6</span><span class="ps-lbl">Categorías</span></div><div class="ps-item"><span class="ps-val"><?php echo e($puntuacion); ?></span><span class="ps-lbl">Puntos</span></div></div>
         <hr class="sh-divider">
-        <div class="logro-list"><div class="logro-item"><svg viewBox="0 0 24 24" fill="#FFD166"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div><div class="logro-name">Primera lección</div><div class="logro-desc">Completaste tu primera lección</div></div></div><div class="logro-item {{ $racha >= 7 ? '' : 'logro-locked' }}"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><div><div class="logro-name">Racha de 7 días</div><div class="logro-desc">Juega 7 días seguidos</div></div></div><div class="logro-item {{ $puntuacion >= 100 ? '' : 'logro-locked' }}"><svg viewBox="0 0 24 24" fill="none" stroke="#00C9A7" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><div><div class="logro-name">100 Puntos</div><div class="logro-desc">Alcanza 100 puntos en quechua</div></div></div></div>
+        <div class="logro-list"><div class="logro-item"><svg viewBox="0 0 24 24" fill="#FFD166"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div><div class="logro-name">Primera lección</div><div class="logro-desc">Completaste tu primera lección</div></div></div><div class="logro-item <?php echo e($racha >= 7 ? '' : 'logro-locked'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><div><div class="logro-name">Racha de 7 días</div><div class="logro-desc">Juega 7 días seguidos</div></div></div><div class="logro-item <?php echo e($puntuacion >= 100 ? '' : 'logro-locked'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="#00C9A7" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><div><div class="logro-name">100 Puntos</div><div class="logro-desc">Alcanza 100 puntos en quechua</div></div></div></div>
         <button class="sh-btn" onclick="closeModal('logrosModal')">Cerrar</button>
     </div>
 </div>
@@ -1359,34 +1359,34 @@
 <div class="overlay" id="profileModal" onclick="closeModal('profileModal')">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="profile-ava">
-            @if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http')))
-                <img src="{{ asset($avatar) }}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-            @elseif(isset($avatar) && $avatar === 'llama')
+            <?php if(isset($avatar) && (str_starts_with($avatar, '/uploads/') || str_starts_with($avatar, 'http'))): ?>
+                <img src="<?php echo e(asset($avatar)); ?>" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            <?php elseif(isset($avatar) && $avatar === 'llama'): ?>
                 <span style="font-size: 38px;">🦙</span>
-            @elseif(isset($avatar) && $avatar === 'condor')
+            <?php elseif(isset($avatar) && $avatar === 'condor'): ?>
                 <span style="font-size: 38px;">🦅</span>
-            @elseif(isset($avatar) && $avatar === 'inca')
+            <?php elseif(isset($avatar) && $avatar === 'inca'): ?>
                 <span style="font-size: 38px;">👑</span>
-            @elseif(isset($avatar) && $avatar === 'coya')
+            <?php elseif(isset($avatar) && $avatar === 'coya'): ?>
                 <span style="font-size: 38px;">👸</span>
-            @elseif(isset($avatar) && $avatar === 'inti')
+            <?php elseif(isset($avatar) && $avatar === 'inti'): ?>
                 <span style="font-size: 38px;">☀️</span>
-            @elseif(isset($avatar) && $avatar === 'chakana')
+            <?php elseif(isset($avatar) && $avatar === 'chakana'): ?>
                 <span style="font-size: 38px;">🏔️</span>
-            @elseif(isset($avatar) && $avatar === 'puma')
+            <?php elseif(isset($avatar) && $avatar === 'puma'): ?>
                 <span style="font-size: 38px;">🏹</span>
-            @elseif(isset($avatar) && $avatar === 'diablada')
+            <?php elseif(isset($avatar) && $avatar === 'diablada'): ?>
                 <span style="font-size: 38px;">🎭</span>
-            @else
+            <?php else: ?>
                 <svg viewBox="0 0 24 24" fill="none" stroke="#F0DCC0" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            @endif
+            <?php endif; ?>
         </div>
-        <div class="profile-name">{{ $nombreUsuario }}</div>
-        <div class="profile-stats"><div class="ps-item"><span class="ps-val">{{ $puntuacion }}</span><span class="ps-lbl">Puntos</span></div><div class="ps-item"><span class="ps-val">{{ $racha }}</span><span class="ps-lbl">Racha</span></div><div class="ps-item"><span class="ps-val">{{ $vidas }}</span><span class="ps-lbl">Vidas</span></div></div>
+        <div class="profile-name"><?php echo e($nombreUsuario); ?></div>
+        <div class="profile-stats"><div class="ps-item"><span class="ps-val"><?php echo e($puntuacion); ?></span><span class="ps-lbl">Puntos</span></div><div class="ps-item"><span class="ps-val"><?php echo e($racha); ?></span><span class="ps-lbl">Racha</span></div><div class="ps-item"><span class="ps-val"><?php echo e($vidas); ?></span><span class="ps-lbl">Vidas</span></div></div>
         <hr class="sh-divider">
         <button type="button" class="sh-btn" onclick="toggleTheme()">🌓 Alternar Modo Claro / Oscuro</button>
-        <button type="button" class="sh-btn" style="background: linear-gradient(135deg, var(--pri), var(--pri-dk)); color: #fff; font-weight: 700;" onclick="window.location.href='{{ route('profile.edit') }}'">🌟 Ver Perfil Completo y Avatar</button>
-        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="sh-btn" style="color: #ff7676;">Cerrar sesión</button></form>
+        <button type="button" class="sh-btn" style="background: linear-gradient(135deg, var(--pri), var(--pri-dk)); color: #fff; font-weight: 700;" onclick="window.location.href='<?php echo e(route('profile.edit')); ?>'">🌟 Ver Perfil Completo y Avatar</button>
+        <form method="POST" action="<?php echo e(route('logout')); ?>"><?php echo csrf_field(); ?><button type="submit" class="sh-btn" style="color: #ff7676;">Cerrar sesión</button></form>
         <button class="sh-btn" onclick="closeModal('profileModal')">Cerrar</button>
     </div>
 </div>
@@ -1396,9 +1396,9 @@
     const animFrames = [];
     for (let i = 1; i <= 40; i++) {
         if (i <= 10) {
-            animFrames.push(`{{ asset('frames de saludo sin fondo/frame_') }}${i}.png`);
+            animFrames.push(`<?php echo e(asset('frames de saludo sin fondo/frame_')); ?>${i}.png`);
         } else {
-            animFrames.push(`{{ asset('frames de saludo sin fondo/frame_') }}${i}-removebg-preview.png`);
+            animFrames.push(`<?php echo e(asset('frames de saludo sin fondo/frame_')); ?>${i}-removebg-preview.png`);
         }
     }
     const splashImg = document.querySelector('.splash-llama');
@@ -1503,4 +1503,4 @@
     }
 </script>
 </body>
-</html>
+</html><?php /**PATH C:\Users\guaya.DESKTOP-FBLNDP3\Desktop\Boliquechua 2.0\proyecto-boliquechua-de-chore\resources\views/index.blade.php ENDPATH**/ ?>

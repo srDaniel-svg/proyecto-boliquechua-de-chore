@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $categoria->nombre }} - BOLIQUECHUA</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo e($categoria->nombre); ?> - BOLIQUECHUA</title>
     <script>
         (function() {
             var theme = localStorage.getItem('boliquechua_theme') || 'dark';
@@ -844,7 +844,7 @@
 <div id="duo-banner-wrapper" class="duo-banner-wrapper">
     <div id="duo-banner" class="duo-banner correct">
         <div class="duo-banner-left">
-            <img id="duo-banner-img" src="{{ asset('animaciones condorio en gif/correcto.svg') }}" alt="Icono">
+            <img id="duo-banner-img" src="<?php echo e(asset('animaciones condorio en gif/correcto.svg')); ?>" alt="Icono">
             <div id="duo-banner-text" class="duo-banner-text">
                 <div id="duo-banner-title">¡Correcto!</div>
                 <div id="duo-banner-subtitle"></div>
@@ -861,18 +861,18 @@
 <div class="app-wrapper">
     <div class="header">
         <div style="display: flex; align-items: center; gap: 8px;">
-            <a href="{{ url('/categorias') }}" class="back-btn">← Volver</a>
+            <a href="<?php echo e(url('/categorias')); ?>" class="back-btn">← Volver</a>
             <button class="theme-toggle-btn" id="gameThemeToggleBtn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
                 <span class="theme-icon">☀️</span>
                 <span class="theme-lbl">Modo</span>
             </button>
         </div>
         <div class="category-info">
-            <div class="category-icon">{{ $categoria->icono }}</div>
-            <div class="category-name">{{ $categoria->nombre }}</div>
+            <div class="category-icon"><?php echo e($categoria->icono); ?></div>
+            <div class="category-name"><?php echo e($categoria->nombre); ?></div>
         </div>
         <div class="stats-mini">
-            <div class="stat-mini">❤️ <span id="vidasDisplay">{{ $vidas }}</span></div>
+            <div class="stat-mini">❤️ <span id="vidasDisplay"><?php echo e($vidas); ?></span></div>
             <div class="stat-mini">⭐ <span id="puntosDisplay">0</span></div>
         </div>
     </div>
@@ -891,17 +891,17 @@
 
     <div class="game-container" id="gameContainer" style="position: relative;">
         <!-- Mascota esperando animada (procesada sin fondo) -->
-        <img id="mascotaAnimada" class="mascota-animada" src="{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}" alt="Condorio animado">
+        <img id="mascotaAnimada" class="mascota-animada" src="<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>" alt="Condorio animado">
         
         <div class="game-card" id="gameContent">Cargando...</div>
     </div>
 
     <div class="bottom-nav" style="position: relative; z-index: 1000; display: flex; align-items: center; justify-content: center; gap: 20px; padding: 10px;">
         <button onclick="location.reload()" class="btn-imagen-animado">
-            <img src="{{ asset('imagenes_botones/boton reiniciar.svg') }}" alt="Reiniciar" style="height: 60px; object-fit: contain;">
+            <img src="<?php echo e(asset('imagenes_botones/boton reiniciar.svg')); ?>" alt="Reiniciar" style="height: 60px; object-fit: contain;">
         </button>
-        <button onclick="window.location.href='{{ route('categorias') }}'" class="btn-imagen-animado">
-            <img src="{{ asset('imagenes_botones/boton inicio.png') }}" alt="Inicio" style="height: 60px; object-fit: contain;">
+        <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'" class="btn-imagen-animado">
+            <img src="<?php echo e(asset('imagenes_botones/boton inicio.png')); ?>" alt="Inicio" style="height: 60px; object-fit: contain;">
         </button>
     </div>
 </div>
@@ -912,10 +912,10 @@
         <p id="modalMessage"></p>
         <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
             <button id="btnRejugar" onclick="cerrarModalYReiniciar()" class="btn-imagen-animado">
-                <img src="{{ asset('imagenes_botones/boton reiniciar.svg') }}" alt="Reiniciar" style="height: 60px; object-fit: contain;">
+                <img src="<?php echo e(asset('imagenes_botones/boton reiniciar.svg')); ?>" alt="Reiniciar" style="height: 60px; object-fit: contain;">
             </button>
-            <button onclick="window.location.href='{{ route('categorias') }}'" class="btn-imagen-animado">
-                <img src="{{ asset('imagenes_botones/boton inicio.png') }}" alt="Inicio" style="height: 60px; object-fit: contain;">
+            <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'" class="btn-imagen-animado">
+                <img src="<?php echo e(asset('imagenes_botones/boton inicio.png')); ?>" alt="Inicio" style="height: 60px; object-fit: contain;">
             </button>
         </div>
     </div>
@@ -923,12 +923,12 @@
 
 <script>
     // Datos desde PHP
-    const palabras = @json($palabras);
+    const palabras = <?php echo json_encode($palabras, 15, 512) ?>;
     let currentIndex = 0;
     let puntos = 0;
-    let vidas = {{ $vidas }};
-    const vidasIniciales = {{ $vidas }};
-    const dificultadJuego = {{ $dificultad ?? 1 }};
+    let vidas = <?php echo e($vidas); ?>;
+    const vidasIniciales = <?php echo e($vidas); ?>;
+    const dificultadJuego = <?php echo e($dificultad ?? 1); ?>;
     let waitingResponse = false;
     let progresoGuardado = false;
 
@@ -973,12 +973,12 @@
 
         if (esCorrecto) {
             banner.className = 'duo-banner correct';
-            img.src = "{{ asset('animaciones condorio en gif/correcto.svg') }}";
+            img.src = "<?php echo e(asset('animaciones condorio en gif/correcto.svg')); ?>";
             title.innerText = '¡Correcto!';
             subtitle.innerText = extraMensaje;
         } else {
             banner.className = 'duo-banner incorrect';
-            img.src = "{{ asset('animaciones condorio en gif/incorrecto.svg') }}";
+            img.src = "<?php echo e(asset('animaciones condorio en gif/incorrecto.svg')); ?>";
             title.innerText = 'Incorrecto';
             subtitle.innerText = extraMensaje;
         }
@@ -1056,7 +1056,7 @@
         
         const mascota = document.getElementById('mascotaAnimada');
         if (mascota) {
-            mascota.src = "{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}";
+            mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>";
         }
     }
 
@@ -1086,13 +1086,13 @@
         const mascota = document.getElementById('mascotaAnimada');
         if (mascota) {
             utter.onstart = () => {
-                mascota.src = "{{ asset('animaciones condorio en gif/condorio_hablando_processed.gif') }}";
+                mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio_hablando_processed.gif')); ?>";
             };
             utter.onend = () => {
-                mascota.src = "{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}";
+                mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>";
             };
             utter.onerror = () => {
-                mascota.src = "{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}";
+                mascota.src = "<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>";
             };
         }
 
@@ -1188,7 +1188,7 @@
         progresoGuardado = true;
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         
-        fetch('{{ route("guardar.progreso") }}', {
+        fetch('<?php echo e(route("guardar.progreso")); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1198,7 +1198,8 @@
             body: JSON.stringify({
                 xp_ganado: xpGanado,
                 vidas: vidas,
-                sub_nivel_id: {{ $subNivelId ?? 0 }}
+                sub_nivel_id: <?php echo e($subNivelId ?? 0); ?>
+
             })
         })
         .then(res => res.json())
@@ -1237,7 +1238,7 @@
             XP Ganado: <strong>0</strong>
             <div id="saveNotice" style="margin-top:15px; font-size:0.9em; color:var(--muted);">Actualizando estado...</div>
             <div style="margin-top:20px;">
-                <button class="sh-btn" onclick="window.location.href='{{ route('categorias') }}'" style="background:var(--card); color:var(--text); width: 100%;">Volver a Categorías</button>
+                <button class="sh-btn" onclick="window.location.href='<?php echo e(route('categorias')); ?>'" style="background:var(--card); color:var(--text); width: 100%;">Volver a Categorías</button>
             </div>
         `;
         document.getElementById('btnRejugar').style.display = 'none';
@@ -1718,7 +1719,7 @@
     // Revisar vidas en segundo plano
     setInterval(() => {
         if (vidas >= 5) return;
-        fetch('{{ route("check.vidas") }}')
+        fetch('<?php echo e(route("check.vidas")); ?>')
             .then(res => res.json())
             .then(data => {
                 if (data.regeneradas > 0) {
@@ -1738,4 +1739,4 @@
     cargarJuego();
 </script>
 </body>
-</html>
+</html><?php /**PATH C:\Users\guaya.DESKTOP-FBLNDP3\Desktop\Boliquechua 2.0\proyecto-boliquechua-de-chore\resources\views/juego.blade.php ENDPATH**/ ?>
