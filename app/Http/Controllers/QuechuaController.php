@@ -191,6 +191,49 @@ class QuechuaController extends Controller
     }
 
     /**
+     * Mostrar juego de memoria (standalone).
+     */
+    public function juegoMemoria(): View|RedirectResponse
+    {
+        // 1. Obtener 6 palabras aleatorias
+        $palabrasRaw = Palabra::inRandomOrder()->limit(6)->get();
+
+        if ($palabrasRaw->count() < 6) {
+            return redirect()->route('categorias')->with('error', 'No hay suficientes palabras para el juego.');
+        }
+
+        $pares = [];
+        $idBase = 1;
+        foreach ($palabrasRaw as $p) {
+            // Tarjeta Quechua
+            $pares[] = [
+                'id' => $idBase,
+                'tipo' => 'quechua',
+                'texto' => $p->quechua ?? $p->palabra_quechua
+            ];
+            // Tarjeta Español
+            $pares[] = [
+                'id' => $idBase,
+                'tipo' => 'espanol',
+                'texto' => $p->espanol ?? $p->palabra_espanol
+            ];
+            $idBase++;
+        }
+
+        $usuario = auth()->user();
+        if ($usuario) {
+            $usuario->regenerarVidas();
+        }
+        
+        $vidas = $usuario->vidas ?? 5;
+        $puntuacion = $usuario->puntuacion_total ?? 0;
+        $racha = $usuario->racha_dias ?? 0;
+        $nombreUsuario = $usuario->name ?? 'Usuario';
+
+        return view('juegos.memoria', compact('pares', 'usuario', 'vidas', 'puntuacion', 'racha', 'nombreUsuario'));
+    }
+
+    /**
      * Guardar el progreso, puntos ganados y vidas del usuario.
      */
     public function guardarProgreso(Request $request): JsonResponse
@@ -256,5 +299,25 @@ class QuechuaController extends Controller
             ]);
         }
         return response()->json(['vidas' => 0, 'regeneradas' => 0]);
+    }
+
+    /**
+     * Añadir una vida al usuario como recompensa.
+     */
+    public function ganarVida(): JsonResponse
+    {
+        /** @var \App\Models\User $usuario */
+        $usuario = auth()->user();
+        if ($usuario) {
+            if ($usuario->vidas < 5) {
+                $usuario->vidas++;
+                if ($usuario->vidas == 5) {
+                    $usuario->vidas_updated_at = null;
+                }
+                $usuario->save();
+            }
+            return response()->json(['success' => true, 'vidas' => $usuario->vidas]);
+        }
+        return response()->json(['success' => false], 401);
     }
 }

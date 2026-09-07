@@ -511,12 +511,12 @@
         .mountain-node-wrap:first-child { margin-top: 0; }
 
         .mountain-node {
-            background: radial-gradient(circle at 30% 30%, #3a261c, #1f1108);
+            background: var(--pri);
             border-radius: 50%;
             width: clamp(100px, 15vw, 130px);
             height: clamp(100px, 15vw, 130px);
-            border: 4px solid #5a3e2c;
-            box-shadow: inset 0 4px 10px rgba(255,255,255,0.1), 0 10px 20px rgba(0,0,0,0.5), 0 0 0 6px rgba(0,0,0,0.2);
+            border: none;
+            box-shadow: 0 10px 0 var(--pri-dk), 0 15px 25px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -524,7 +524,7 @@
             cursor: pointer;
             position: relative;
             z-index: 2;
-            transition: all 0.3s var(--ease);
+            transition: transform 0.1s var(--ease), box-shadow 0.1s var(--ease), filter 0.1s var(--ease);
             text-align: center;
             text-decoration: none;
         }
@@ -532,23 +532,26 @@
         .node-left .mountain-node { transform: translateX(clamp(-40px, -10vw, -80px)); }
         .node-right .mountain-node { transform: translateX(clamp(40px, 10vw, 80px)); }
 
-        .node-left .mountain-node:hover { transform: translateX(clamp(-40px, -10vw, -80px)) scale(1.05) translateY(-5px); }
-        .node-right .mountain-node:hover { transform: translateX(clamp(40px, 10vw, 80px)) scale(1.05) translateY(-5px); }
+        .node-left .mountain-node:hover { transform: translateX(clamp(-40px, -10vw, -80px)); filter: brightness(1.1); }
+        .node-right .mountain-node:hover { transform: translateX(clamp(40px, 10vw, 80px)); filter: brightness(1.1); }
+
+        .node-left .mountain-node:active { transform: translateX(clamp(-40px, -10vw, -80px)) translateY(6px); box-shadow: 0 4px 0 var(--pri-dk), 0 8px 12px rgba(0,0,0,0.4); }
+        .node-right .mountain-node:active { transform: translateX(clamp(40px, 10vw, 80px)) translateY(6px); box-shadow: 0 4px 0 var(--pri-dk), 0 8px 12px rgba(0,0,0,0.4); }
 
         .mn-icon {
             font-size: clamp(28px, 4vw, 36px);
             margin-bottom: 4px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
 
         .mn-name {
             font-family: 'Rajdhani', sans-serif;
             font-size: clamp(0.75em, 1vw, 0.9em);
             font-weight: 900;
-            color: #f3e6d3;
+            color: #fff;
             letter-spacing: 1px;
             text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
             padding: 0 8px;
             line-height: 1.1;
         }
@@ -558,28 +561,45 @@
             gap: 4px;
             margin-top: 6px;
         }
-        .star { font-size: 14px; color: rgba(255,255,255,0.2); }
+        .star { font-size: 14px; color: rgba(255,255,255,0.4); }
         .star.filled { color: var(--gold); text-shadow: 0 0 8px var(--gold); }
 
         .mountain-node.locked {
-            background: #2a2a2a;
-            border-color: #444;
-            filter: grayscale(100%);
+            background: #4a4a4a;
+            box-shadow: 0 10px 0 #2b2b2b, 0 15px 25px rgba(0,0,0,0.4);
             cursor: not-allowed;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+            filter: none;
         }
-        .node-left .mountain-node.locked:hover { transform: translateX(clamp(-40px, -10vw, -80px)); }
-        .node-right .mountain-node.locked:hover { transform: translateX(clamp(40px, 10vw, 80px)); }
+        .node-left .mountain-node.locked:hover, .node-right .mountain-node.locked:hover { filter: none; }
+        .node-left .mountain-node.locked:active { transform: translateX(clamp(-40px, -10vw, -80px)); box-shadow: 0 10px 0 #2b2b2b, 0 15px 25px rgba(0,0,0,0.4); }
+        .node-right .mountain-node.locked:active { transform: translateX(clamp(40px, 10vw, 80px)); box-shadow: 0 10px 0 #2b2b2b, 0 15px 25px rgba(0,0,0,0.4); }
 
         .mountain-node.current {
-            border-color: var(--gold);
-            background: radial-gradient(circle at 30% 30%, #5e3b1c, #2b1102);
-            box-shadow: 0 0 30px rgba(255, 209, 102, 0.4), inset 0 0 20px rgba(255, 209, 102, 0.2), 0 10px 20px rgba(0,0,0,0.5), 0 0 0 6px rgba(255, 209, 102, 0.15);
-            animation: pulse-glow 2s infinite alternate;
+            background: var(--gold);
+            box-shadow: 0 10px 0 #c2992a, 0 15px 25px rgba(0,0,0,0.4), 0 0 30px rgba(255, 209, 102, 0.3);
+            animation: pulse-glow-duo 2s infinite alternate;
         }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 20px rgba(255, 209, 102, 0.3), inset 0 0 10px rgba(255, 209, 102, 0.2), 0 10px 20px rgba(0,0,0,0.5), 0 0 0 6px rgba(255, 209, 102, 0.1); }
-            100% { box-shadow: 0 0 50px rgba(255, 209, 102, 0.7), inset 0 0 25px rgba(255, 209, 102, 0.4), 0 10px 20px rgba(0,0,0,0.5), 0 0 0 6px rgba(255, 209, 102, 0.2); }
+        .node-left .mountain-node.current:active { box-shadow: 0 4px 0 #c2992a, 0 8px 12px rgba(0,0,0,0.4); }
+        .node-right .mountain-node.current:active { box-shadow: 0 4px 0 #c2992a, 0 8px 12px rgba(0,0,0,0.4); }
+
+        @keyframes pulse-glow-duo {
+            0% { box-shadow: 0 10px 0 #c2992a, 0 15px 25px rgba(0,0,0,0.4), 0 0 10px rgba(255, 209, 102, 0.2); }
+            100% { box-shadow: 0 10px 0 #c2992a, 0 15px 25px rgba(0,0,0,0.4), 0 0 40px rgba(255, 209, 102, 0.7); }
+        }
+
+        /* ===== LIGHT THEME MOUNTAIN NODES ===== */
+        html[data-theme="light"] .mountain-node { background: #ff9b73; box-shadow: 0 10px 0 #d46c42, 0 15px 25px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .node-left .mountain-node:active, html[data-theme="light"] .node-right .mountain-node:active { box-shadow: 0 4px 0 #d46c42, 0 8px 12px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .mountain-node.current { background: #ffe399; box-shadow: 0 10px 0 #d4ad48, 0 15px 25px rgba(0,0,0,0.15), 0 0 30px rgba(255, 209, 102, 0.4); animation: pulse-glow-duo-light 2s infinite alternate; }
+        html[data-theme="light"] .node-left .mountain-node.current:active, html[data-theme="light"] .node-right .mountain-node.current:active { box-shadow: 0 4px 0 #d4ad48, 0 8px 12px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .mountain-node.locked { background: #d0c5b8; box-shadow: 0 10px 0 #aba094, 0 15px 25px rgba(0,0,0,0.1); }
+        html[data-theme="light"] .node-left .mountain-node.locked:active, html[data-theme="light"] .node-right .mountain-node.locked:active { box-shadow: 0 10px 0 #aba094, 0 15px 25px rgba(0,0,0,0.1); }
+        html[data-theme="light"] .mn-name { color: #2b1c14; text-shadow: none; font-weight: 800; }
+        html[data-theme="light"] .mn-icon { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
+
+        @keyframes pulse-glow-duo-light {
+            0% { box-shadow: 0 10px 0 #d4ad48, 0 15px 25px rgba(0,0,0,0.15), 0 0 10px rgba(255, 209, 102, 0.2); }
+            100% { box-shadow: 0 10px 0 #d4ad48, 0 15px 25px rgba(0,0,0,0.15), 0 0 40px rgba(255, 209, 102, 0.7); }
         }
 
         .path-svg {
@@ -1307,9 +1327,9 @@
             <div class="mountain-node-wrap {{ $isLeft ? 'node-left' : 'node-right' }}" id="node-wrap-{{ $nodo->orden }}">
                 
                 @if($nodo->orden == 20)
-                    <!-- Animación de celebración final anclada al Nivel 20 (Fondo Negro Puro) -->
-                    <div style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: -15px; z-index: 10; pointer-events: none; width: 320px; display: flex; justify-content: center; mix-blend-mode: screen;">
-                        <img src="{{ asset('animaciones condorio en gif/condorio bailando fondo negro.gif') }}" alt="Celebracion final" style="width: 100%; max-width: 90vw; transform: scale(0.95);">
+                    <!-- Animación de celebración final anclada al Nivel 20 (Fondo Transparente) -->
+                    <div style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: -15px; z-index: 10; pointer-events: none; width: 320px; display: flex; justify-content: center;">
+                        <img src="{{ asset('animaciones condorio en gif/condorio bailando fondo negro_processed.gif') }}" alt="Celebracion final" style="width: 100%; max-width: 90vw; transform: scale(0.95);">
                     </div>
                 @endif
 
@@ -1343,11 +1363,16 @@
                             100% { opacity: 0; transform: translateY(20px); }
                         }
                     </style>
-                    <div style="position: absolute; right: 75%; top: 50%; transform: translateY(-50%); z-index: 20; display: flex; flex-direction: column; align-items: center; width: clamp(220px, 40vw, 340px);">
-                        <div id="kevin-text" style="font-family: 'Rajdhani', sans-serif; font-size: clamp(0.8em, 1.6vw, 1.4em); font-weight: 900; color: #fff; text-shadow: 0 0 10px #E8450A, 0 0 15px #FFD166; white-space: nowrap; margin-bottom: 5px; pointer-events: none;">
-                            <span>¡</span><span>H</span><span>o</span><span>l</span><span>a</span><span>&nbsp;</span><span>s</span><span>o</span><span>y</span><span>&nbsp;</span><span>k</span><span>e</span><span>v</span><span>i</span><span>n</span><span>!</span>
+                    <div style="position: absolute; right: 75%; top: calc(50% + 12px); transform: translateY(-50%); z-index: 20; width: clamp(220px, 40vw, 340px);">
+                        <div style="position: relative; width: 100%;">
+                            <!-- Texto "¡Hola soy kevin!" - encima de la cabeza de la llama -->
+                            <div id="kevin-text" style="position: absolute; top: -120px; left: 50%; transform: translateX(-50%); font-family: 'Rajdhani', sans-serif; font-size: clamp(0.8em, 1.6vw, 1.4em); font-weight: 900; color: #fff; text-shadow: 0 0 10px #E8450A, 0 0 15px #FFD166; white-space: nowrap; pointer-events: none; z-index: 40;">
+                                <span>¡</span><span>R</span><span>i</span><span>m</span><span>a</span><span>y</span><span>k</span><span>u</span><span>l</span><span>l</span><span>a</span><span>y</span><span>k</span><span>i</span><span>,</span><span>&nbsp;</span><span>K</span><span>e</span><span>v</span><span>i</span><span>n</span><span>&nbsp;</span><span>k</span><span>a</span><span>n</span><span>i</span><span>!</span>
+                            </div>
+                            <img id="llamin-estatico" src="{{ asset('animaciones condorio en gif/llamin comiendo pasto_processed.gif') }}" alt="Llama pastando" style="width: 100%; cursor: pointer; mix-blend-mode: screen;" onclick="playLlaminVideo()">
+                            <img id="llamin-hablando" src="{{ asset('animaciones condorio en gif/llamin hablando_tr.gif') }}" style="position: absolute; top: -59px; left: 71px; transform: scale(1.9); width: 100%; height: auto; pointer-events: none; z-index: 30; display: none; mix-blend-mode: screen;">
+                            <audio id="llamin-audio" src="{{ asset('animaciones condorio en gif/llamin hablando.mp4') }}" preload="auto"></audio>
                         </div>
-                        <img src="{{ asset('animaciones condorio en gif/llamin comiendo pasto_processed.gif') }}" alt="Llama pastando" style="width: 100%; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));" onclick="triggerKevin()">
                     </div>
                     <script>
                         function triggerKevin() {
@@ -1374,7 +1399,7 @@
                                 setTimeout(() => {
                                     textContainer.classList.remove('animating');
                                 }, 1200 + (spans.length * 50));
-                            }, 3000);
+                            }, 4000);
                         }
                     </script>
                 @endif
@@ -1617,6 +1642,38 @@
                 }
             }).catch(e => console.error(e));
     }, 15000);
+</script>
+
+<script>
+// Interacción llamin hablando
+function playLlaminVideo() {
+    const img = document.getElementById('llamin-estatico');
+    const gifHablando = document.getElementById('llamin-hablando');
+    const audio = document.getElementById('llamin-audio');
+    if (!img || !gifHablando || !audio) return;
+    if (audio.dataset.playing === 'true') return;
+    
+    // Ocultar imagen estática, mostrar GIF animado
+    img.style.display = 'none';
+    // Reset GIF reiniciándolo (forzar recarga)
+    gifHablando.src = gifHablando.src;
+    gifHablando.style.display = 'block';
+    
+    // Reproducir audio
+    audio.currentTime = 0;
+    audio.dataset.playing = 'true';
+    audio.play().catch(e => console.log('Audio bloqueado:', e));
+    
+    // Cuando el audio termina, volver a la llama estática
+    audio.onended = function() {
+        gifHablando.style.display = 'none';
+        audio.dataset.playing = 'false';
+        img.style.display = 'block';
+    };
+    
+    // También disparar el ¡Hola soy kevin!
+    triggerKevin();
+}
 </script>
 </body>
 </html>

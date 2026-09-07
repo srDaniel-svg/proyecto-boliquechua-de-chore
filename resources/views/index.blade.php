@@ -1157,17 +1157,61 @@
             .theme-toggle-btn { padding: 7px 10px; border-radius: 50%; }
         }
         
+        .theme-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 120, 60, 0.5);
+            background: rgba(18, 24, 32, 0.85);
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95em;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            user-select: none;
+        }
+        .theme-toggle-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            border-color: rgba(255, 120, 60, 0.9);
+            box-shadow: 0 6px 20px rgba(255, 74, 16, 0.35);
+        }
+        .theme-toggle-btn:active {
+            transform: scale(0.97);
+        }
+        html[data-theme="light"] .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e293b;
+            border-color: rgba(255, 74, 16, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
         /* ====== CUENTOS VIEW ====== */
-        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: url('{{ asset("images/fondo de cuentos.svg") }}'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
+        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('{{ asset("images/fondo de cuentos.svg") }}'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
         #cuentos-view.active { display: flex; }
         .cuentos-header { position: absolute; top: clamp(16px, 2.5vh, 28px); left: clamp(16px, 3vw, 54px); z-index: 20; }
-        .nodo-cuento { position: absolute; width: clamp(20px, 4vw, 30px); height: clamp(20px, 4vw, 30px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: clamp(0.5em, 1vw, 0.8em); font-weight: 900; cursor: pointer; transition: transform 0.2s, filter 0.2s; transform: translate(-50%, -50%); z-index: 10; }
-        .nodo-cuento:hover { transform: translate(-50%, -50%) scale(1.1); }
-        .nodo-bloqueado { background: rgba(30, 30, 30, 0.9); color: #777; border: 2px solid #555; cursor: not-allowed; pointer-events: none; }
-        .nodo-completado { background: rgba(30, 30, 30, 0.9); color: var(--gold); border: 2px solid var(--gold); }
-        .nodo-actual { background: rgba(30, 30, 30, 0.9); color: #fff; border: 2px solid var(--gold); animation: pulse-nodo 1.5s infinite alternate; }
-        .nodo-actual span { text-align: center; line-height: 1.1; font-size: 0.8em; margin-top: 5px; }
-        .indicador-pajaro { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; animation: bounce 1.5s infinite; pointer-events: none; z-index: 20; }
+        .nodo-cuento { position: absolute; width: clamp(50px, 6vw, 65px); height: clamp(50px, 6vw, 65px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; transform: translate(-50%, -50%); z-index: 10; background: var(--pri); border: none; box-shadow: 0 6px 0 var(--pri-dk), 0 8px 15px rgba(0,0,0,0.4); margin-top: 0; }
+        .nodo-cuento:hover { filter: brightness(1.15); }
+        .nodo-cuento:active { transform: translate(-50%, calc(-50% + 6px)); box-shadow: 0 0px 0 var(--pri-dk), 0 2px 4px rgba(0,0,0,0.4); }
+        .nodo-icon { font-size: clamp(1.4em, 2.5vw, 2em); line-height: 1; }
+        .nodo-label { position: absolute; top: 115%; font-size: clamp(0.75em, 1vw, 0.95em); white-space: nowrap; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: #fff; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 8px; pointer-events: none; }
+        html[data-theme="light"] .nodo-noche { display: none !important; }
+        html[data-theme="dark"] .nodo-dia { display: none !important; }
+        
+        /* ===== LIGHT THEME CUENTOS NODES ===== */
+        html[data-theme="light"] .nodo-cuento { background: #ff9b73; box-shadow: 0 6px 0 #d46c42, 0 8px 15px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-cuento:active { box-shadow: 0 0px 0 #d46c42, 0 2px 4px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-actual { background: #ffe399; box-shadow: 0 6px 0 #d4ad48, 0 8px 15px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-actual:active { box-shadow: 0 0px 0 #d4ad48, 0 2px 4px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-label { background: rgba(255, 255, 255, 0.85); color: #2b1c14; text-shadow: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nodo-actual { background: var(--gold); box-shadow: 0 6px 0 #c2992a, 0 8px 15px rgba(0,0,0,0.4); }
+        .nodo-actual:active { box-shadow: 0 0px 0 #c2992a, 0 2px 4px rgba(0,0,0,0.4); }
+        .indicador-pajaro { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); width: 35px; height: 35px; animation: bounce 1.5s infinite; pointer-events: none; z-index: 20; }
         @keyframes pulse-nodo { 0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px rgba(255, 209, 102, 0.4); } 100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 20px rgba(255, 209, 102, 0.8), 0 0 10px rgba(255, 209, 102, 0.6) inset; } }
         #proximamente-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         #proximamente-view.active { display: flex; }
@@ -1287,34 +1331,124 @@
 
 <!-- ========== CUENTOS VIEW ========== -->
 <div id="cuentos-view">
-    <div class="sm-back" onclick="hideCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <video id="cuentos-bg-video" src="{{ asset('images/fondo de arbol modo oscuro.mp4') }}" autoplay loop muted playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; transition: opacity 0.5s ease; opacity: 0;"></video>
+    <div class="sm-back" onclick="hideCuentos()" style="z-index: 600;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
     
-    <div style="position: absolute; inset: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; pointer-events: none;">
+    <div style="position: absolute; top: clamp(16px, 2.5vh, 28px); right: clamp(16px, 3vw, 54px); z-index: 600;">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
+            <span class="theme-icon">☀️</span>
+            <span class="theme-lbl">CLARO</span>
+        </button>
+    </div>
+    
+    <div style="position: absolute; inset: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 10;">
         <div style="position: relative; width: 100%; max-width: 1200px; min-width: 800px; aspect-ratio: 1843 / 2261; pointer-events: auto; margin-bottom: -5%;">
-            <img src="{{ asset('arbol cuentos (2).svg') }}" style="width: 100%; height: auto; display: block; pointer-events: none;">
+            <img src="{{ asset('arbol cuentos (2).svg') }}" style="position: absolute; top: 0.33%; left: 1.15%; width: 94.12%; height: auto; display: block; pointer-events: none;">
             
-            <!-- Centro -->
-            <div class="nodo-cuento nodo-actual" style="top: 72.8%; left: 48.8%;" onclick="showProximamente()">
+            <!-- ================= NODOS NOCHE (13) ================= -->
+            <div class="nodo-cuento nodo-noche nodo-actual" style="top: 65.9%; left: 46.5%;" onclick="showProximamente()">
                 <img src="{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}" class="indicador-pajaro" alt="Indicador">
-                <span>NIVEL<br>INICIAL<br><span style="font-size: 1.4em; line-height: 0.5;">&gt;</span></span>
+                <span class="nodo-icon">❌</span>
+                <div class="nodo-label">Errores</div>
             </div>
             
-            <!-- Izquierda (8 nodos) -->
-            <div class="nodo-cuento nodo-bloqueado" style="top: 52.2%; left: 39.6%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 59.8%; left: 26.1%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 66.2%; left: 38.4%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 72.4%; left: 13.1%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 71.1%; left: 25.3%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 81.4%; left: 10.9%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 78.2%; left: 31.0%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 84.0%; left: 35.7%;"></div>
+            <div class="nodo-cuento nodo-noche" style="top: 54.2%; left: 27.3%;" onclick="showProximamente()">
+                <span class="nodo-icon">📖</span>
+                <div class="nodo-label">Palabras</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 55.0%; left: 61.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">🧠</span>
+                <div class="nodo-label">Difíciles</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 80.0%; left: 25.2%;" onclick="showProximamente()">
+                <span class="nodo-icon">👂</span>
+                <div class="nodo-label">Oír</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 62.9%; left: 36.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎧</span>
+                <div class="nodo-label">Dictado</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 67.4%; left: 24.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎤</span>
+                <div class="nodo-label">Hablar</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 67.7%; left: 67.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">🗣️</span>
+                <div class="nodo-label">Pronuncia</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 76.0%; left: 10.7%;" onclick="showProximamente()">
+                <span class="nodo-icon">💬</span>
+                <div class="nodo-label">Charla</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 78.3%; left: 34.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">📖</span>
+                <div class="nodo-label">Himno</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 47.3%; left: 46.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">🔥</span>
+                <div class="nodo-label">Repaso</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 59.8%; left: 68.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">⚡</span>
+                <div class="nodo-label">Rápido</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 72.5%; left: 81.7%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎯</span>
+                <div class="nodo-label">Reto</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 74.2%; left: 63.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">👑</span>
+                <div class="nodo-label">Perfecto</div>
+            </div>
 
-            <!-- Derecha (5 nodos) -->
-            <div class="nodo-cuento nodo-bloqueado" style="top: 55.8%; left: 56.2%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 63.3%; left: 71.7%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 70.0%; left: 69.7%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 78.7%; left: 63.1%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 77.2%; left: 82.2%;"></div>
+            <!-- ================= NODOS DÍA (10) ================= -->
+            <div class="nodo-cuento nodo-dia nodo-actual" style="top: 65.9%; left: 46.5%;" onclick="showProximamente()">
+                <img src="{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}" class="indicador-pajaro" alt="Indicador">
+                <span class="nodo-icon">🧩</span>
+                <div class="nodo-label">Ordena</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 54.2%; left: 27.3%;" onclick="showProximamente()">
+                <span class="nodo-icon">🖼️</span>
+                <div class="nodo-label">Imagen</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 55.0%; left: 61.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">🔊</span>
+                <div class="nodo-label">Sonido</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 80.0%; left: 25.2%;" onclick="window.location.href='{{ route('juego.memoria') }}'">
+                <span class="nodo-icon">🃏</span>
+                <div class="nodo-label">Memoria</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 62.9%; left: 36.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">📗</span>
+                <div class="nodo-label">Cuentos</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 67.4%; left: 24.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">🏔️</span>
+                <div class="nodo-label">Cultura</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 67.7%; left: 67.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">📚</span>
+                <div class="nodo-label">Leyendas</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 76.0%; left: 10.7%;" onclick="showProximamente()">
+                <span class="nodo-icon">❤️🔥</span>
+                <div class="nodo-label">Supervive</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 78.3%; left: 34.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">👑</span>
+                <div class="nodo-label">Prueba</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 47.3%; left: 46.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎲</span>
+                <div class="nodo-label">Sorpresa</div>
+            </div>
+            <!-- Condorio animado sin fondo -->
+            <img id="condorio-video" src="{{ asset('animaciones condorio en gif/condorio_amable_processed.gif') }}" alt="Condorio" style="position: absolute; top: 89.07%; left: 109.64%; transform: translate(-50%, -50%); width: 22.09%; height: auto; z-index: 15; pointer-events: none;">
+            <audio id="cuentos-audio" src="{{ asset('animaciones condorio en gif/condorio amable.mp4') }}" loop preload="auto"></audio>
+            
+            <!-- Llama -->
+            <img id="llama-img" src="{{ asset('animaciones condorio en gif/llama_processed.png') }}" style="position: absolute; top: 83.42%; left: 70.2%; transform: translate(-50%, -50%) scale(3) rotate(0deg); width: 10%; height: auto; z-index: 16; pointer-events: auto;">
         </div>
     </div>
 
@@ -1456,18 +1590,30 @@
     window.addEventListener('click', (e) => { if(e.target.classList.contains('overlay')) closeModal(e.target.id); });
     // Modo claro / oscuro persistente
     function updateThemeUI(theme) {
-        const btn = document.getElementById('themeToggleBtn');
-        if (btn) {
+        const btns = document.querySelectorAll('.theme-toggle-btn');
+        btns.forEach(btn => {
             const icon = btn.querySelector('.theme-icon');
             const lbl = btn.querySelector('.theme-lbl');
             if (theme === 'light') {
                 if (icon) icon.textContent = '🌙';
-                if (lbl) lbl.textContent = 'Oscuro';
+                if (lbl) lbl.textContent = 'OSCURO';
                 btn.title = 'Cambiar a Modo Oscuro';
             } else {
                 if (icon) icon.textContent = '☀️';
-                if (lbl) lbl.textContent = 'Claro';
+                if (lbl) lbl.textContent = 'CLARO';
                 btn.title = 'Cambiar a Modo Claro';
+            }
+        });
+
+        // Alternar fondo de video / svg en Cuentos
+        const cuentosVideo = document.getElementById('cuentos-bg-video');
+        if (cuentosVideo) {
+            if (theme === 'dark') {
+                cuentosVideo.style.opacity = '1';
+                cuentosVideo.play().catch(e => console.log('Video play:', e));
+            } else {
+                cuentosVideo.style.opacity = '0';
+                cuentosVideo.pause();
             }
         }
     }
@@ -1478,23 +1624,44 @@
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('boliquechua_theme', next);
         updateThemeUI(next);
-        closeModal('profileModal');
+        if (typeof closeModal === 'function') {
+            closeModal('profileModal');
+        }
     }
 
     // Inicializar UI de tema
     document.addEventListener('DOMContentLoaded', () => {
         const theme = localStorage.getItem('boliquechua_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
         updateThemeUI(theme);
     });
 
     function showCuentos() {
         document.getElementById('app').style.display = 'none';
         document.getElementById('cuentos-view').classList.add('active');
+        
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        updateThemeUI(currentTheme);
+        
+        // Reproducir la música de fondo de Cuentos
+        const audio = document.getElementById('cuentos-audio');
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log('Autoplay con sonido bloqueado:', e));
+        }
     }
+    
     function hideCuentos() {
         document.getElementById('cuentos-view').classList.remove('active');
         document.getElementById('app').style.display = 'flex';
+        
+        // Detener la música de fondo al salir de Cuentos
+        const audio = document.getElementById('cuentos-audio');
+        if (audio) {
+            audio.pause();
+        }
     }
+    
     function showProximamente() {
         document.getElementById('proximamente-view').classList.add('active');
     }
