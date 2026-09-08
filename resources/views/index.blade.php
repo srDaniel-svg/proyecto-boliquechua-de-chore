@@ -371,6 +371,7 @@
             color: rgba(255,255,255,.92);
             line-height: 1;
             text-shadow: 0 0 18px rgba(255, 74, 16, 0.18);
+            white-space: nowrap;
         }
         .logo span { color: var(--pri); text-shadow: 0 0 18px rgba(255, 74, 16, .35); }
         .tagline { font-family:'Rajdhani',sans-serif;font-size:clamp(.56em,.75vw,.74em);letter-spacing:3.2px;color:var(--muted2);text-transform:uppercase;margin-top:4px; }
@@ -1048,6 +1049,20 @@
             border-color: rgba(214, 60, 10, 0.16);
         }
 
+        html[data-theme="light"] .stat-chip-val,
+        html[data-theme="light"] .sm-chip-val {
+            color: var(--text);
+        }
+
+        html[data-theme="light"] .nb-lbl {
+            color: var(--muted);
+        }
+
+        html[data-theme="light"] .nb-btn.active .nb-lbl {
+            color: rgba(214, 60, 10, 0.92);
+        }
+
+
         html[data-theme="light"] .cat-card {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 243, 235, 0.90));
             border-color: rgba(214, 60, 10, 0.16);
@@ -1129,6 +1144,12 @@
         }
         html[data-theme="light"] .logro-name {
             color: #23150c;
+        }
+        html[data-theme="light"] .logro-desc {
+            color: var(--muted);
+        }
+        html[data-theme="light"] .ps-lbl {
+            color: var(--muted);
         }
         html[data-theme="light"] .sh-btn {
             background: rgba(240, 231, 219, 0.85);
@@ -1322,9 +1343,8 @@
     </main>
     <nav id="navbar">
         <button class="nb-btn" onclick="window.location.href='{{ url('/categorias') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nb-lbl">Inicio</span></button>
-        <button class="nb-btn" onclick="showCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span class="nb-lbl">Cuentos</span></button>
+        <button class="nb-btn" onclick="showCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="nb-lbl">Práctica</span></button>
         <button class="nb-btn" onclick="showLogros()"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg><span class="nb-lbl">Logros</span></button>
-        <button class="nb-btn" onclick="alert('Práctica próximamente')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span class="nb-lbl">Práctica</span></button>
         <button class="nb-btn" onclick="window.location.href='{{ route('profile.edit') }}'"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="nb-lbl">Perfil</span></button>
     </nav>
 </div>
