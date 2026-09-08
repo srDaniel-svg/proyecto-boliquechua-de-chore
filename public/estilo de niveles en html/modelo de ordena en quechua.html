@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minijuego Quechua - Ordena las Palabras</title>
+    <style>
+        :root {
+            --green: #58cc02;
+            --green-dark: #58a700;
+            --red: #ff4b4b;
+            --red-dark: #ea2b2b;
+            --gray: #e5e5e5;
+            --gray-dark: #afafaf;
+            --text-main: #4b4b4b;
+            --bg-color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--text-main);
+        }
+
+        .game-container {
+            background-color: var(--bg-color);
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Pantalla de inicio */
+        #start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            background-color: #2b3d2b;
+            color: white;
+        }
+
+        #start-screen img {
+            width: 150px;
+            min-height: 150px; /* Para que el botón sea grande aunque no cargue la imagen */
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #start-screen img:hover {
+            transform: scale(1.05);
+        }
+
+        #start-screen img:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+
+        /* Cabecera del juego */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            gap: 15px;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 16px;
+            background-color: var(--gray);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--green);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .lives {
+            font-weight: bold;
+            color: var(--red);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Contenido del nivel */
+        .level-content {
+            flex-grow: 1;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .translation {
+            font-size: 1.2rem;
+            color: #777;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--gray);
+            padding-bottom: 10px;
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border-bottom: 2px solid var(--gray);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding-bottom: 10px;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Botones de palabras */
+        .word-btn {
+            background-color: white;
+            border: 2px solid var(--gray);
+            border-bottom: 4px solid var(--gray);
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+
+        .word-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+            margin-top: 2px;
+        }
+
+        .word-btn.placeholder {
+            background-color: var(--gray);
+            color: transparent;
+            border-color: var(--gray);
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+        /* Footer y Comprobación */
+        .footer {
+            padding: 20px;
+            border-top: 2px solid var(--gray);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn {
+            background-color: var(--gray);
+            color: var(--gray-dark);
+            border: none;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: default;
+            width: 100%;
+        }
+
+        .action-btn.active {
+            background-color: var(--green);
+            color: white;
+            border-bottom: 4px solid var(--green-dark);
+            cursor: pointer;
+        }
+
+        .action-btn.active:active {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+        }
+
+        .action-btn.error {
+            background-color: var(--red);
+            color: white;
+            border-bottom: 4px solid var(--red-dark);
+            cursor: pointer;
+        }
+
+        .feedback-msg {
+            display: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Pantalla final */
+        #end-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            background-color: #ffde00;
+        }
+
+        #end-screen h1 {
+            color: #d68a00;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .bonus-life {
+            background-color: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            display: none;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Pantalla de Inicio -->
+        <div id="start-screen">
+            <h2>Módulo: Quechua Básico</h2>
+            <p style="margin-bottom: 30px;">Toca el nivel para empezar a ordenar oraciones.</p>
+            <img src="image_617dff.png" alt="Inicia el nivel" onclick="startGame()">
+            <h3>¡Empieza ahora!</h3>
+        </div>
+
+        <!-- Pantalla de Juego -->
+        <div id="game-screen" style="display: none; flex-direction: column; height: 100%;">
+            <div class="header">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="lives">❤️ <span id="lives-count">3</span></div>
+            </div>
+
+            <div class="level-content">
+                <h2>Traduce esta oración</h2>
+                <div class="translation" id="spanish-text">Cargando...</div>
+                
+                <div class="drop-zone" id="drop-zone"></div>
+                <div class="word-bank" id="word-bank"></div>
+            </div>
+
+            <div class="footer" id="footer">
+                <div class="feedback-msg" id="feedback-msg"></div>
+                <button class="action-btn" id="check-btn" onclick="checkOrNext()">COMPROBAR</button>
+            </div>
+        </div>
+
+        <!-- Pantalla Final -->
+        <div id="end-screen">
+            <h1>¡Lección Completada!</h1>
+            <p style="font-size: 1.2rem; color: #a56a00;">Has ordenado correctamente todas las oraciones.</p>
+            
+            <div class="bonus-life" id="bonus-life">
+                <h2 style="color: var(--green);">¡Misión Perfecta!</h2>
+                <p>0 Errores cometidos.</p>
+                <h1 style="margin-top: 10px; color: var(--red);">+1 ❤️ VIDA EXTRA</h1>
+            </div>
+            
+            <button class="action-btn active" style="margin-top: 40px; width: 80%;" onclick="location.reload()">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        // Niveles del juego
+        const levels = [
+            { spanish: "Yo soy estudiante.", quechua: ["Ñuqa", "yachakuq", "kani"] },
+            { spanish: "Él está en la casa.", quechua: ["Payqa", "wasipi", "kachkan"] },
+            { spanish: "Buenos días.", quechua: ["Allin", "p'unchaw"] },
+            { spanish: "El perro come carne.", quechua: ["Allqu", "aychata", "mikhun"] },
+            { spanish: "¿Cómo te llamas?", quechua: ["Imataq", "sutiki?"] }
+        ];
+
+        let currentLevel = 0;
+        let lives = 3;
+        let totalErrors = 0;
+        let currentSelectedWords = [];
+        let state = "PLAYING"; 
+
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const endScreen = document.getElementById('end-screen');
+        const progressBar = document.getElementById('progress-bar');
+        const spanishText = document.getElementById('spanish-text');
+        const dropZone = document.getElementById('drop-zone');
+        const wordBank = document.getElementById('word-bank');
+        const checkBtn = document.getElementById('check-btn');
+        const footer = document.getElementById('footer');
+        const feedbackMsg = document.getElementById('feedback-msg');
+        const livesCount = document.getElementById('lives-count');
+
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            if(JSON.stringify(shuffled) === JSON.stringify(array) && array.length > 1) {
+                return shuffleArray(array);
+            }
+            return shuffled;
+        }
+
+        function startGame() {
+            startScreen.style.display = 'none';
+            gameScreen.style.display = 'flex';
+            loadLevel();
+        }
+
+        function loadLevel() {
+            if (currentLevel >= levels.length) {
+                finishGame();
+                return;
+            }
+
+            state = "PLAYING";
+            currentSelectedWords = [];
+            dropZone.innerHTML = '';
+            wordBank.innerHTML = '';
+            
+            footer.style.backgroundColor = 'transparent';
+            feedbackMsg.style.display = 'none';
+            checkBtn.className = 'action-btn';
+            checkBtn.innerText = 'COMPROBAR';
+
+            const levelData = levels[currentLevel];
+            spanishText.innerText = levelData.spanish;
+            
+            progressBar.style.width = `${(currentLevel / levels.length) * 100}%`;
+
+            const shuffledWords = shuffleArray(levelData.quechua);
+            
+            shuffledWords.forEach((word, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'word-btn';
+                btn.innerText = word;
+                btn.dataset.id = index;
+                btn.onclick = () => selectWord(btn, word);
+                wordBank.appendChild(btn);
+            });
+            
+            checkButtonState();
+        }
+
+        function selectWord(btn, word) {
+            if (state !== "PLAYING") return;
+
+            btn.classList.add('placeholder');
+
+            const dropBtn = document.createElement('div');
+            dropBtn.className = 'word-btn';
+            dropBtn.innerText = word;
+            dropBtn.dataset.originId = btn.dataset.id;
+            
+            dropBtn.onclick = () => deselectWord(dropBtn);
+            
+            dropZone.appendChild(dropBtn);
+            currentSelectedWords.push(word);
+            
+            checkButtonState();
+        }
+
+        function deselectWord(dropBtn) {
+            if (state !== "PLAYING") return;
+
+            const originId = dropBtn.dataset.originId;
+            const originalBtn = wordBank.querySelector(`.word-btn[data-id="${originId}"]`);
+            originalBtn.classList.remove('placeholder');
+
+            const wordIndex = currentSelectedWords.indexOf(dropBtn.innerText);
+            if (wordIndex > -1) {
+                currentSelectedWords.splice(wordIndex, 1);
+            }
+            dropBtn.remove();
+            
+            checkButtonState();
+        }
+
+        function checkButtonState() {
+            const totalWords = levels[currentLevel].quechua.length;
+            if (currentSelectedWords.length === totalWords) {
+                checkBtn.classList.add('active');
+            } else {
+                checkBtn.classList.remove('active');
+            }
+        }
+
+        function checkOrNext() {
+            if (state === "PLAYING" && checkBtn.classList.contains('active')) {
+                comprobar();
+            } else if (state === "SUCCESS") {
+                currentLevel++;
+                loadLevel();
+            } else if (state === "ERROR") {
+                loadLevel();
+            }
+        }
+
+        function comprobar() {
+            const correctOrder = levels[currentLevel].quechua;
+            
+            if (JSON.stringify(currentSelectedWords) === JSON.stringify(correctOrder)) {
+                // ¡CORRECTO!
+                state = "SUCCESS";
+                footer.style.backgroundColor = '#d7ffb8';
+                feedbackMsg.style.display = 'block';
+                // AQUÍ ESTABA EL ERROR: Faltaban las comillas en el color.
+                feedbackMsg.style.color = 'var(--green-dark)';
+                feedbackMsg.innerText = '¡Correcto! Muy bien hecho.';
+                
+                checkBtn.className = 'action-btn active';
+                checkBtn.innerText = 'CONTINUAR';
+            } else {
+                // ¡INCORRECTO!
+                state = "ERROR";
+                totalErrors++;
+                lives--;
+                livesCount.innerText = lives;
+                
+                footer.style.backgroundColor = '#ffdfdf';
+                feedbackMsg.style.display = 'block';
+                feedbackMsg.style.color = 'var(--red-dark)';
+                feedbackMsg.innerHTML = 'Respuesta correcta:<br>' + correctOrder.join(" ");
+                
+                checkBtn.className = 'action-btn error';
+                checkBtn.innerText = 'ENTENDIDO';
+
+                if (lives <= 0) {
+                    alert("Te has quedado sin vidas. ¡Inténtalo de nuevo!");
+                    location.reload();
+                }
+            }
+        }
+
+        function finishGame() {
+            gameScreen.style.display = 'none';
+            endScreen.style.display = 'flex';
+            
+            if (totalErrors === 0) {
+                const bonus = document.getElementById('bonus-life');
+                bonus.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

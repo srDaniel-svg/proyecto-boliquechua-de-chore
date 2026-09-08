@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leyendas del Oriente - Cuaderno Interactivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Eater&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos Base */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            /* Evita que la pantalla del celular haga "pull-to-refresh" al deslizar */
+            overscroll-behavior-y: contain; 
+        }
+
+        .scene {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1800px;
+            /* Evita seleccionar el texto sin querer al arrastrar el ratón */
+            user-select: none; 
+        }
+
+        .book {
+            position: relative;
+            width: 420px;
+            height: 550px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease-in-out;
+            cursor: grab; /* Cursor de "agarrar" para dar pista en PC */
+        }
+        
+        .book:active {
+            cursor: grabbing;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            border-radius: 3px 15px 15px 3px;
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            box-sizing: border-box;
+            background-color: #fdfbf7;
+            border: 1px solid #c7c7c7;
+            border-radius: 3px 15px 15px 3px;
+            box-shadow: inset 0px 0px 30px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            border-radius: 15px 3px 3px 15px;
+        }
+
+        .flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* Sombras del lomo */
+        .front::before, .back::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%);
+            z-index: 10;
+        }
+        .front::before { left: 0; }
+        .back::before { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); }
+
+        /* Estilos Portada */
+        .cover {
+            background-color: #2b2b2b;
+            color: #f98b00;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid #1a1a1a;
+        }
+
+        .cover-title {
+            font-family: 'Eater', cursive;
+            font-size: 4.5rem;
+            line-height: 1;
+            margin: 0 0 40px 0;
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.8);
+        }
+
+        .cover-subtitle {
+            font-family: 'Creepster', cursive;
+            font-size: 2rem;
+            color: #d1d1d1;
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+        }
+
+        /* Botones Duolingo */
+        .btn {
+            background-color: #58cc02;
+            color: white;
+            border: none;
+            border-bottom: 5px solid #46a302;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s;
+            font-family: 'Nunito', sans-serif;
+            z-index: 20; /* Para que sea clickeable sobre el arrastre */
+        }
+        .btn:active {
+            border-bottom: 0px;
+            transform: translateY(5px);
+        }
+        .btn-blue {
+            background-color: #1cb0f6;
+            border-bottom-color: #1482b6;
+        }
+        .btn-red {
+            background-color: #ff4b4b;
+            border-bottom-color: #c73636;
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin-top: auto; /* Empuja el botón al fondo */
+        }
+
+        /* Interfaz de Menú y Lectura */
+        .menu-title {
+            color: #3c3c3c;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 5px;
+        }
+
+        .legend-btn {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border: 2px solid #e5e5e5;
+            border-bottom: 5px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            z-index: 20;
+        }
+        .legend-btn:hover { background-color: #f7f7f7; }
+        .legend-btn:active { border-bottom: 2px solid #e5e5e5; transform: translateY(3px); }
+        .legend-icon { font-size: 2.2rem; margin-right: 15px; }
+        .legend-name { font-size: 1.2rem; font-weight: bold; color: #4b4b4b; }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .story-title { font-size: 1.5rem; color: #ce82ff; margin: 0; font-weight: bold; }
+        
+        .back-btn {
+            background: none; border: none; color: #afafaf;
+            font-weight: bold; font-size: 1rem; cursor: pointer; z-index: 20;
+        }
+
+        .scrollable-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 20px;
+            /* Permite seleccionar texto en la lectura */
+            user-select: text; 
+        }
+
+        .paragraph-block {
+            margin-bottom: 25px; opacity: 0; transform: translateY(20px);
+            animation: fadeIn 0.4s forwards;
+        }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .quechua-text {
+            font-size: 1.2rem; font-weight: bold; color: #3c3c3c; cursor: pointer;
+            padding: 15px; border-radius: 12px; border: 2px dashed #e5e5e5; z-index: 20;
+        }
+        .quechua-text:hover { background-color: #f0f9ff; border-color: #1cb0f6; }
+
+        .spanish-translation {
+            display: none; font-size: 1.05rem; color: #1cb0f6; margin-top: 10px;
+            padding-left: 15px; border-left: 4px solid #1cb0f6;
+        }
+
+        .image-container {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; height: 100%;
+        }
+        .image-container img {
+            max-width: 100%; max-height: 75%; border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid #fff; pointer-events: none;
+        }
+        .image-title {
+            margin-top: 15px; font-family: 'Creepster', cursive; font-size: 2.5rem; color: #3c3c3c;
+        }
+
+        /* Instrucción sutil de gesto */
+        .swipe-hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scene" id="scene">
+        <div class="book" id="book">
+            
+            <!-- HOJA 1: PORTADA -->
+            <div class="page" id="page1" style="z-index: 3;">
+                <div class="front cover">
+                    <div class="cover-subtitle">Mitos y</div>
+                    <div class="cover-title">LEYENDAS</div>
+                    <button class="btn" onclick="openBook()">Abrir &#8594;</button>
+                    <div class="swipe-hint">O desliza hacia la izquierda &larr;</div>
+                </div>
+                
+                <div class="back">
+                    <div style="text-align: center; margin-top: 40px;">
+                        <img src="https://dummyimage.com/120x120/58cc02/ffffff&text=B%C3%BAho" style="border-radius:50%; margin-bottom:10px; pointer-events:none;">
+                        <h2 style="color: #4b4b4b;">¡Bienvenido!</h2>
+                        <p style="color: #777; font-size: 1rem; line-height: 1.5;">
+                            Selecciona una leyenda a la derecha. <br>
+                            Toca el texto en quechua para ver su traducción.
+                        </p>
+                        <!-- Botón manual para cerrar el cuaderno -->
+                        <button class="btn btn-red" style="margin-top: 40px;" onclick="closeBook()">Cerrar Cuaderno</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOJA 2: MENÚ / IMAGEN -->
+            <div class="page" id="page2" style="z-index: 2;">
+                <div class="front">
+                    <h2 class="menu-title">Elige un Cuento</h2>
+                    
+                    <div class="legend-btn" onclick="loadStory('duende')">
+                        <div class="legend-icon">🍄</div>
+                        <div class="legend-name">El Duende</div>
+                    </div>
+                    <div class="legend-btn" onclick="loadStory('viudita')">
+                        <div class="legend-icon">👰‍♀️</div>
+                        <div class="legend-name">La Viudita</div>
+                    </div>
+                    <div class="legend-btn" onclick="loadStory('carreton')">
+                        <div class="legend-icon">🐂</div>
+                        <div class="legend-name">El Carretón</div>
+                    </div>
+                </div>
+
+                <div class="back">
+                    <div class="image-container">
+                        <img id="story-image" src="" alt="Ilustración">
+                        <div class="image-title" id="story-image-title">Título</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOJA 3: LECTURA / CONTRAPORTADA -->
+            <div class="page" id="page3" style="z-index: 1;">
+                <div class="front">
+                    <div class="story-header">
+                        <button class="back-btn" onclick="closeStory()">❮ Volver</button>
+                        <h2 class="story-title" id="story-header-title">Título</h2>
+                    </div>
+                    
+                    <div id="story-content" class="scrollable-content"></div>
+
+                    <button id="continue-btn" class="btn" style="width:100%; display:none; margin-bottom: 10px;" onclick="nextParagraph()">Continuar</button>
+                    <button id="finish-btn" class="btn btn-blue" style="width:100%; display:none; margin-bottom: 10px;" onclick="closeStory()">¡Completado!</button>
+                </div>
+
+                <div class="back cover">
+                    <div class="cover-title" style="font-size: 3rem;">FIN</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ESTADO GLOBAL DEL CUADERNO
+        // 0 = Cerrado, 1 = Menú, 2 = Leyenda Abierta
+        // ==========================================
+        let bookState = 0; 
+        
+        const book = document.getElementById('book');
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+
+        // ==========================================
+        // FUNCIONES DE CONTROL DEL CUADERNO
+        // ==========================================
+        function openBook() {
+            if(bookState >= 1) return;
+            page1.classList.add('flipped');
+            page1.style.zIndex = 1;
+            book.style.transform = "translateX(210px)";
+            bookState = 1;
+        }
+
+        function closeBook() {
+            if(bookState === 2) closeStory(); // Si está en leyenda, cerrar leyenda primero
+            setTimeout(() => {
+                page1.classList.remove('flipped');
+                setTimeout(() => { page1.style.zIndex = 3; }, 400); // Esperar media animación para subir el z-index
+                book.style.transform = "translateX(0px)";
+                bookState = 0;
+            }, bookState === 2 ? 600 : 0); // Retraso si estaba en la leyenda
+        }
+
+        function closeStory() {
+            if(bookState !== 2) return;
+            page2.classList.remove('flipped');
+            setTimeout(() => { page2.style.zIndex = 2; }, 400);
+            bookState = 1;
+        }
+
+        // ==========================================
+        // GESTOS TÁCTILES Y DE RATÓN (SWIPES)
+        // ==========================================
+        const scene = document.getElementById('scene');
+        let startX = 0, startY = 0, endX = 0, endY = 0;
+        let isDragging = false;
+        const swipeThreshold = 60; // Píxeles de recorrido mínimo para detectar el gesto
+
+        // Funciones para manejar inicio y fin del gesto
+        function handleDragStart(x, y) {
+            startX = x;
+            startY = y;
+            isDragging = true;
+        }
+
+        function handleDragEnd(x, y) {
+            if (!isDragging) return;
+            endX = x;
+            endY = y;
+            isDragging = false;
+            processSwipe();
+        }
+
+        // Detectar hacia dónde fue el gesto
+        function processSwipe() {
+            let deltaX = endX - startX;
+            let deltaY = endY - startY;
+
+            // Asegurarnos que el movimiento sea más horizontal que vertical (evita choques con el scroll de lectura)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > swipeThreshold) {
+                if (deltaX < 0) {
+                    // Swipe hacia la Izquierda (<-) : Abrir/Avanzar
+                    if (bookState === 0) openBook();
+                    // (De Menú a Leyenda solo se entra tocando el botón de la leyenda)
+                } else {
+                    // Swipe hacia la Derecha (->) : Cerrar/Retroceder
+                    if (bookState === 1) closeBook();
+                    if (bookState === 2) closeStory();
+                }
+            }
+        }
+
+        // --- Eventos Táctiles (Celulares) ---
+        scene.addEventListener('touchstart', e => handleDragStart(e.changedTouches[0].screenX, e.changedTouches[0].screenY), {passive: true});
+        scene.addEventListener('touchend', e => handleDragEnd(e.changedTouches[0].screenX, e.changedTouches[0].screenY), {passive: true});
+
+        // --- Eventos de Ratón (PC) ---
+        scene.addEventListener('mousedown', e => handleDragStart(e.clientX, e.clientY));
+        scene.addEventListener('mouseup', e => handleDragEnd(e.clientX, e.clientY));
+        scene.addEventListener('mouseleave', () => { isDragging = false; }); // Cancelar si el ratón sale de la pantalla
+
+        // ==========================================
+        // BASE DE DATOS Y LÓGICA DE LECTURA
+        // ==========================================
+        const stories = {
+            duende: {
+                title: "El Duende",
+                image: "https://dummyimage.com/400x500/1e40af/ffffff&text=El+Duende",
+                paragraphs: [
+                    { q: "Uj juch'uy runa, jatun sombreroyoj, sach'a sach'api tiyan.", s: "Un hombrecito con sombrero grande vive en el monte." },
+                    { q: "Wawaswan pukllayta munan, chinkachin.", s: "Busca jugar con los niños y se los lleva para perderlos." },
+                    { q: "Payqa juch'uy makiyoj, manchachikullaj.", s: "Tiene las manos pequeñas y le gusta asustar en las noches." }
+                ]
+            },
+            viudita: {
+                title: "La Viudita",
+                image: "https://dummyimage.com/400x500/000000/ffffff&text=La+Viudita",
+                paragraphs: [
+                    { q: "Chaupi tutapi, yana p'achayoj warmi purin.", s: "A la medianoche, camina una mujer solitaria vestida de negro." },
+                    { q: "Machasqa qharispaq mask'an, waqaspa purin.", s: "Busca a los hombres borrachos mientras finge llorar por las calles." },
+                    { q: "Uyanta qhawaspa, calavera kashan.", s: "Al destapar su velo, los hombres ven que su rostro es una calavera." }
+                ]
+            },
+            carreton: {
+                title: "El Carretón",
+                image: "https://dummyimage.com/400x500/78350f/fbbf24&text=El+Carreton",
+                paragraphs: [
+                    { q: "Tuta ch'inpi, k'ullu carretón qaparin.", s: "En el silencio de la madrugada, suena el crujir de un carretón de madera." },
+                    { q: "Jatun turus aysanku, nina ñawiyoj.", s: "Es jalado por bueyes gigantes que tienen fuego en los ojos." },
+                    { q: "Supaypa carretonnin, juchasapasta apan.", s: "Es el carretón del diablo, dicen que viene a llevarse a los pecadores." }
+                ]
+            }
+        };
+
+        const contentDiv = document.getElementById('story-content');
+        const continueBtn = document.getElementById('continue-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        let currentStory = null;
+        let paragraphIndex = 0;
+
+        function loadStory(storyId) {
+            currentStory = stories[storyId];
+            paragraphIndex = 0;
+            document.getElementById('story-image').src = currentStory.image;
+            document.getElementById('story-image-title').textContent = currentStory.title;
+            document.getElementById('story-header-title').textContent = currentStory.title;
+            
+            contentDiv.innerHTML = '';
+            continueBtn.style.display = 'none';
+            finishBtn.style.display = 'none';
+
+            page2.classList.add('flipped');
+            page2.style.zIndex = 1; 
+            bookState = 2; // Actualizar estado a "Leyenda Abierta"
+
+            setTimeout(renderParagraph, 400); 
+        }
+
+        function renderParagraph() {
+            continueBtn.style.display = 'none';
+            const pData = currentStory.paragraphs[paragraphIndex];
+            
+            const block = document.createElement('div');
+            block.className = 'paragraph-block';
+            
+            const quechuaEl = document.createElement('div');
+            quechuaEl.className = 'quechua-text';
+            quechuaEl.textContent = pData.q;
+            
+            const spanishEl = document.createElement('div');
+            spanishEl.className = 'spanish-translation';
+            spanishEl.textContent = pData.s;
+            
+            quechuaEl.addEventListener('click', () => {
+                spanishEl.style.display = 'block';
+                quechuaEl.style.borderColor = '#58cc02';
+                quechuaEl.style.backgroundColor = '#f7f7f7';
+                
+                if (paragraphIndex < currentStory.paragraphs.length - 1) {
+                    continueBtn.style.display = 'block';
+                } else {
+                    finishBtn.style.display = 'block';
+                }
+                setTimeout(() => contentDiv.scrollTo({ top: contentDiv.scrollHeight, behavior: 'smooth' }), 100);
+            }, { once: true });
+            
+            block.appendChild(quechuaEl);
+            block.appendChild(spanishEl);
+            contentDiv.appendChild(block);
+        }
+
+        function nextParagraph() {
+            paragraphIndex++;
+            if (paragraphIndex < currentStory.paragraphs.length) {
+                renderParagraph();
+            }
+        }
+    </script>
+</body>
+</html>
