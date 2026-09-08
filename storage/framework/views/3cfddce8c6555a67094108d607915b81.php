@@ -10,7 +10,7 @@
             document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Creepster&family=Eater&display=swap" rel="stylesheet">
     <style>
         /* ============================
            BOLIQUECHUA · Futurista Andino
@@ -1147,6 +1147,33 @@
             .sm-grid { grid-template-columns: repeat(2, 1fr); }
             .cc-arrow { display: none; }
             .dashboard-llama { display: none !important; }
+            
+            /* Ajustes para la vista de Cuentos (árbol) en celular */
+            .cuentos-tree-wrapper {
+                min-width: 800px !important; /* Volvemos al tamaño grande inicial */
+                margin-bottom: 2% !important;
+            }
+            .nodo-cuento {
+                width: clamp(42px, 11vw, 55px) !important;
+                height: clamp(42px, 11vw, 55px) !important;
+            }
+            .nodo-icon {
+                font-size: clamp(1.1em, 4vw, 1.6em) !important;
+            }
+            .nodo-label {
+                font-size: clamp(0.65em, 2.8vw, 0.85em) !important;
+            }
+            
+            /* Coordenadas específicas de Móvil para el fondo y la llama */
+            .cuentos-tree-wrapper > img {
+                top: 6.69% !important;
+                left: 4.25% !important;
+            }
+            #llama-img {
+                top: 91.53% !important;
+                left: 65.21% !important;
+                transform: translate(-50%, -50%) scale(2.3) rotate(0deg) !important;
+            }
         }
         @media (max-width: 480px) {
             #topbar { padding: 12px 14px; }
@@ -1157,20 +1184,222 @@
             .theme-toggle-btn { padding: 7px 10px; border-radius: 50%; }
         }
         
+        .theme-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 120, 60, 0.5);
+            background: rgba(18, 24, 32, 0.85);
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95em;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            user-select: none;
+        }
+        .theme-toggle-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            border-color: rgba(255, 120, 60, 0.9);
+            box-shadow: 0 6px 20px rgba(255, 74, 16, 0.35);
+        }
+        .theme-toggle-btn:active {
+            transform: scale(0.97);
+        }
+        html[data-theme="light"] .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e293b;
+            border-color: rgba(255, 74, 16, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
         /* ====== CUENTOS VIEW ====== */
-        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: url('<?php echo e(asset("images/fondo de cuentos.svg")); ?>'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
+        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('<?php echo e(asset("images/fondo de cuentos.svg")); ?>'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
         #cuentos-view.active { display: flex; }
         .cuentos-header { position: absolute; top: clamp(16px, 2.5vh, 28px); left: clamp(16px, 3vw, 54px); z-index: 20; }
-        .nodo-cuento { position: absolute; width: clamp(20px, 4vw, 30px); height: clamp(20px, 4vw, 30px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: clamp(0.5em, 1vw, 0.8em); font-weight: 900; cursor: pointer; transition: transform 0.2s, filter 0.2s; transform: translate(-50%, -50%); z-index: 10; }
-        .nodo-cuento:hover { transform: translate(-50%, -50%) scale(1.1); }
-        .nodo-bloqueado { background: rgba(30, 30, 30, 0.9); color: #777; border: 2px solid #555; cursor: not-allowed; pointer-events: none; }
-        .nodo-completado { background: rgba(30, 30, 30, 0.9); color: var(--gold); border: 2px solid var(--gold); }
-        .nodo-actual { background: rgba(30, 30, 30, 0.9); color: #fff; border: 2px solid var(--gold); animation: pulse-nodo 1.5s infinite alternate; }
-        .nodo-actual span { text-align: center; line-height: 1.1; font-size: 0.8em; margin-top: 5px; }
-        .indicador-pajaro { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; animation: bounce 1.5s infinite; pointer-events: none; z-index: 20; }
+        .nodo-cuento { position: absolute; width: clamp(50px, 6vw, 65px); height: clamp(50px, 6vw, 65px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; transform: translate(-50%, -50%); z-index: 10; background: var(--pri); border: none; box-shadow: 0 6px 0 var(--pri-dk), 0 8px 15px rgba(0,0,0,0.4); margin-top: 0; }
+        .nodo-cuento:hover { filter: brightness(1.15); }
+        .nodo-cuento:active { transform: translate(-50%, calc(-50% + 6px)); box-shadow: 0 0px 0 var(--pri-dk), 0 2px 4px rgba(0,0,0,0.4); }
+        .nodo-icon { font-size: clamp(1.4em, 2.5vw, 2em); line-height: 1; }
+        .nodo-label { position: absolute; top: 115%; font-size: clamp(0.75em, 1vw, 0.95em); white-space: nowrap; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: #fff; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 8px; pointer-events: none; }
+        html[data-theme="light"] .nodo-noche { display: none !important; }
+        html[data-theme="dark"] .nodo-dia { display: none !important; }
+        
+        /* ===== LIGHT THEME CUENTOS NODES ===== */
+        html[data-theme="light"] .nodo-cuento { background: #ff9b73; box-shadow: 0 6px 0 #d46c42, 0 8px 15px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-cuento:active { box-shadow: 0 0px 0 #d46c42, 0 2px 4px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-actual { background: #ffe399; box-shadow: 0 6px 0 #d4ad48, 0 8px 15px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-actual:active { box-shadow: 0 0px 0 #d4ad48, 0 2px 4px rgba(0,0,0,0.15); }
+        html[data-theme="light"] .nodo-label { background: rgba(255, 255, 255, 0.85); color: #2b1c14; text-shadow: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nodo-actual { background: var(--gold); box-shadow: 0 6px 0 #c2992a, 0 8px 15px rgba(0,0,0,0.4); }
+        .nodo-actual:active { box-shadow: 0 0px 0 #c2992a, 0 2px 4px rgba(0,0,0,0.4); }
+        .indicador-pajaro { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); width: 35px; height: 35px; animation: bounce 1.5s infinite; pointer-events: none; z-index: 20; }
         @keyframes pulse-nodo { 0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px rgba(255, 209, 102, 0.4); } 100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 20px rgba(255, 209, 102, 0.8), 0 0 10px rgba(255, 209, 102, 0.6) inset; } }
         #proximamente-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         #proximamente-view.active { display: flex; }
+        
+        /* ================= CUADERNO 3D (HIMNOS) ================= */
+        #himnos-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); flex-direction: column; align-items: center; justify-content: center; perspective: 1500px; overflow: hidden; }
+        #himnos-view.active { display: flex; }
+        
+        .book { position: relative; width: 350px; height: 500px; transform-style: preserve-3d; transition: transform 0.8s ease-in-out; }
+        
+        .page { position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: left center; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); border-radius: 5px 15px 15px 5px; box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.05); }
+        
+        .page-front, .page-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 30px; box-sizing: border-box; border-radius: 5px 15px 15px 5px; background-color: #fdfbf7; border: 1px solid #d3d3d3; color: #333; overflow-y: auto; font-family: 'Rajdhani', sans-serif; }
+        
+        .page-front::before, .page-back::before { content: ''; position: absolute; top: 0; bottom: 0; width: 30px; background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); pointer-events: none; }
+        .page-front::before { left: 0; }
+        .page-back::before { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); }
+        
+        .page-back { transform: rotateY(180deg); border-radius: 15px 5px 5px 15px; }
+        .flipped { transform: rotateY(-180deg); }
+        
+        /* Portada especial */
+        #himno-page-0 .page-front { background: var(--pri); color: #fff; justify-content: center; }
+        #himno-page-0 .page-front img { width: 150px; margin-bottom: 20px; }
+        #himno-page-3 .page-back { background: var(--pri); }
+        
+        .book-controls { margin-top: 40px; display: flex; gap: 20px; z-index: 10; }
+        .book-controls button { padding: 10px 25px; font-size: 16px; border: none; border-radius: 30px; background-color: var(--pri); color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: background 0.3s, transform 0.1s; }
+        .book-controls button:hover { background-color: var(--gold); color: #000; }
+        .book-controls button:disabled { background-color: #555; cursor: not-allowed; }
+        
+        .index-list { list-style: none; padding: 0; width: 100%; }
+        .index-list li { padding: 10px; border-bottom: 1px dashed #ccc; cursor: pointer; color: var(--pri); font-weight: bold; text-align: left; }
+        .index-list li:hover { color: var(--gold); }
+        
+        .lang-toggle { display: flex; gap: 10px; margin-bottom: 15px; }
+        .lang-toggle button { padding: 5px 10px; border: 1px solid var(--pri); background: transparent; color: var(--pri); border-radius: 5px; cursor: pointer; }
+        .lang-toggle button.active { background: var(--pri); color: white; }
+        
+        @media (max-width: 480px) { .book { width: 90vw; height: 75vh; } }
+        
+        /* ================= CUADERNO LEYENDAS (Exacto) ================= */
+        #leyendas-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; perspective: 1800px; overflow: hidden; user-select: none; }
+        #leyendas-view.active { display: flex; }
+        
+        #leyendas-view .l-book { position: relative; width: 420px; height: 550px; transform-style: preserve-3d; transition: transform 0.8s ease-in-out; cursor: grab; margin-top: 50px; }
+        #leyendas-view .l-book:active { cursor: grabbing; }
+
+        #leyendas-view .l-page { position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: left center; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); border-radius: 3px 15px 15px 3px; }
+        
+        #leyendas-view .l-front, #leyendas-view .l-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; padding: 30px; box-sizing: border-box; background-color: #fdfbf7; border: 1px solid #c7c7c7; border-radius: 3px 15px 15px 3px; box-shadow: inset 0px 0px 30px rgba(0, 0, 0, 0.03); overflow: hidden; font-family: 'Rajdhani', sans-serif; }
+        #leyendas-view .l-back { transform: rotateY(180deg); border-radius: 15px 3px 3px 15px; }
+        #leyendas-view .l-flipped { transform: rotateY(-180deg); }
+        
+        #leyendas-view .l-front::before, #leyendas-view .l-back::before { content: ''; position: absolute; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); z-index: 10; pointer-events: none; }
+        #leyendas-view .l-front::before { left: 0; }
+        #leyendas-view .l-back::before { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); }
+
+        /* Clases Duales para PC / Celular */
+        @media (max-width: 768px) {
+            .hide-on-mobile { display: none !important; }
+        }
+        @media (min-width: 769px) {
+            .hide-on-pc { display: none !important; }
+        }
+
+        /* Estilos Portada Originales */
+        #leyendas-view .l-cover { background-color: #2b2b2b; color: #f98b00; justify-content: center; align-items: center; text-align: center; border: 2px solid #1a1a1a; }
+        #leyendas-view .l-cover-title { font-family: 'Eater', cursive; font-size: 4.5rem; line-height: 1; margin: 0 0 40px 0; text-shadow: 3px 3px 5px rgba(0,0,0,0.8); font-weight: normal; }
+        #leyendas-view .l-cover-subtitle { font-family: 'Creepster', cursive; font-size: 2rem; color: #d1d1d1; margin-bottom: 50px; letter-spacing: 2px; }
+
+        /* Botones Duolingo Originales */
+        #leyendas-view .l-btn { background-color: #58cc02; color: white; border: none; border-bottom: 5px solid #46a302; border-radius: 15px; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.1s; font-family: 'Rajdhani', sans-serif; z-index: 20; }
+        #leyendas-view .l-btn:active { border-bottom: 0px; transform: translateY(5px); }
+        #leyendas-view .l-btn-blue { background-color: #1cb0f6; border-bottom-color: #1482b6; color: white; }
+        #leyendas-view .l-btn-red { background-color: #ff4b4b; border-bottom-color: #c73636; padding: 10px 20px; font-size: 1rem; margin-top: auto; }
+
+        /* Interfaz de Menú y Lectura */
+        #leyendas-view .l-menu-title { color: #3c3c3c; font-size: 2rem; text-align: center; margin-bottom: 20px; margin-top: 5px; font-weight: 900; }
+        #leyendas-view .l-legend-btn { display: flex; align-items: center; background-color: #ffffff; border: 2px solid #e5e5e5; border-bottom: 5px solid #e5e5e5; border-radius: 15px; padding: 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease; z-index: 20; }
+        #leyendas-view .l-legend-btn:hover { background-color: #f7f7f7; }
+        #leyendas-view .l-legend-btn:active { border-bottom: 2px solid #e5e5e5; transform: translateY(3px); }
+        #leyendas-view .l-legend-icon { font-size: 2.2rem; margin-right: 15px; }
+        #leyendas-view .l-legend-name { font-size: 1.2rem; font-weight: bold; color: #4b4b4b; }
+
+        #leyendas-view .l-story-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+        #leyendas-view .l-story-title { font-size: 1.5rem; color: var(--pri); margin: 0; font-weight: bold; }
+        #leyendas-view .l-back-btn { background: none; border: none; color: #afafaf; font-weight: bold; font-size: 1rem; cursor: pointer; z-index: 20; font-family: 'Rajdhani', sans-serif; }
+
+        #leyendas-view .l-scrollable-content { flex-grow: 1; overflow-y: auto; padding-right: 10px; margin-bottom: 20px; user-select: text; -webkit-overflow-scrolling: touch; transform: translateZ(0); }
+        #leyendas-view .l-paragraph-block { margin-bottom: 25px; animation: fadeInLeyenda 0.5s ease-out forwards; }
+        @keyframes fadeInLeyenda { 
+            0% { opacity: 0; transform: translateY(20px); } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
+        #leyendas-view .l-quechua-text { font-size: 1.2rem; font-weight: bold; color: #3c3c3c; cursor: pointer; padding: 15px; border-radius: 12px; border: 2px dashed #e5e5e5; z-index: 20; transition: all 0.2s; }
+        #leyendas-view .l-quechua-text:hover { background-color: rgba(255, 122, 0, 0.1); border-color: var(--pri); }
+        #leyendas-view .l-spanish-translation { display: none; font-size: 1.05rem; color: var(--pri); margin-top: 10px; padding-left: 15px; border-left: 4px solid var(--pri); }
+
+        /* Contenedor de Imagen (Adaptado para Móvil) */
+        #leyendas-view .l-image-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
+        #leyendas-view .l-image-container img { max-width: 100%; max-height: 75%; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid #fff; pointer-events: none; }
+        #leyendas-view .l-image-title { margin-top: 15px; font-family: 'Rajdhani', sans-serif; font-size: 2.5rem; color: #3c3c3c; font-weight: 900; }
+        #leyendas-view .l-swipe-hint { position: absolute; bottom: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.7); font-style: italic; }        
+        
+        @media (max-width: 768px) {
+            #leyendas-view .l-book { width: 90vw; height: 85vh; margin-top: 0; }
+            #leyendas-view .l-image-container { height: auto; margin-bottom: 10px; }
+            #leyendas-view .l-image-container img { max-height: 140px; }
+            #leyendas-view .l-image-title { display: none; }
+            #leyendas-view .l-scrollable-content { min-height: 0; flex-shrink: 1; }
+        }
+        /* ========== MINIJUEGO ORDENA ========== */
+        #ordena-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); color: #fff; overflow: hidden; font-family: 'Inter', sans-serif; }
+        #ordena-view.active { display: flex; flex-direction: column; }
+        
+        #ordena-view .o-game-container { width: 100%; max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; height: 100vh; position: relative; }
+        
+        #ordena-view .o-start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 20px; }
+        #ordena-view .o-start-screen h2 { color: #fff; font-size: 2.5rem; margin-bottom:10px; font-family: 'Rajdhani', sans-serif; font-weight: 900; }
+        #ordena-view .o-start-screen p { margin-bottom: 30px; color: rgba(255,255,255,0.7); font-size:1.2rem; }
+        #ordena-view .o-start-screen img { width: 150px; min-height: 150px; border-radius: 20px; cursor: pointer; transition: transform 0.2s; margin-bottom: 20px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+        #ordena-view .o-start-screen img:hover { transform: scale(1.05); }
+        #ordena-view .o-start-screen img:active { transform: translateY(4px); }
+        
+        #ordena-view .o-header { display: flex; align-items: center; padding: 20px; gap: 15px; }
+        #ordena-view .o-progress-container { flex-grow: 1; height: 16px; background-color: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        #ordena-view .o-progress-bar { height: 100%; background-color: var(--pri); width: 0%; border-radius: 10px; transition: width 0.3s ease; }
+        #ordena-view .o-lives { font-weight: bold; color: #ff4b4b; font-size: 1.2rem; display: flex; align-items: center; gap: 5px; }
+        
+        #ordena-view .o-level-content { flex-grow: 1; padding: 0 20px; display: flex; flex-direction: column; }
+        #ordena-view .o-level-content h2 { font-size: 1.5rem; margin-bottom: 10px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 900; }
+        #ordena-view .o-translation { font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 30px; border-bottom: 2px dashed rgba(255,255,255,0.2); padding-bottom: 10px; }
+        
+        #ordena-view .o-drop-zone { min-height: 60px; border-bottom: 2px solid rgba(255,255,255,0.2); display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; padding-bottom: 10px; }
+        #ordena-view .o-word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        
+        #ordena-view .o-word-btn { background-color: #fff; border: 2px solid #ddd; border-bottom: 4px solid #ddd; border-radius: 12px; padding: 10px 15px; font-size: 1.1rem; font-weight: bold; color: #333; cursor: pointer; transition: transform 0.1s; user-select: none; }
+        #ordena-view .o-word-btn:active { transform: translateY(2px); border-bottom-width: 2px; margin-top: 2px; }
+        #ordena-view .o-word-btn.placeholder { background-color: rgba(255,255,255,0.1); color: transparent; border-color: transparent; pointer-events: none; box-shadow: none; }
+        
+        #ordena-view .o-footer { padding: 20px; border-top: 2px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 10px; transition: background-color 0.3s; }
+        #ordena-view .o-action-btn { background-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); border: none; border-radius: 15px; padding: 15px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase; cursor: default; width: 100%; transition: all 0.2s; }
+        #ordena-view .o-action-btn.active { background-color: var(--pri); color: #fff; border-bottom: 4px solid var(--pri-dk); cursor: pointer; }
+        #ordena-view .o-action-btn.active:active { transform: translateY(4px); border-bottom-width: 0px; }
+        #ordena-view .o-action-btn.error { background-color: #ff4b4b; color: #fff; border-bottom: 4px solid #cc0000; cursor: pointer; }
+        
+        #ordena-view .o-feedback-msg { display: none; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
+        
+        #ordena-view .o-end-screen { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 20px; }
+        #ordena-view .o-end-screen h1 { color: var(--gold); font-size: 2.5rem; margin-bottom: 20px; font-family: 'Rajdhani', sans-serif; font-weight: 900; text-shadow: 0 0 20px var(--pri); }
+        #ordena-view .o-end-screen p { font-size: 1.2rem; color: #fff; }
+        #ordena-view .o-bonus-life { background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 20px; margin-top: 20px; display: none; animation: popIn 0.5s ease; border: 2px solid var(--pri); }
+
+        /* Modal Game Over */
+        #ordena-view .o-game-over-modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.8); z-index: 700; align-items: center; justify-content: center; padding: 20px; }
+        #ordena-view .o-game-over-content { background: var(--card); border: 2px solid var(--border); border-bottom: 6px solid var(--border); border-radius: 24px; padding: 30px 20px; text-align: center; width: 100%; max-width: 400px; box-shadow: var(--shadow); animation: popIn 0.3s ease-out; }
+        #ordena-view .o-game-over-content h2 { color: #ff4b4b; font-family: 'Rajdhani', sans-serif; font-weight: 900; font-size: 2.2rem; margin-bottom: 10px; }
+        #ordena-view .o-game-over-content p { color: var(--text); font-size: 1.1rem; margin-bottom: 25px; }
+        #ordena-view .o-game-over-content img { width: 80px; margin-bottom: 15px; filter: grayscale(100%) opacity(0.8); }
+        
         .proximamente-text { font-family: 'Rajdhani', sans-serif; font-size: clamp(2em, 8vw, 4em); font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--pri); margin-top: 20px; animation: bounce 2s infinite; }
         .proximamente-icon { width: clamp(100px, 30vw, 200px); height: clamp(100px, 30vw, 200px); }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
@@ -1287,34 +1516,124 @@
 
 <!-- ========== CUENTOS VIEW ========== -->
 <div id="cuentos-view">
-    <div class="sm-back" onclick="hideCuentos()"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <video id="cuentos-bg-video" src="<?php echo e(asset('images/fondo de arbol modo oscuro.mp4')); ?>" autoplay loop muted playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; transition: opacity 0.5s ease; opacity: 0;"></video>
+    <div class="sm-back" onclick="hideCuentos()" style="z-index: 600;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
     
-    <div style="position: absolute; inset: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; pointer-events: none;">
-        <div style="position: relative; width: 100%; max-width: 1200px; min-width: 800px; aspect-ratio: 1843 / 2261; pointer-events: auto; margin-bottom: -5%;">
-            <img src="<?php echo e(asset('arbol cuentos (2).svg')); ?>" style="width: 100%; height: auto; display: block; pointer-events: none;">
+    <div style="position: absolute; top: clamp(16px, 2.5vh, 28px); right: clamp(16px, 3vw, 54px); z-index: 600;">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
+            <span class="theme-icon">☀️</span>
+            <span class="theme-lbl">CLARO</span>
+        </button>
+    </div>
+    
+    <div style="position: absolute; inset: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 10;">
+        <div class="cuentos-tree-wrapper" style="position: relative; width: 100%; max-width: 1200px; min-width: 800px; aspect-ratio: 1843 / 2261; pointer-events: auto; margin-bottom: -5%;">
+            <img src="<?php echo e(asset('arbol cuentos (2).svg')); ?>" style="position: absolute; top: 0.33%; left: 1.15%; width: 94.12%; height: auto; display: block; pointer-events: none;">
             
-            <!-- Centro -->
-            <div class="nodo-cuento nodo-actual" style="top: 72.8%; left: 48.8%;" onclick="showProximamente()">
+            <!-- ================= NODOS NOCHE (13) ================= -->
+            <div class="nodo-cuento nodo-noche nodo-actual" style="top: 65.9%; left: 46.5%;" onclick="showProximamente()">
                 <img src="<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>" class="indicador-pajaro" alt="Indicador">
-                <span>NIVEL<br>INICIAL<br><span style="font-size: 1.4em; line-height: 0.5;">&gt;</span></span>
+                <span class="nodo-icon">❌</span>
+                <div class="nodo-label">Errores</div>
             </div>
             
-            <!-- Izquierda (8 nodos) -->
-            <div class="nodo-cuento nodo-bloqueado" style="top: 52.2%; left: 39.6%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 59.8%; left: 26.1%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 66.2%; left: 38.4%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 72.4%; left: 13.1%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 71.1%; left: 25.3%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 81.4%; left: 10.9%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 78.2%; left: 31.0%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 84.0%; left: 35.7%;"></div>
+            <div class="nodo-cuento nodo-noche" style="top: 54.2%; left: 27.3%;" onclick="showProximamente()">
+                <span class="nodo-icon">📖</span>
+                <div class="nodo-label">Palabras</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 55.0%; left: 61.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">🧠</span>
+                <div class="nodo-label">Difíciles</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 80.0%; left: 25.2%;" onclick="showProximamente()">
+                <span class="nodo-icon">👂</span>
+                <div class="nodo-label">Oír</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 62.9%; left: 36.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎧</span>
+                <div class="nodo-label">Dictado</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 67.4%; left: 24.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎤</span>
+                <div class="nodo-label">Hablar</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 67.7%; left: 67.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">🗣️</span>
+                <div class="nodo-label">Pronuncia</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 76.0%; left: 10.7%;" onclick="showProximamente()">
+                <span class="nodo-icon">💬</span>
+                <div class="nodo-label">Charla</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 78.3%; left: 34.8%;" onclick="showHimnos()">
+                <span class="nodo-icon">📖</span>
+                <div class="nodo-label">Himno</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 47.3%; left: 46.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">🔥</span>
+                <div class="nodo-label">Repaso</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 59.8%; left: 68.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">⚡</span>
+                <div class="nodo-label">Rápido</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 72.5%; left: 81.7%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎯</span>
+                <div class="nodo-label">Reto</div>
+            </div>
+            <div class="nodo-cuento nodo-noche" style="top: 74.2%; left: 63.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">👑</span>
+                <div class="nodo-label">Perfecto</div>
+            </div>
 
-            <!-- Derecha (5 nodos) -->
-            <div class="nodo-cuento nodo-bloqueado" style="top: 55.8%; left: 56.2%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 63.3%; left: 71.7%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 70.0%; left: 69.7%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 78.7%; left: 63.1%;"></div>
-            <div class="nodo-cuento nodo-bloqueado" style="top: 77.2%; left: 82.2%;"></div>
+            <!-- ================= NODOS DÍA (10) ================= -->
+            <div class="nodo-cuento nodo-dia nodo-actual" style="top: 65.9%; left: 46.5%;" onclick="showOrdenaGame()">
+                <img src="<?php echo e(asset('animaciones condorio en gif/condorio esperando_processed.gif')); ?>" class="indicador-pajaro" alt="Indicador">
+                <span class="nodo-icon">🧩</span>
+                <div class="nodo-label">Ordena</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 54.2%; left: 27.3%;" onclick="showProximamente()">
+                <span class="nodo-icon">🖼️</span>
+                <div class="nodo-label">Imagen</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 55.0%; left: 61.1%;" onclick="showProximamente()">
+                <span class="nodo-icon">🔊</span>
+                <div class="nodo-label">Sonido</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 80.0%; left: 25.2%;" onclick="window.location.href='<?php echo e(route('juego.memoria')); ?>'">
+                <span class="nodo-icon">🃏</span>
+                <div class="nodo-label">Memoria</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 62.9%; left: 36.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">📗</span>
+                <div class="nodo-label">Cuentos</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 67.4%; left: 24.6%;" onclick="showProximamente()">
+                <span class="nodo-icon">🏔️</span>
+                <div class="nodo-label">Cultura</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 67.7%; left: 67.1%;" onclick="showLeyendas()">
+                <span class="nodo-icon">📚</span>
+                <div class="nodo-label">Leyendas</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 76.0%; left: 10.7%;" onclick="showProximamente()">
+                <span class="nodo-icon">❤️🔥</span>
+                <div class="nodo-label">Supervive</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 78.3%; left: 34.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">👑</span>
+                <div class="nodo-label">Prueba</div>
+            </div>
+            <div class="nodo-cuento nodo-dia" style="top: 47.3%; left: 46.8%;" onclick="showProximamente()">
+                <span class="nodo-icon">🎲</span>
+                <div class="nodo-label">Sorpresa</div>
+            </div>
+            <!-- Condorio animado sin fondo -->
+            <img id="condorio-video" src="<?php echo e(asset('animaciones condorio en gif/condorio_amable_processed.gif')); ?>" alt="Condorio" style="position: absolute; top: 89.07%; left: 109.64%; transform: translate(-50%, -50%); width: 22.09%; height: auto; z-index: 15; pointer-events: none;">
+            <audio id="cuentos-audio" src="<?php echo e(asset('animaciones condorio en gif/condorio amable.mp4')); ?>" loop preload="auto"></audio>
+            
+            <!-- Llama -->
+            <img id="llama-img" src="<?php echo e(asset('animaciones condorio en gif/llama_processed.png')); ?>" style="position: absolute; top: 83.42%; left: 70.2%; transform: translate(-50%, -50%) scale(3) rotate(0deg); width: 10%; height: auto; z-index: 16; pointer-events: auto;">
         </div>
     </div>
 
@@ -1323,7 +1642,269 @@
         <div class="proximamente-text">¡PRÓXIMAMENTE!</div>
         <button class="sh-btn" style="margin-top: 30px;" onclick="hideProximamente()">Volver atrás</button>
     </div>
+
+    <div id="himnos-view">
+        <div class="sm-back" onclick="hideHimnos()" style="z-index: 600;">
+            <span><</span>
+        </div>
+        <div class="book" id="himnos-book">
+            <!-- Portada -->
+            <div class="page" id="himno-page-0" style="z-index: 4;">
+                <div class="page-front">
+                    <img src="<?php echo e(asset('nuevo_icono_transparent.png')); ?>" alt="Icono Boliquechua">
+                    <h2 style="margin:0; font-size:28px;">Cancionero</h2>
+                </div>
+                <div class="page-back"></div>
+            </div>
+
+            <!-- Índice -->
+            <div class="page" id="himno-page-1" style="z-index: 3;">
+                <div class="page-front">
+                    <h2 style="color:var(--pri); margin-bottom: 20px;">Índice</h2>
+                    <ul class="index-list">
+                        <li onclick="goToHimnoPage(2)">1. Himno Nacional de Bolivia</li>
+                    </ul>
+                </div>
+                <div class="page-back"></div>
+            </div>
+
+            <!-- Himno 1 -->
+            <div class="page" id="himno-page-2" style="z-index: 2;">
+                <div class="page-front">
+                    <h3 style="color:var(--pri); text-align:center; margin-top:0; font-size:1.5rem;">Himno Nacional de Bolivia</h3>
+                    <div class="lang-toggle">
+                        <button class="active" onclick="toggleLang(this, 'qu')">Quechua</button>
+                        <button onclick="toggleLang(this, 'es')">Español</button>
+                    </div>
+                    <div class="lyrics lyrics-qu">
+                        <p>Próximamente (Quechua)...</p>
+                    </div>
+                    <div class="lyrics lyrics-es" style="display:none;">
+                        <p>Próximamente (Español)...</p>
+                    </div>
+                </div>
+                <div class="page-back"></div>
+            </div>
+            
+            <!-- Fin -->
+            <div class="page" id="himno-page-3" style="z-index: 1;">
+                <div class="page-front" style="justify-content:center;">
+                    <h3 style="color:var(--pri); text-align:center;">Fin del cancionero</h3>
+                </div>
+                <div class="page-back"></div>
+            </div>
+        </div>
+
+        <div class="book-controls">
+            <button id="bookPrevBtn" disabled>&#8592; Anterior</button>
+            <button id="bookNextBtn">Siguiente &#8594;</button>
+        </div>
+    </div>
+    
+    <!-- ========== LEYENDAS ========== -->
+    <div id="leyendas-view">
+        <!-- VERSIÓN PC (2 CARAS, IGUAL AL MODELO) -->
+        <div class="l-book hide-on-mobile" id="leyendas-book-pc">
+            <!-- HOJA 1: PORTADA -->
+            <div class="l-page" id="pc-page1" style="z-index: 3;">
+                <div class="l-front l-cover">
+                    <div class="l-cover-subtitle">Mitos y</div>
+                    <div class="l-cover-title">LEYENDAS</div>
+                    <button class="l-btn" onclick="openLeyendasBook()">Abrir &#8594;</button>
+                    <div class="l-swipe-hint">O desliza hacia la izquierda &larr;</div>
+                </div>
+                <div class="l-back">
+                    <div style="text-align: center; margin-top: 40px;">
+                        <img src="<?php echo e(asset('nuevo_icono_transparent.png')); ?>" style="width:120px; border-radius:50%; margin-bottom:10px; pointer-events:none;">
+                        <h2 style="color: #4b4b4b;">¡Bienvenido!</h2>
+                        <p style="color: #777; font-size: 1rem; line-height: 1.5;">
+                            Selecciona una leyenda a la derecha. <br>
+                            Toca el texto en quechua para ver su traducción.
+                        </p>
+                        <button class="l-btn l-btn-red" style="margin-top: 40px;" onclick="hideLeyendas()">Cerrar Cuaderno</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOJA 2: MENÚ / IMAGEN -->
+            <div class="l-page" id="pc-page2" style="z-index: 2;">
+                <div class="l-front">
+                    <h2 class="l-menu-title">Elige una Leyenda</h2>
+                    
+                    <div class="l-legend-btn" onclick="loadLeyenda('duende')">
+                        <div class="l-legend-icon">🍄</div>
+                        <div class="l-legend-name">El Duende</div>
+                    </div>
+                    <div class="l-legend-btn" onclick="loadLeyenda('viudita')">
+                        <div class="l-legend-icon">👰‍♀️</div>
+                        <div class="l-legend-name">La Viudita</div>
+                    </div>
+                    <div class="l-legend-btn" onclick="loadLeyenda('carreton')">
+                        <div class="l-legend-icon">🐂</div>
+                        <div class="l-legend-name">El Carretón</div>
+                    </div>
+                </div>
+                <div class="l-back">
+                    <div class="l-image-container">
+                        <img id="pc-story-image" src="" alt="Ilustración" style="display:none;">
+                        <div class="l-image-title" id="pc-story-image-title"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOJA 3: LECTURA / CONTRAPORTADA -->
+            <div class="l-page" id="pc-page3" style="z-index: 1;">
+                <div class="l-front">
+                    <div class="l-story-header">
+                        <button class="l-back-btn" onclick="closeLeyendaStory()">❮ Volver</button>
+                        <h2 class="l-story-title" id="pc-story-header-title">Título</h2>
+                    </div>
+                    <div id="pc-story-content" class="l-scrollable-content"></div>
+                    <button id="pc-continue-btn" class="l-btn" style="width:100%; display:none; margin-bottom: 10px;" onclick="nextLeyendaParagraph()">Continuar</button>
+                    <button id="pc-finish-btn" class="l-btn l-btn-blue" style="width:100%; display:none; margin-bottom: 10px;" onclick="closeLeyendaStory()">¡Completado!</button>
+                </div>
+                <div class="l-back l-cover">
+                    <div class="l-cover-title" style="font-size: 3rem;">FIN</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VERSIÓN MÓVIL (1 CARA, PARA QUE NO SE CORTE) -->
+        <div class="l-book hide-on-pc" id="leyendas-book-mobile">
+            <div class="l-page" id="mb-page0" style="z-index: 5;">
+                <div class="l-front l-cover">
+                    <div class="l-cover-subtitle">Mitos y</div>
+                    <div class="l-cover-title">LEYENDAS</div>
+                    <button class="l-btn" onclick="openLeyendasBook()">Abrir &#8594;</button>
+                    <div class="l-swipe-hint">O desliza hacia la izquierda &larr;</div>
+                </div>
+                <div class="l-back" style="background:var(--pri);"></div>
+            </div>
+
+            <div class="l-page" id="mb-page1" style="z-index: 4;">
+                <div class="l-front">
+                    <div style="text-align: center; margin-top: 40px;">
+                        <img src="<?php echo e(asset('nuevo_icono_transparent.png')); ?>" style="width:120px; border-radius:50%; margin-bottom:10px; pointer-events:none;">
+                        <h2 style="color: #4b4b4b;">¡Bienvenido!</h2>
+                        <p style="color: #777; font-size: 1.1rem; line-height: 1.5; font-weight: bold;">
+                            Desliza para elegir una leyenda. <br><br>
+                            Toca el texto en quechua para ver su traducción.
+                        </p>
+                        <button class="l-btn l-btn-red" style="margin-top: 40px;" onclick="hideLeyendas()">Cerrar Cuaderno</button>
+                    </div>
+                </div>
+                <div class="l-back"></div>
+            </div>
+
+            <div class="l-page" id="mb-page2" style="z-index: 3;">
+                <div class="l-front">
+                    <h2 class="l-menu-title">Elige una Leyenda</h2>
+                    <div class="l-legend-btn" onclick="loadLeyenda('duende')">
+                        <div class="l-legend-icon">🍄</div>
+                        <div class="l-legend-name">El Duende</div>
+                    </div>
+                    <div class="l-legend-btn" onclick="loadLeyenda('viudita')">
+                        <div class="l-legend-icon">👰‍♀️</div>
+                        <div class="l-legend-name">La Viudita</div>
+                    </div>
+                    <div class="l-legend-btn" onclick="loadLeyenda('carreton')">
+                        <div class="l-legend-icon">🐂</div>
+                        <div class="l-legend-name">El Carretón</div>
+                    </div>
+                </div>
+                <div class="l-back"></div>
+            </div>
+
+            <div class="l-page" id="mb-page3" style="z-index: 2;">
+                <div class="l-front">
+                    <div class="l-story-header">
+                        <button class="l-back-btn" onclick="closeLeyendaStory()">❮ Volver</button>
+                        <h2 class="l-story-title" id="mb-story-header-title">Título</h2>
+                    </div>
+                    <div class="l-image-container" id="mb-story-img-container" style="display:none; margin-bottom: 20px;">
+                        <img id="mb-story-image" src="" alt="Ilustración">
+                    </div>
+                    <div id="mb-story-content" class="l-scrollable-content"></div>
+                    <button id="mb-continue-btn" class="l-btn" style="width:100%; display:none; margin-bottom: 10px;" onclick="nextLeyendaParagraph()">Continuar</button>
+                    <button id="mb-finish-btn" class="l-btn l-btn-blue" style="width:100%; display:none; margin-bottom: 10px;" onclick="closeLeyendaStory()">¡Completado!</button>
+                </div>
+                <div class="l-back"></div>
+            </div>
+            
+            <div class="l-page" id="mb-page4" style="z-index: 1;">
+                <div class="l-front l-cover">
+                    <div class="l-cover-title" style="font-size: 3rem;">FIN</div>
+                </div>
+                <div class="l-back" style="background:var(--pri);"></div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+    <!-- ========== MINIJUEGO ORDENA ========== -->
+    <div id="ordena-view">
+        <div class="o-game-container">
+            
+            <!-- Pantalla de Inicio -->
+            <div id="o-start-screen" class="o-start-screen">
+                <h2>Ordena las Palabras</h2>
+                <p>Toca el botón para empezar a ordenar oraciones en quechua.</p>
+                <img src="<?php echo e(asset('nuevo_icono_transparent.png')); ?>" alt="Inicia el nivel" onclick="oStartGame()">
+                <h3 style="color:var(--gold);">¡Empieza ahora!</h3>
+                <button class="o-action-btn" style="margin-top: 40px; width: auto; padding: 10px 20px;" onclick="hideOrdenaGame()">Volver al Mapa</button>
+            </div>
+
+            <!-- Pantalla de Juego -->
+            <div id="o-game-screen" style="display: none; flex-direction: column; height: 100%;">
+                <div class="o-header">
+                    <button onclick="hideOrdenaGame()" style="background:none; border:none; color:var(--muted); font-size:1.5rem; cursor:pointer;">&times;</button>
+                    <div class="o-progress-container">
+                        <div class="o-progress-bar" id="o-progress-bar"></div>
+                    </div>
+                    <div class="o-lives">❤️ <span id="o-lives-count">3</span></div>
+                </div>
+
+                <div class="o-level-content">
+                    <h2>Traduce esta oración</h2>
+                    <div class="o-translation" id="o-spanish-text">Cargando...</div>
+                    
+                    <div class="o-drop-zone" id="o-drop-zone"></div>
+                    <div class="o-word-bank" id="o-word-bank"></div>
+                </div>
+
+                <div class="o-footer" id="o-footer">
+                    <div class="o-feedback-msg" id="o-feedback-msg"></div>
+                    <button class="o-action-btn" id="o-check-btn" onclick="oCheckOrNext()">COMPROBAR</button>
+                </div>
+            </div>
+
+            <!-- Pantalla Final -->
+            <div id="o-end-screen" class="o-end-screen">
+                <h1>¡Lección Completada!</h1>
+                <p>Has ordenado correctamente todas las oraciones.</p>
+                
+                <div class="o-bonus-life" id="o-bonus-life">
+                    <h2 style="color: var(--gold);">¡Misión Perfecta!</h2>
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">0 Errores cometidos.</p>
+                    <h1 style="color: #ff4b4b; text-shadow: none;">+1 ❤️ VIDA EXTRA</h1>
+                </div>
+                
+                <button class="o-action-btn active" style="margin-top: 40px; width: 80%;" onclick="hideOrdenaGame()">Volver al Mapa</button>
+            </div>
+
+            <!-- Modal Game Over -->
+            <div id="o-game-over" class="o-game-over-modal">
+                <div class="o-game-over-content">
+                    <img src="<?php echo e(asset('nuevo_icono_transparent.png')); ?>" alt="Sin vidas">
+                    <h2>¡Te has quedado sin vidas!</h2>
+                    <p>No te rindas, vuelve a intentarlo para dominar estas oraciones.</p>
+                    <button class="o-action-btn error" style="margin-top: 10px; width: 100%;" onclick="closeOrdenaGameOver()">REINTENTAR</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 <!-- ========== SUBMENÚ ========== -->
 <div id="submenu">
@@ -1456,18 +2037,30 @@
     window.addEventListener('click', (e) => { if(e.target.classList.contains('overlay')) closeModal(e.target.id); });
     // Modo claro / oscuro persistente
     function updateThemeUI(theme) {
-        const btn = document.getElementById('themeToggleBtn');
-        if (btn) {
+        const btns = document.querySelectorAll('.theme-toggle-btn');
+        btns.forEach(btn => {
             const icon = btn.querySelector('.theme-icon');
             const lbl = btn.querySelector('.theme-lbl');
             if (theme === 'light') {
                 if (icon) icon.textContent = '🌙';
-                if (lbl) lbl.textContent = 'Oscuro';
+                if (lbl) lbl.textContent = 'OSCURO';
                 btn.title = 'Cambiar a Modo Oscuro';
             } else {
                 if (icon) icon.textContent = '☀️';
-                if (lbl) lbl.textContent = 'Claro';
+                if (lbl) lbl.textContent = 'CLARO';
                 btn.title = 'Cambiar a Modo Claro';
+            }
+        });
+
+        // Alternar fondo de video / svg en Cuentos
+        const cuentosVideo = document.getElementById('cuentos-bg-video');
+        if (cuentosVideo) {
+            if (theme === 'dark') {
+                cuentosVideo.style.opacity = '1';
+                cuentosVideo.play().catch(e => console.log('Video play:', e));
+            } else {
+                cuentosVideo.style.opacity = '0';
+                cuentosVideo.pause();
             }
         }
     }
@@ -1478,29 +2071,645 @@
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('boliquechua_theme', next);
         updateThemeUI(next);
-        closeModal('profileModal');
+        if (typeof closeModal === 'function') {
+            closeModal('profileModal');
+        }
     }
 
     // Inicializar UI de tema
     document.addEventListener('DOMContentLoaded', () => {
         const theme = localStorage.getItem('boliquechua_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
         updateThemeUI(theme);
     });
 
     function showCuentos() {
         document.getElementById('app').style.display = 'none';
         document.getElementById('cuentos-view').classList.add('active');
+        
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        updateThemeUI(currentTheme);
+        
+        // Reproducir la música de fondo de Cuentos
+        const audio = document.getElementById('cuentos-audio');
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log('Autoplay con sonido bloqueado:', e));
+        }
     }
+    
     function hideCuentos() {
         document.getElementById('cuentos-view').classList.remove('active');
         document.getElementById('app').style.display = 'flex';
+        
+        // Detener la música de fondo al salir de Cuentos
+        const audio = document.getElementById('cuentos-audio');
+        if (audio) {
+            audio.pause();
+        }
     }
+    
     function showProximamente() {
         document.getElementById('proximamente-view').classList.add('active');
     }
     function hideProximamente() {
         document.getElementById('proximamente-view').classList.remove('active');
     }
+    
+    // ================= LÓGICA DEL CUADERNO =================
+    function showHimnos() {
+        document.getElementById('app').style.display = 'none';
+        document.getElementById('himnos-view').classList.add('active');
+        // Reset book a portada
+        currentPage = 0;
+        document.querySelectorAll('#himnos-book .page').forEach((p, i) => {
+            p.classList.remove('flipped');
+            p.style.zIndex = document.querySelectorAll('#himnos-book .page').length - i;
+        });
+        updateBookButtons();
+    }
+    
+    function hideHimnos() {
+        document.getElementById('himnos-view').classList.remove('active');
+        document.getElementById('app').style.display = 'flex';
+    }
+
+    let currentPage = 0;
+    
+    function updateBookButtons() {
+        const pages = document.querySelectorAll('#himnos-book .page');
+        const prevBtn = document.getElementById('bookPrevBtn');
+        const nextBtn = document.getElementById('bookNextBtn');
+        const book = document.getElementById('himnos-book');
+        
+        if (!book) return;
+        
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === pages.length;
+        
+        // Efecto de centrado dinámico en PC
+        if (window.innerWidth > 480) {
+            if (currentPage > 0 && currentPage < pages.length) {
+                book.style.transform = "translateX(175px)";
+            } else if (currentPage === pages.length) {
+                book.style.transform = "translateX(350px)";
+            } else {
+                book.style.transform = "translateX(0px)";
+            }
+        } else {
+            book.style.transform = "translateX(0px)"; // En móvil no se traslada
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const nextBtn = document.getElementById('bookNextBtn');
+        const prevBtn = document.getElementById('bookPrevBtn');
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                const pages = document.querySelectorAll('#himnos-book .page');
+                if (currentPage < pages.length) {
+                    pages[currentPage].classList.add('flipped');
+                    pages[currentPage].style.zIndex = currentPage + 1;
+                    currentPage++;
+                    updateBookButtons();
+                }
+            });
+        }
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                const pages = document.querySelectorAll('#himnos-book .page');
+                if (currentPage > 0) {
+                    currentPage--;
+                    pages[currentPage].classList.remove('flipped');
+                    pages[currentPage].style.zIndex = pages.length - currentPage;
+                    updateBookButtons();
+                }
+            });
+        }
+
+        // ====== GESTOS TÁCTILES (SWIPE) ======
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const himnosBook = document.getElementById('himnos-book');
+        
+        if (himnosBook) {
+            himnosBook.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+
+            himnosBook.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchEndX < touchStartX - 50) {
+                    // Swipe Izquierda -> Siguiente página
+                    if(nextBtn && !nextBtn.disabled) nextBtn.click();
+                }
+                if (touchEndX > touchStartX + 50) {
+                    // Swipe Derecha -> Página anterior
+                    if(prevBtn && !prevBtn.disabled) prevBtn.click();
+                }
+            }, {passive: true});
+        }
+    });
+
+    function goToHimnoPage(targetPageNum) {
+        const pages = document.querySelectorAll('#himnos-book .page');
+        // Avanza o retrocede páginas hasta llegar al target
+        while (currentPage < targetPageNum) {
+            pages[currentPage].classList.add('flipped');
+            pages[currentPage].style.zIndex = currentPage + 1;
+            currentPage++;
+        }
+        while (currentPage > targetPageNum) {
+            currentPage--;
+            pages[currentPage].classList.remove('flipped');
+            pages[currentPage].style.zIndex = pages.length - currentPage;
+        }
+        updateBookButtons();
+    }
+    
+    function toggleLang(btn, lang) {
+        const container = btn.closest('.page-front, .page-back');
+        container.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        container.querySelectorAll('.lyrics').forEach(l => l.style.display = 'none');
+        container.querySelector(`.lyrics-${lang}`).style.display = 'block';
+    }
+    // ==========================================
+    // ESTADO GLOBAL DEL CUADERNO LEYENDAS
+    // 0 = Cerrado, 1 = Menú, 2 = Leyenda Abierta
+    // ==========================================
+    let leyendasBookState = 0; // Para PC
+    let lMbCurrentPage = 0;    // Para Móvil
+    
+    function showLeyendas() {
+        document.getElementById('app').style.display = 'none';
+        document.getElementById('leyendas-view').classList.add('active');
+        resetLeyendas();
+    }
+
+    function hideLeyendas() {
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile && leyendasBookState === 2) closeLeyendaStory();
+        
+        setTimeout(() => {
+            resetLeyendas();
+            setTimeout(() => {
+                document.getElementById('leyendas-view').classList.remove('active');
+                document.getElementById('app').style.display = 'flex';
+            }, 600);
+        }, (!isMobile && leyendasBookState === 2) ? 600 : 0);
+    }
+
+    function resetLeyendas() {
+        leyendasBookState = 0;
+        lMbCurrentPage = 0;
+        
+        // Reset PC
+        document.querySelectorAll('#leyendas-book-pc .l-page').forEach(p => p.classList.remove('l-flipped'));
+        if(document.getElementById('pc-page1')) document.getElementById('pc-page1').style.zIndex = 3;
+        if(document.getElementById('pc-page2')) document.getElementById('pc-page2').style.zIndex = 2;
+        if(document.getElementById('pc-page3')) document.getElementById('pc-page3').style.zIndex = 1;
+        if(document.getElementById('leyendas-book-pc')) document.getElementById('leyendas-book-pc').style.transform = "translateX(0px)";
+        
+        // Reset Mobile
+        document.querySelectorAll('#leyendas-book-mobile .l-page').forEach((p, i) => {
+            p.classList.remove('l-flipped');
+            p.style.zIndex = 5 - i;
+        });
+    }
+
+    function openLeyendasBook() {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            if (lMbCurrentPage === 0) {
+                document.getElementById('mb-page0').classList.add('l-flipped');
+                document.getElementById('mb-page0').style.zIndex = 4;
+                lMbCurrentPage = 1; // Muestra Bienvenido
+            }
+        } else {
+            if(leyendasBookState >= 1) return;
+            const page1 = document.getElementById('pc-page1');
+            const book = document.getElementById('leyendas-book-pc');
+            page1.classList.add('l-flipped');
+            page1.style.zIndex = 1;
+            book.style.transform = "translateX(210px)";
+            leyendasBookState = 1;
+        }
+    }
+
+    function closeLeyendaStory() {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            // Retroceder de Historia a Menú
+            document.getElementById('mb-page2').classList.remove('l-flipped');
+            setTimeout(() => { document.getElementById('mb-page2').style.zIndex = 3; }, 400);
+            lMbCurrentPage = 2;
+        } else {
+            if(leyendasBookState !== 2) return;
+            const page2 = document.getElementById('pc-page2');
+            page2.classList.remove('l-flipped');
+            setTimeout(() => { page2.style.zIndex = 2; }, 400);
+            leyendasBookState = 1;
+        }
+    }
+
+    // ==========================================
+    // GESTOS TÁCTILES Y DE RATÓN (SWIPES)
+    // ==========================================
+    const lScene = document.getElementById('leyendas-view');
+    let lStartX = 0, lStartY = 0, lEndX = 0, lEndY = 0;
+    let lIsDragging = false;
+    const lSwipeThreshold = 60;
+
+    function handleLDragStart(x, y) {
+        lStartX = x; lStartY = y; lIsDragging = true;
+    }
+    function handleLDragEnd(x, y) {
+        if (!lIsDragging) return;
+        lEndX = x; lEndY = y; lIsDragging = false;
+        processLSwipe();
+    }
+    function processLSwipe() {
+        let deltaX = lEndX - lStartX;
+        let deltaY = lEndY - lStartY;
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > lSwipeThreshold) {
+            const isMobile = window.innerWidth <= 768;
+            if (deltaX < 0) {
+                // Swipe Izquierda (Siguiente)
+                if (isMobile) {
+                    if (lMbCurrentPage < 4 && lMbCurrentPage !== 2 && lMbCurrentPage !== 3) { // 2=Menu, 3=Story (controlados por botones)
+                        document.getElementById(`mb-page${lMbCurrentPage}`).classList.add('l-flipped');
+                        document.getElementById(`mb-page${lMbCurrentPage}`).style.zIndex = lMbCurrentPage;
+                        lMbCurrentPage++;
+                    }
+                } else {
+                    if (leyendasBookState === 0) openLeyendasBook();
+                }
+            } else {
+                // Swipe Derecha (Atrás)
+                if (isMobile) {
+                    if (lMbCurrentPage > 0 && lMbCurrentPage !== 3) {
+                        lMbCurrentPage--;
+                        document.getElementById(`mb-page${lMbCurrentPage}`).classList.remove('l-flipped');
+                        document.getElementById(`mb-page${lMbCurrentPage}`).style.zIndex = 5 - lMbCurrentPage;
+                    }
+                } else {
+                    if (leyendasBookState === 1) hideLeyendas();
+                    if (leyendasBookState === 2) closeLeyendaStory();
+                }
+            }
+        }
+    }
+
+    lScene.addEventListener('touchstart', e => handleLDragStart(e.changedTouches[0].screenX, e.changedTouches[0].screenY), {passive: true});
+    lScene.addEventListener('touchend', e => handleLDragEnd(e.changedTouches[0].screenX, e.changedTouches[0].screenY), {passive: true});
+    lScene.addEventListener('mousedown', e => handleLDragStart(e.clientX, e.clientY));
+    lScene.addEventListener('mouseup', e => handleLDragEnd(e.clientX, e.clientY));
+    lScene.addEventListener('mouseleave', () => { lIsDragging = false; });
+
+    // ==========================================
+    // BASE DE DATOS Y LÓGICA DE LECTURA
+    // ==========================================
+    const lStories = {
+        duende: {
+            title: "El Duende",
+            image: "https://dummyimage.com/400x500/1e40af/ffffff&text=El+Duende",
+            paragraphs: [
+                { q: "Uj juch'uy runa, jatun sombreroyoj, sach'a sach'api tiyan.", s: "Un hombrecito con sombrero grande vive en el monte." },
+                { q: "Wawaswan pukllayta munan, chinkachin.", s: "Busca jugar con los niños y se los lleva para perderlos." },
+                { q: "Payqa juch'uy makiyoj, manchachikullaj.", s: "Tiene las manos pequeñas y le gusta asustar en las noches." }
+            ]
+        },
+        viudita: {
+            title: "La Viudita",
+            image: "https://dummyimage.com/400x500/000000/ffffff&text=La+Viudita",
+            paragraphs: [
+                { q: "Chaupi tutapi, yana p'achayoj warmi purin.", s: "A la medianoche, camina una mujer solitaria vestida de negro." },
+                { q: "Machasqa qharispaq mask'an, waqaspa purin.", s: "Busca a los hombres borrachos mientras finge llorar por las calles." },
+                { q: "Uyanta qhawaspa, calavera kashan.", s: "Al destapar su velo, los hombres ven que su rostro es una calavera." }
+            ]
+        },
+        carreton: {
+            title: "El Carretón",
+            image: "https://dummyimage.com/400x500/78350f/fbbf24&text=El+Carreton",
+            paragraphs: [
+                { q: "Tuta ch'inpi, k'ullu carretón qaparin.", s: "En el silencio de la madrugada, suena el crujir de un carretón de madera." },
+                { q: "Jatun turus aysanku, nina ñawiyoj.", s: "Es jalado por bueyes gigantes que tienen fuego en los ojos." },
+                { q: "Supaypa carretonnin, juchasapasta apan.", s: "Es el carretón del diablo, dicen que viene a llevarse a los pecadores." }
+            ]
+        }
+    };
+
+    let lCurrentStory = null;
+    let lParagraphIndex = 0;
+
+    function loadLeyenda(storyId) {
+        lCurrentStory = lStories[storyId];
+        lParagraphIndex = 0;
+        
+        const isMobile = window.innerWidth <= 768;
+        const prefix = isMobile ? 'mb-' : 'pc-';
+
+        document.getElementById(prefix + 'story-image').src = lCurrentStory.image;
+        document.getElementById(prefix + 'story-image').style.display = 'block';
+        if (document.getElementById(prefix + 'story-image-title')) {
+            document.getElementById(prefix + 'story-image-title').textContent = lCurrentStory.title;
+        }
+        document.getElementById(prefix + 'story-header-title').textContent = lCurrentStory.title;
+        
+        if (isMobile) {
+            document.getElementById('mb-story-img-container').style.display = 'flex';
+        }
+        
+        const contentDiv = document.getElementById(prefix + 'story-content');
+        contentDiv.innerHTML = '';
+        document.getElementById(prefix + 'continue-btn').style.display = 'none';
+        document.getElementById(prefix + 'finish-btn').style.display = 'none';
+
+        if (isMobile) {
+            document.getElementById('mb-page2').classList.add('l-flipped');
+            document.getElementById('mb-page2').style.zIndex = 2;
+            lMbCurrentPage = 3;
+        } else {
+            const page2 = document.getElementById('pc-page2');
+            page2.classList.add('l-flipped');
+            page2.style.zIndex = 1; 
+            leyendasBookState = 2; 
+        }
+
+        setTimeout(renderLeyendaParagraph, 400); 
+    }
+
+    function renderLeyendaParagraph() {
+        const isMobile = window.innerWidth <= 768;
+        const prefix = isMobile ? 'mb-' : 'pc-';
+        
+        document.getElementById(prefix + 'continue-btn').style.display = 'none';
+        const pData = lCurrentStory.paragraphs[lParagraphIndex];
+        const contentDiv = document.getElementById(prefix + 'story-content');
+        
+        const block = document.createElement('div');
+        block.className = 'l-paragraph-block';
+        
+        const quechuaEl = document.createElement('div');
+        quechuaEl.className = 'l-quechua-text';
+        quechuaEl.textContent = pData.q;
+        
+        const spanishEl = document.createElement('div');
+        spanishEl.className = 'l-spanish-translation';
+        spanishEl.textContent = pData.s;
+        
+        quechuaEl.addEventListener('click', () => {
+            spanishEl.style.display = 'block';
+            quechuaEl.style.borderColor = 'var(--pri)';
+            quechuaEl.style.backgroundColor = 'rgba(255, 122, 0, 0.1)';
+            
+            if (lParagraphIndex < lCurrentStory.paragraphs.length - 1) {
+                document.getElementById(prefix + 'continue-btn').style.display = 'block';
+            } else {
+                document.getElementById(prefix + 'finish-btn').style.display = 'block';
+            }
+            setTimeout(() => contentDiv.scrollTo({ top: contentDiv.scrollHeight, behavior: 'smooth' }), 100);
+        }, { once: true });
+        
+        block.appendChild(quechuaEl);
+        block.appendChild(spanishEl);
+        contentDiv.appendChild(block);
+    }
+
+    function nextLeyendaParagraph() {
+        lParagraphIndex++;
+        if (lParagraphIndex < lCurrentStory.paragraphs.length) {
+            renderLeyendaParagraph();
+        }
+    }
+
+    // ========== LOGICA MINIJUEGO ORDENA ==========
+    const oLevels = [
+        { spanish: "Yo soy estudiante.", quechua: ["Ñuqa", "yachakuq", "kani"] },
+        { spanish: "Él está en la casa.", quechua: ["Payqa", "wasipi", "kachkan"] },
+        { spanish: "Buenos días.", quechua: ["Allin", "p'unchaw"] },
+        { spanish: "El perro come carne.", quechua: ["Allqu", "aychata", "mikhun"] },
+        { spanish: "¿Cómo te llamas?", quechua: ["Imataq", "sutiki?"] }
+    ];
+
+    let oCurrentLevel = 0;
+    let oLives = 3;
+    let oTotalErrors = 0;
+    let oCurrentSelectedWords = [];
+    let oState = "PLAYING"; 
+
+    function showOrdenaGame() {
+        document.getElementById('app').style.display = 'none';
+        document.getElementById('ordena-view').classList.add('active');
+        
+        document.getElementById('o-start-screen').style.display = 'flex';
+        document.getElementById('o-game-screen').style.display = 'none';
+        document.getElementById('o-end-screen').style.display = 'none';
+        document.getElementById('o-game-over').style.display = 'none';
+        
+        oCurrentLevel = 0;
+        oLives = 3;
+        oTotalErrors = 0;
+        document.getElementById('o-lives-count').innerText = oLives;
+        document.getElementById('o-bonus-life').style.display = 'none';
+    }
+
+    function hideOrdenaGame() {
+        document.getElementById('ordena-view').classList.remove('active');
+        document.getElementById('app').style.display = 'block';
+    }
+
+    function closeOrdenaGameOver() {
+        document.getElementById('o-game-over').style.display = 'none';
+        showOrdenaGame(); // Reinicia al inicio
+    }
+
+    function oShuffleArray(array) {
+        let shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        if(JSON.stringify(shuffled) === JSON.stringify(array) && array.length > 1) {
+            return oShuffleArray(array);
+        }
+        return shuffled;
+    }
+
+    function oStartGame() {
+        document.getElementById('o-start-screen').style.display = 'none';
+        document.getElementById('o-game-screen').style.display = 'flex';
+        oLoadLevel();
+    }
+
+    function oLoadLevel() {
+        if (oCurrentLevel >= oLevels.length) {
+            oFinishGame();
+            return;
+        }
+
+        oState = "PLAYING";
+        oCurrentSelectedWords = [];
+        const dropZone = document.getElementById('o-drop-zone');
+        const wordBank = document.getElementById('o-word-bank');
+        dropZone.innerHTML = '';
+        wordBank.innerHTML = '';
+        
+        const footer = document.getElementById('o-footer');
+        const feedbackMsg = document.getElementById('o-feedback-msg');
+        const checkBtn = document.getElementById('o-check-btn');
+        
+        footer.style.backgroundColor = 'transparent';
+        feedbackMsg.style.display = 'none';
+        checkBtn.className = 'o-action-btn';
+        checkBtn.innerText = 'COMPROBAR';
+
+        const levelData = oLevels[oCurrentLevel];
+        document.getElementById('o-spanish-text').innerText = levelData.spanish;
+        
+        document.getElementById('o-progress-bar').style.width = `${(oCurrentLevel / oLevels.length) * 100}%`;
+
+        const shuffledWords = oShuffleArray(levelData.quechua);
+        
+        shuffledWords.forEach((word, index) => {
+            const btn = document.createElement('div');
+            btn.className = 'o-word-btn';
+            btn.innerText = word;
+            btn.dataset.id = index;
+            btn.onclick = () => oSelectWord(btn, word);
+            wordBank.appendChild(btn);
+        });
+        
+        oCheckButtonState();
+    }
+
+    function oSelectWord(btn, word) {
+        if (oState !== "PLAYING") return;
+
+        btn.classList.add('placeholder');
+
+        const dropBtn = document.createElement('div');
+        dropBtn.className = 'o-word-btn';
+        dropBtn.innerText = word;
+        dropBtn.dataset.originId = btn.dataset.id;
+        
+        dropBtn.onclick = () => oDeselectWord(dropBtn);
+        
+        document.getElementById('o-drop-zone').appendChild(dropBtn);
+        oCurrentSelectedWords.push(word);
+        
+        oCheckButtonState();
+    }
+
+    function oDeselectWord(dropBtn) {
+        if (oState !== "PLAYING") return;
+
+        const originId = dropBtn.dataset.originId;
+        const originalBtn = document.getElementById('o-word-bank').querySelector(`.o-word-btn[data-id="${originId}"]`);
+        if(originalBtn) originalBtn.classList.remove('placeholder');
+
+        const wordIndex = oCurrentSelectedWords.indexOf(dropBtn.innerText);
+        if (wordIndex > -1) {
+            oCurrentSelectedWords.splice(wordIndex, 1);
+        }
+        dropBtn.remove();
+        
+        oCheckButtonState();
+    }
+
+    function oCheckButtonState() {
+        const checkBtn = document.getElementById('o-check-btn');
+        const totalWords = oLevels[oCurrentLevel].quechua.length;
+        if (oCurrentSelectedWords.length === totalWords) {
+            checkBtn.classList.add('active');
+        } else {
+            checkBtn.classList.remove('active');
+        }
+    }
+
+    function oCheckOrNext() {
+        const checkBtn = document.getElementById('o-check-btn');
+        if (oState === "PLAYING" && checkBtn.classList.contains('active')) {
+            oComprobar();
+        } else if (oState === "SUCCESS") {
+            oCurrentLevel++;
+            oLoadLevel();
+        } else if (oState === "ERROR") {
+            oLoadLevel();
+        }
+    }
+
+    function oComprobar() {
+        const correctOrder = oLevels[oCurrentLevel].quechua;
+        const footer = document.getElementById('o-footer');
+        const feedbackMsg = document.getElementById('o-feedback-msg');
+        const checkBtn = document.getElementById('o-check-btn');
+        
+        if (JSON.stringify(oCurrentSelectedWords) === JSON.stringify(correctOrder)) {
+            // ¡CORRECTO!
+            oState = "SUCCESS";
+            footer.style.backgroundColor = 'rgba(255, 74, 16, 0.1)';
+            feedbackMsg.style.display = 'block';
+            feedbackMsg.style.color = 'var(--pri)';
+            feedbackMsg.innerText = '¡Correcto! Muy bien hecho.';
+            
+            checkBtn.className = 'o-action-btn active';
+            checkBtn.innerText = 'CONTINUAR';
+        } else {
+            // ¡INCORRECTO!
+            oState = "ERROR";
+            oTotalErrors++;
+            oLives--;
+            document.getElementById('o-lives-count').innerText = oLives;
+            
+            footer.style.backgroundColor = 'rgba(255, 75, 75, 0.1)';
+            feedbackMsg.style.display = 'block';
+            feedbackMsg.style.color = '#ff4b4b';
+            feedbackMsg.innerHTML = 'Respuesta correcta:<br>' + correctOrder.join(" ");
+            
+            checkBtn.className = 'o-action-btn error';
+            checkBtn.innerText = 'ENTENDIDO';
+
+            if (oLives <= 0) {
+                document.getElementById('o-game-over').style.display = 'flex';
+            }
+        }
+    }
+
+    function oFinishGame() {
+        document.getElementById('o-game-screen').style.display = 'none';
+        document.getElementById('o-end-screen').style.display = 'flex';
+        
+        if (oTotalErrors === 0) {
+            const bonus = document.getElementById('o-bonus-life');
+            bonus.style.display = 'block';
+            
+            // Petición AJAX para sumar vida real a la BD
+            fetch("<?php echo e(route('ganar.vida')); ?>", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>",
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Actualizar UI del usuario (dashboard)
+                    document.querySelectorAll('.stat-chip.hp .stat-chip-val, .sm-chip.hp .sm-chip-val, .ps-item:nth-child(3) .ps-val').forEach(el => {
+                        el.innerText = data.vidas;
+                    });
+                }
+            })
+            .catch(err => console.error("Error al sumar vida:", err));
+        }
+    }
 </script>
+
+
 </body>
 </html><?php /**PATH C:\Users\guaya.DESKTOP-FBLNDP3\Desktop\Boliquechua 2.0\proyecto-boliquechua-de-chore\resources\views/index.blade.php ENDPATH**/ ?>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 <title>Memoria - BOLIQUECHUA</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
@@ -200,7 +200,7 @@
 
 <div id="app-container">
   <div class="top-bar">
-      <a href="{{ route('categorias') }}" class="back-btn">✕</a>
+      <a href="<?php echo e(route('categorias')); ?>" class="back-btn">✕</a>
       <div class="header">Memoria</div>
       <div style="width: 40px;"></div>
   </div>
@@ -212,12 +212,12 @@
 <div id="modal-felicidades" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 20px;">
     <h2 style="font-family: 'Rajdhani', sans-serif; font-size: clamp(2.5em, 8vw, 4em); font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--pri); margin-bottom: 10px;">¡Felicidades!</h2>
     <p style="font-size: clamp(1.2em, 4vw, 1.8em); color: white; margin-bottom: 30px;">¡Ganaste 1 corazón! ❤️</p>
-    <button onclick="window.location.href='{{ route('categorias') }}'" class="btn-reset" style="width: 200px;">Volver</button>
+    <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'" class="btn-reset" style="width: 200px;">Volver</button>
 </div>
 
 <script>
   // Palabras obtenidas desde el backend
-  const paresDB = @json($pares);
+  const paresDB = <?php echo json_encode($pares, 15, 512) ?>;
   
   // Mapear al formato que necesita el juego
   let pares = paresDB.map(p => {
@@ -232,7 +232,7 @@
   let bloqueo = false;
   let paresEncontrados = 0;
   
-  const iconoSrc = "{{ asset('nuevo_icono_transparent.png') }}";
+  const iconoSrc = "<?php echo e(asset('nuevo_icono_transparent.png')); ?>";
 
   function barajar(array) {
     return array.sort(() => Math.random() - 0.5);
@@ -301,7 +301,7 @@
             document.getElementById('modal-felicidades').style.display = 'flex';
 
             // Gana un corazón en backend
-            fetch('{{ route('ganar.vida') }}', {
+            fetch('<?php echo e(route('ganar.vida')); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -329,3 +329,4 @@
 
 </body>
 </html>
+<?php /**PATH C:\Users\guaya.DESKTOP-FBLNDP3\Desktop\Boliquechua 2.0\proyecto-boliquechua-de-chore\resources\views/juegos/memoria.blade.php ENDPATH**/ ?>
