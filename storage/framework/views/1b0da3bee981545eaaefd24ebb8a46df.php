@@ -1871,69 +1871,126 @@
         actualizarUI();
     }
 
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
     function iniciarReconocimientoVoz(palabraEsperada) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            document.getElementById('speechResult').innerHTML = '<span style="color:#EF5350">Tu navegador no soporta reconocimiento de voz.</span>';
-            setTimeout(() => {
-                // Simular éxito para no trancar el juego en navegadores sin soporte
-                handleSuccess(palabras[currentIndex]);
-            }, 2000);
-            return;
-        }
-
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'es-BO'; // Usamos español como base para reconocimiento
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-
         const btnHablar = document.getElementById('btnHablar');
         const resDiv = document.getElementById('speechResult');
 
-        recognition.onstart = function() {
-            btnHablar.classList.add('recording');
-            resDiv.innerHTML = "Escuchando...";
-            resDiv.style.color = 'var(--gold)';
-        };
-
-        recognition.onspeechend = function() {
-            recognition.stop();
-        };
-
-        recognition.onresult = function(event) {
-            btnHablar.classList.remove('recording');
-            const transcript = event.results[0][0].transcript.toLowerCase().trim();
-            resDiv.innerHTML = `Escuchado: "${transcript}"`;
-            
-            // Lógica simple: Como el reconocimiento no es perfecto en quechua, damos mucho margen
-            // o verificamos si algunas letras coinciden.
-            const expected = palabraEsperada.toLowerCase().trim();
-            
-            // Similitud simple o si incluye parte de la palabra
-            let isCorrect = false;
-            if (transcript === expected || transcript.includes(expected) || expected.includes(transcript)) {
-                isCorrect = true;
-            } else if (levenshteinDistance(transcript, expected) <= Math.max(2, expected.length * 0.4)) {
-                isCorrect = true;
+        if (isRecording) {
+            // Detener grabación si ya está grabando
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
             }
+            return;
+        }
 
-            if (isCorrect) {
-                resDiv.style.color = '#4CAF50';
-                handleSuccess(palabras[currentIndex]);
-            } else {
-                resDiv.style.color = '#E53935';
-                let pError = {...palabras[currentIndex]};
-                pError.palabra_espanol = "Pronunciación fallida";
-                handleError(pError);
-            }
-        };
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            resDiv.innerHTML = '<span style="color:#EF5350">Tu navegador no soporta grabación de audio.</span>';
+            setTimeout(() => handleSuccess(palabras[currentIndex]), 2000);
+            return;
+        }
 
-        recognition.onerror = function(event) {
-            btnHablar.classList.remove('recording');
-            resDiv.innerHTML = '<span style="color:#EF5350">Error al escuchar. Intenta de nuevo.</span>';
-        };
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
 
-        recognition.start();
+                mediaRecorder.onstart = () => {
+                    isRecording = true;
+                    btnHablar.classList.add('recording');
+                    resDiv.innerHTML = "Escuchando... Haz clic de nuevo para detener.";
+                    resDiv.style.color = 'var(--gold)';
+                };
+
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) audioChunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    isRecording = false;
+                    btnHablar.classList.remove('recording');
+                    resDiv.innerHTML = "Procesando transcripción con IA... <span class='loading-dots'></span>";
+                    resDiv.style.color = 'var(--text)';
+                    
+                    // Apagar el micrófono
+                    stream.getTracks().forEach(track => track.stop());
+
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = () => {
+                        const base64Audio = reader.result;
+                        
+                        // Enviar al servidor Laravel (proxy)
+                        fetch("<?php echo e(route('check.pronunciation')); ?>", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>"
+                            },
+                            body: JSON.stringify({
+                                audio: base64Audio,
+                                expected: palabraEsperada
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.ok) {
+                                resDiv.innerHTML = `Escuchado: "${data.heard || '...'}" (Puntaje: ${data.score || 0})`;
+                                
+                                let isCorrect = false;
+                                if (data.engine === 'quechua') {
+                                    isCorrect = (data.score >= 50);
+                                } else if (data.heard && data.heard.trim() !== '') {
+                                    // Lógica antigua de Levenshtein para el fallback (español o heurístico)
+                                    const expected = palabraEsperada.toLowerCase().trim();
+                                    const transcript = data.heard.toLowerCase().trim();
+                                    if (transcript === expected || transcript.includes(expected) || expected.includes(transcript)) {
+                                        isCorrect = true;
+                                    } else if (levenshteinDistance(transcript, expected) <= Math.max(2, expected.length * 0.4)) {
+                                        isCorrect = true;
+                                    }
+                                }
+
+                                if (isCorrect) {
+                                    resDiv.style.color = '#4CAF50';
+                                    setTimeout(() => handleSuccess(palabras[currentIndex]), 1500);
+                                } else {
+                                    resDiv.style.color = '#E53935';
+                                    let pError = {...palabras[currentIndex]};
+                                    pError.palabra_espanol = "Pronunciación fallida (" + (data.score || 0) + "%)";
+                                    setTimeout(() => handleError(pError), 1500);
+                                }
+                            } else {
+                                resDiv.innerHTML = `<span style="color:#EF5350">Error: ${data.reason}</span>`;
+                                // Si hay error del servidor, lo reprobamos o pasamos? Reprobamos para que deba intentar de nuevo
+                                setTimeout(() => handleError({...palabras[currentIndex], palabra_espanol: 'Error de servidor'}), 2500);
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            resDiv.innerHTML = '<span style="color:#EF5350">Error de conexión con la IA.</span>';
+                            setTimeout(() => handleSuccess(palabras[currentIndex]), 2500);
+                        });
+                    };
+                };
+
+                mediaRecorder.start();
+                
+                // Auto-stop después de 5 segundos si no hace clic
+                setTimeout(() => {
+                    if (mediaRecorder && mediaRecorder.state === "recording") {
+                        mediaRecorder.stop();
+                    }
+                }, 5000);
+            })
+            .catch(err => {
+                console.error("Error al acceder al micrófono:", err);
+                resDiv.innerHTML = '<span style="color:#EF5350">Por favor, permite el acceso al micrófono en tu navegador.</span>';
+            });
     }
 
     // Levenshtein para calcular similitud de strings (útil para quechua reconocido como español)
