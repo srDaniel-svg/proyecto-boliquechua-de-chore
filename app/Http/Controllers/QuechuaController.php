@@ -340,4 +340,23 @@ class QuechuaController extends Controller
         }
         return response()->json(['success' => false], 401);
     }
+
+    /**
+     * Proxy para el microservicio de reconocimiento de voz en Python.
+     */
+    public function checkPronunciation(Request $request): JsonResponse
+    {
+        try {
+            $response = \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5000/api/check', [
+                'audio' => $request->input('audio'),
+                'expected' => $request->input('expected')
+            ]);
+            return response()->json($response->json(), $response->status());
+        } catch (\Exception $e) {
+            return response()->json([
+                'ok' => false, 
+                'reason' => 'No se pudo contactar al servidor de reconocimiento de voz. Asegúrate de que app.py esté en ejecución.'
+            ], 500);
+        }
+    }
 }

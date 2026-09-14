@@ -1280,6 +1280,9 @@
                     <button type="button" class="btn-secondary" onclick="openModal('passwordModal')">
                         <span>🔒</span> Cambiar Contraseña
                     </button>
+                    <button type="button" class="btn-secondary" onclick="openModal('musicModal')">
+                        <span>🔊</span> Configurar Música
+                    </button>
                     <button type="button" class="btn-danger" onclick="openModal('logoutModal')">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                         Cerrar Sesión
@@ -1574,6 +1577,25 @@
         </div>
     </div>
 
+    <!-- ========== MODAL: CONFIGURAR MÚSICA ========== -->
+    <div class="modal-overlay" id="musicModal">
+        <div class="modal-box">
+            <button type="button" class="modal-close" onclick="closeModal('musicModal')">✕</button>
+            <h2 style="font-family:'Rajdhani',sans-serif; font-size: 1.6em; color: #fff; margin-bottom: 6px;">Música de Fondo</h2>
+            <p style="font-size: 0.9em; color: var(--muted); margin-bottom: 20px;">Ajusta el volumen de la música para toda la aplicación.</p>
+
+            <div class="form-group">
+                <label class="form-label" for="musicVolumeSlider">Volumen (<span id="volValue">100</span>%)</label>
+                <input type="range" id="musicVolumeSlider" min="0" max="100" value="100" style="width: 100%; cursor: pointer;">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 24px;">
+                <button type="button" class="btn-primary" style="flex: 1;" onclick="saveMusicVolume()">Guardar</button>
+                <button type="button" class="btn-secondary" style="width: auto;" onclick="closeModal('musicModal')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Generador de partículas ambientales
         function spawnParticles() {
@@ -1684,7 +1706,32 @@
         document.addEventListener('DOMContentLoaded', function() {
             const theme = localStorage.getItem('boliquechua_theme') || 'dark';
             updateProfileThemeUI(theme);
+            
+            // Setup music volume slider
+            const storedVolume = localStorage.getItem('boliquechua_music_volume');
+            const slider = document.getElementById('musicVolumeSlider');
+            const volVal = document.getElementById('volValue');
+            if (slider && volVal) {
+                if (storedVolume !== null) {
+                    slider.value = Math.round(parseFloat(storedVolume) * 100);
+                } else {
+                    slider.value = 100;
+                }
+                volVal.innerText = slider.value;
+                
+                slider.addEventListener('input', function() {
+                    volVal.innerText = this.value;
+                });
+            }
         });
+
+        function saveMusicVolume() {
+            const slider = document.getElementById('musicVolumeSlider');
+            if (slider) {
+                localStorage.setItem('boliquechua_music_volume', slider.value / 100);
+            }
+            closeModal('musicModal');
+        }
     </script>
 </body>
 </html>

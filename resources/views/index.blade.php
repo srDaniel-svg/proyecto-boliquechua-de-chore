@@ -1272,10 +1272,10 @@
         
         .page { position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: left center; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); border-radius: 5px 15px 15px 5px; box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.05); }
         
-        .page-front, .page-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 30px; box-sizing: border-box; border-radius: 5px 15px 15px 5px; background-color: #fdfbf7; border: 1px solid #d3d3d3; color: #333; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; font-family: 'Rajdhani', sans-serif; }
+        .page-front, .page-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 30px; box-sizing: border-box; border-radius: 5px 15px 15px 5px; background-color: #f4e4bc; border: 1px solid #c8a97e; color: #4a3525; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; font-family: 'Rajdhani', sans-serif; font-weight: 700; box-shadow: inset 0 0 50px rgba(139,69,19,0.15); }
         .page-front::-webkit-scrollbar, .page-back::-webkit-scrollbar { display: none; }
         
-        .page-front::before, .page-back::before { content: ''; position: absolute; top: 0; bottom: 0; width: 30px; background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); pointer-events: none; }
+        .page-front::before, .page-back::before { content: ''; position: absolute; top: 0; bottom: 0; width: 30px; background: linear-gradient(to right, rgba(139,69,19,0.2) 0%, rgba(0,0,0,0) 100%); pointer-events: none; }
         .page-front::before { left: 0; }
         .page-back::before { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); }
         
@@ -1285,7 +1285,7 @@
         /* Portada especial */
         #himno-page-0 .page-front { background: var(--pri); color: #fff; justify-content: center; }
         #himno-page-0 .page-front img { width: 150px; margin-bottom: 20px; }
-        #himno-page-3 .page-back { background: var(--pri); }
+        #himno-page-6 .page-back { background: var(--pri); }
         
         .book-controls { margin-top: 40px; display: flex; gap: 20px; z-index: 10; }
         .book-controls button { padding: 10px 25px; font-size: 16px; border: none; border-radius: 30px; background-color: var(--pri); color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: background 0.3s, transform 0.1s; }
@@ -1699,36 +1699,281 @@
             </div>
 
             <!-- Índice -->
-            <div class="page" id="himno-page-1" style="z-index: 3;">
+            <div class="page" id="himno-page-1" style="z-index: 6;">
                 <div class="page-front">
                     <h2 style="color:var(--pri); margin-bottom: 20px;">Índice</h2>
                     <ul class="index-list">
                         <li onclick="goToHimnoPage(2)">1. Himno Nacional de Bolivia</li>
+                        <li onclick="goToHimnoPage(3)">2. Himno a la Bandera</li>
+                        <li onclick="goToHimnoPage(4)">3. Himno a Santa Cruz</li>
+                        <li onclick="goToHimnoPage(5)">4. Himno A la UAGRM</li>
                     </ul>
                 </div>
                 <div class="page-back"></div>
             </div>
 
             <!-- Himno 1 -->
-            <div class="page" id="himno-page-2" style="z-index: 2;">
-                <div class="page-front">
-                    <h3 style="color:var(--pri); text-align:center; margin-top:0; font-size:1.5rem;">Himno Nacional de Bolivia</h3>
-                    <div class="lang-toggle">
-                        <button class="active" onclick="toggleLang(this, 'qu')">Quechua</button>
-                        <button onclick="toggleLang(this, 'es')">Español</button>
+            <div class="page" id="himno-page-2" style="z-index: 5;">
+                <div class="page-front" style="display: block; padding: 0;">
+                    <div style="width: 100%; height: 100%; padding: 20px; overflow-y: auto; text-align: left;">
+                        <h3 style="color:var(--pri); text-align:center; margin-top:0; font-size:1.5rem;">Himno Nacional de Bolivia</h3>
+                        <div class="lang-toggle" style="justify-content: center; margin-bottom: 15px;">
+                            <button class="active" onclick="toggleLang(this, 'qu')">Quechua</button>
+                            <button onclick="toggleLang(this, 'es')">Español</button>
+                        </div>
+                        <div class="lyrics lyrics-qu">
+                            <p style="white-space: pre-wrap; font-size:0.9em; line-height: 1.4;">Qullasuyup qhapaq sutinta
+qunqur chaki yupaychasunchik,
+sumaq kawsay suyasqanchikta
+munayninmanjina tarinchik.
+
+Ch'in ch'ulla qayna p'unchawpiqa
+sinchi q'aqcha maqanakuy karqa
+kunanqa sumaq kawsay k'anchamun
+llaqtanchikpaq q'uñi khuyaypi.
+
+Coro:
+Qhapaq suyu, Llaqta,
+Hatun sutiykita
+Wiñaypaq k'anchaypi waqaychasun
+Kamachinta musuqmanta wakichisun
+Wañuna qhasita kawsanata,
+Wañuna qhasita kawsanata,
+Wañuna qhasita kawsanata.</p>
+                        </div>
+                        <div class="lyrics lyrics-es" style="display:none;">
+                            <p style="white-space: pre-wrap; font-size:0.9em; line-height: 1.4;">Bolivianos, el hado propicio
+coronó nuestros votos y anhelo;
+es ya libre, ya libre este suelo,
+ya cesó su servil condición.
+
+Al estruendo marcial que ayer fuera,
+y al clamor de la guerra horroroso,
+siguen hoy en contraste armonioso,
+dulces himnos de paz y de unión. 
+
+Coro:
+De la patria, el alto nombre
+en glorioso esplendor conservemos
+y en sus aras de nuevo juremos
+¡Morir antes que esclavos vivir!</p>
+                        </div>
                     </div>
-                    <div class="lyrics lyrics-qu">
-                        <p>Próximamente (Quechua)...</p>
+                </div>
+                <div class="page-back"></div>
+            </div>
+
+            <!-- Himno 2 -->
+            <div class="page" id="himno-page-3" style="z-index: 4;">
+                <div class="page-front" style="display: block; padding: 0;">
+                    <div style="width: 100%; height: 100%; padding: 20px; overflow-y: auto; text-align: left;">
+                        <h3 style="color:var(--pri); text-align:center; margin-top:0; font-size:1.5rem;">Himno a la Bandera</h3>
+                        <div class="lang-toggle" style="justify-content: center; margin-bottom: 15px;">
+                            <button class="active" onclick="toggleLang(this, 'qu')">Quechua</button>
+                            <button onclick="toggleLang(this, 'es')">Español</button>
+                        </div>
+                        <div class="lyrics lyrics-qu">
+                            <p style="white-space: pre-wrap; font-size:0.85em; line-height: 1.3;">Kinsa llimphi wiphala k'anchanki
+Qullasuyup hanan pachampi,
+K'uychijina atipay lliphipiy,
+Sumaq kawsaywan hukllachay unancha.
+
+Willka p'alltayki ukhupi jap'inki
+Khuyakuq llaqtaykip munayninta,
+Anti urqukunamanta qaparikuspa
+Sumaq munakuywan yupaychasunki.
+
+Phutuqutu waqyay uyarikunman
+Yawar mayu maqanakuyman wajhaspa,
+Qhasqunchikmi pirqa jina kanqa
+Iñiyninwan, kallpanwan sayananpaq.
+
+Sutiykita rimaq waqrakuna
+Wayraman kacharispa takininta,
+Karupura qhuchakunapim q'aparinqa
+Chakiykita much'aq mama quchapi.
+
+Kinsa llimphi wiphala, siq'iykiwan
+Llawril, quri, nina puka;
+Qanrayku janaqpachaman mañakuni,
+Qanrayku Apuman kawsayniyta quni.
+
+P'alltaykita wayraman kachariptiiki
+Wasinchikta, q'isanchikta jark'aspa,
+Qanpaqmi kawsayniykup tuqtuqiynin
+Huk sunquyuq llaqtaykimanta.</p>
+                        </div>
+                        <div class="lyrics lyrics-es" style="display:none;">
+                            <p style="white-space: pre-wrap; font-size:0.85em; line-height: 1.3;">Pabellón tricolor que te ostentas
+de Bolivia en el cielo radiante,
+como el iris de gloria triunfante,
+como emblema de paz y de unión.
+
+En tus pliegues benditos acoges
+los anhelos del pueblo que te ama,
+que en las cumbres andinas te aclama
+y te rinde homenaje de amor.
+
+Si el clarín de la guerra resuena
+y nos llama a la cruenta batalla,
+nuestros pechos serán la muralla
+que resista con fe y con valor.
+
+Las cornetas que dicen tu nombre
+desgranando a los vientos sus notas,
+vibrarán en las playas remotas
+sobre el mar que tus plantas besó.
+
+Pabellón tricolor con tus franjas
+de laurel, de oro vivo y de fuego;
+por ti elevo a los cielos mi ruego,
+por ti ofrezco mi vida al Señor.
+
+Cuando sueltas tus pliegues al viento
+protegiendo heredades y nidos,
+tuyos son los vehementes latidos
+de tu pueblo que es un corazón.</p>
+                        </div>
                     </div>
-                    <div class="lyrics lyrics-es" style="display:none;">
-                        <p>Próximamente (Español)...</p>
+                </div>
+                <div class="page-back"></div>
+            </div>
+
+            <!-- Himno 3 -->
+            <div class="page" id="himno-page-4" style="z-index: 3;">
+                <div class="page-front" style="display: block; padding: 0;">
+                    <div style="width: 100%; height: 100%; padding: 20px; overflow-y: auto; text-align: left;">
+                        <h3 style="color:var(--pri); text-align:center; margin-top:0; font-size:1.5rem;">Himno a Santa Cruz</h3>
+                        <div class="lang-toggle" style="justify-content: center; margin-bottom: 15px;">
+                            <button class="active" onclick="toggleLang(this, 'qu')">Quechua</button>
+                            <button onclick="toggleLang(this, 'es')">Español</button>
+                        </div>
+                        <div class="lyrics lyrics-qu">
+                            <p style="white-space: pre-wrap; font-size:0.9em; line-height: 1.4;">Américaq aswan ch'uya hanaq pachanpi
+Ñuflo de Chávez allpanpi,
+qisqisqa p'isqukuna qispikayta takinku
+sumaq p'achanta rikuchispa.
+
+Sumaq pachap t'ikankunamanta
+misk'i q'apaynin quspa
+qispikay, qispikay nispa purinku
+Sumaq kawsaywan munakuy wajyariypi.
+
+Hatun España
+sumaq samiyuq,
+kaypi mallkirqa
+qispichiy unanchata.
+
+Llanthunpim paqarimurqa
+k'anchaq mat'iyuq
+huk hatun llaqta
+chiqaq sunquyuq.</p>
+                        </div>
+                        <div class="lyrics lyrics-es" style="display:none;">
+                            <p style="white-space: pre-wrap; font-size:0.9em; line-height: 1.4;">Bajo el cielo más puro de América
+y en la tierra de Ñuflo de Chávez,
+libertad van trinando las aves
+de su veste ostentando el primor.
+
+De las flores del mundo galano
+su ambrosía perfumada ofreciendo
+libertad, libertad van diciendo
+en efluvios de paz y de amor.
+
+La España grandiosa
+con hado benigno
+aquí plantó el signo
+de la redención.
+
+Y surgió en su sombra
+un pueblo eminente
+de límpida frente
+de leal corazón</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-back"></div>
+            </div>
+
+            <!-- Himno 4 -->
+            <div class="page" id="himno-page-5" style="z-index: 2;">
+                <div class="page-front" style="display: block; padding: 0;">
+                    <div style="width: 100%; height: 100%; padding: 20px; overflow-y: auto; text-align: left;">
+                        <h3 style="color:var(--pri); text-align:center; margin-top:0; font-size:1.4rem;">Himno a la UAGRM</h3>
+                        <div class="lang-toggle" style="justify-content: center; margin-bottom: 10px;">
+                            <button class="active" onclick="toggleLang(this, 'qu')">Quechua</button>
+                            <button onclick="toggleLang(this, 'es')">Español</button>
+                        </div>
+                        <div class="lyrics lyrics-qu">
+                            <p style="white-space: pre-wrap; font-size:0.75em; line-height: 1.3;">Wayna sipaskuna, wiñay kallpa! 
+Kallpaykim qhapaq kunkata qaparin, qispikay!
+Musuq pachakunata paqarichinaykipaq pusasuspa
+Sumaq kawsayta, paqtakayta, chiqaq kaytapas.
+Llaqtanchikpa kawsaynin musuqmanta paqarimunanpaq
+Rimasqaykimanta, sumaq ruwasqaykimantapas,
+Ama hayk'aqpas qunquriychu
+chiqniy, maqanakuy, waqay sasachakuykunaman.
+
+Willakuyninchikta ruwanki p'akispa
+llakiy ñanta saqispa,
+Mana qhasipaqchu Alma Mater sutiyki,
+Yachaymi wiñay k'anchayniykiqa.
+
+Qanpaqmi wiñaypaq hatun runakunap yachay wasin
+Qanpaqmi atipay llawril unancha,
+maqanakuypi kallpayki kachkan,
+Yuyay kamachiqpaq sayaynin.
+
+Paqariypa muhunmi mat'iyki
+Yuyayniykikunaqa sayariq mayujina,
+Sumaq suyakuywan yuyaychasunki
+Munakuymanta, iñiymanta raphranjina.
+
+Kay allpa qusunki layqa kayninta,
+Karumanta qhawariypi pachamamata,
+Morenop hatun yachayninwan,
+Intipa k'anchasqan sach'a sach'anwan.
+Inti k'anchay wayna sipaskuna.</p>
+                        </div>
+                        <div class="lyrics lyrics-es" style="display:none;">
+                            <p style="white-space: pre-wrap; font-size:0.75em; line-height: 1.3;">Juventud, fuerza eterna ¡tú impulso
+vibra altiva esta voz, libertad!
+y te lleve a crear nuevos mundos
+de belleza, justicia y verdad,
+que los patrios destinos resurjan
+de tu verbo y tu acción ejemplar
+y no cedan jamás al influjo
+de los odios, la guerra, el azar.
+
+Gestaras nuestra historia quebrando
+de su curso la curva fatal
+que no en vano Alma Mater te llaman
+y es la ciencia tu luz inmortal.
+
+Tuya es siempre la escuela de próceres
+tuyo el signo triunfal del laurel
+sigue siendo el vigor en las luchas
+y del rey pensamiento el troquel.
+
+Semillero de auroras la frente
+tus ideas torrentes de pie
+que te inspira fecundo optimismo
+cual un ala de amor y de fe.
+
+Y te brinde esta tierra la magia
+de horizonte universo crisol
+con el vasto saber de Moreno
+y su selva radiante de sol.
+
+Juventud radiante de sol.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="page-back"></div>
             </div>
             
             <!-- Fin -->
-            <div class="page" id="himno-page-3" style="z-index: 1;">
+            <div class="page" id="himno-page-6" style="z-index: 1;">
                 <div class="page-front" style="justify-content:center;">
                     <h3 style="color:var(--pri); text-align:center;">Fin del cancionero</h3>
                 </div>
@@ -2170,8 +2415,17 @@
         const mainAudio = document.getElementById('bg-music-main');
         const treeAudio = document.getElementById('bg-music-tree');
         
-        if (mainAudio) mainAudio.muted = isMusicMuted;
-        if (treeAudio) treeAudio.muted = isMusicMuted;
+        let savedVol = localStorage.getItem('boliquechua_music_volume');
+        let vol = savedVol !== null ? parseFloat(savedVol) : 1.0;
+
+        if (mainAudio) {
+            mainAudio.muted = isMusicMuted;
+            mainAudio.volume = vol;
+        }
+        if (treeAudio) {
+            treeAudio.muted = isMusicMuted;
+            treeAudio.volume = vol;
+        }
         
         if (!isMusicMuted && currentActiveMusic) {
             const activeAudio = currentActiveMusic === 'main' ? mainAudio : treeAudio;
@@ -2507,7 +2761,7 @@
     const lStories = {
         duende: {
             title: "El Duende",
-            image: "https://dummyimage.com/400x500/1e40af/ffffff&text=El+Duende",
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Roberto_Alejandro_Vargas_Valdez-El_duende.png/500px-Roberto_Alejandro_Vargas_Valdez-El_duende.png",
             paragraphs: [
                 { q: "Uj juch'uy runa, jatun sombreroyoj, sach'a sach'api tiyan.", s: "Un hombrecito con sombrero grande vive en el monte." },
                 { q: "Wawaswan pukllayta munan, chinkachin.", s: "Busca jugar con los niños y se los lleva para perderlos." },
@@ -2516,7 +2770,7 @@
         },
         viudita: {
             title: "La Viudita",
-            image: "https://dummyimage.com/400x500/000000/ffffff&text=La+Viudita",
+            image: "https://www.soysantacruz.com.bo/Contenidos/Dibujos/D_LEPO/D_LEPO_0019.jpg",
             paragraphs: [
                 { q: "Chaupi tutapi, yana p'achayoj warmi purin.", s: "A la medianoche, camina una mujer solitaria vestida de negro." },
                 { q: "Machasqa qharispaq mask'an, waqaspa purin.", s: "Busca a los hombres borrachos mientras finge llorar por las calles." },
@@ -2525,7 +2779,7 @@
         },
         carreton: {
             title: "El Carretón",
-            image: "https://dummyimage.com/400x500/78350f/fbbf24&text=El+Carreton",
+            image: "https://www.soysantacruz.com.bo/Contenidos/Dibujos/D_LEPO/D_LEPO_0006.jpg",
             paragraphs: [
                 { q: "Tuta ch'inpi, k'ullu carretón qaparin.", s: "En el silencio de la madrugada, suena el crujir de un carretón de madera." },
                 { q: "Jatun turus aysanku, nina ñawiyoj.", s: "Es jalado por bueyes gigantes que tienen fuego en los ojos." },

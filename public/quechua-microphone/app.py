@@ -39,6 +39,14 @@ import unicodedata
 
 app = Flask(__name__)
 
+# --- Inyectar ffmpeg embebido si está instalado ---
+try:
+    import imageio_ffmpeg
+    import pydub
+    pydub.AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
+except Exception:
+    pass
+
 # ---------------------------------------------------------------------
 # Capa 1: modelo de quechua (carga perezosa, en segundo plano)
 # ---------------------------------------------------------------------
@@ -98,18 +106,28 @@ except ImportError:
 def _decode_audio_to_wav(audio_bytes, wav_path):
     """Convierte el blob (normalmente audio/webm del navegador) a WAV
     mono de 16kHz, el formato que espera el modelo de quechua."""
-    from pydub import AudioSegment
+    import subprocess
+    import imageio_ffmpeg
+    
+    ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
 
     with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as tmp_in:
         tmp_in.write(audio_bytes)
         tmp_in_path = tmp_in.name
 
     try:
-        audio = AudioSegment.from_file(tmp_in_path)
-        audio = audio.set_frame_rate(16000).set_channels(1)
-        audio.export(wav_path, format="wav")
+        # Llamada directa a ffmpeg para evitar problemas de pydub/ffprobe
+        subprocess.run([
+            ffmpeg_exe,
+            "-y",
+            "-i", tmp_in_path,
+            "-ac", "1",
+            "-ar", "16000",
+            wav_path
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     finally:
-        os.remove(tmp_in_path)
+        if os.path.exists(tmp_in_path):
+            os.remove(tmp_in_path)
 
 
 def _normalize_text(text):
