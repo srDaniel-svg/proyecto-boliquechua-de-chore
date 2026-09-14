@@ -1300,7 +1300,38 @@
         .lang-toggle button { padding: 5px 10px; border: 1px solid var(--pri); background: transparent; color: var(--pri); border-radius: 5px; cursor: pointer; }
         .lang-toggle button.active { background: var(--pri); color: white; }
         
-        @media (max-width: 480px) { .book { width: 90vw; height: 75vh; } }
+        @media (max-width: 480px) { 
+            .book { width: 90vw; height: 75vh; } 
+            .mobile-scroll-btns {
+                display: flex !important;
+                flex-direction: column;
+                position: absolute;
+                right: 8px;
+                bottom: 25px;
+                gap: 12px;
+                z-index: 50;
+            }
+            .mobile-scroll-btns button {
+                background: rgba(255, 74, 16, 0.85);
+                color: white;
+                border: 2px solid rgba(255, 209, 102, 0.5);
+                border-radius: 50%;
+                width: 42px;
+                height: 42px;
+                font-size: 1.4rem;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+                cursor: pointer;
+            }
+            .mobile-scroll-btns button:active {
+                background: rgba(255, 74, 16, 1);
+                transform: scale(0.95);
+            }
+        }
+        .mobile-scroll-btns { display: none; }
         
         /* ================= CUADERNO LEYENDAS (Exacto) ================= */
         #leyendas-view { display: none; position: absolute; inset: 0; z-index: 600; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; perspective: 1800px; overflow: hidden; user-select: none; }
@@ -1445,6 +1476,8 @@
             mask-image: radial-gradient(ellipse at center, black 60%, transparent 98%);
         }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
+        .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -2529,6 +2562,18 @@ Juventud radiante de sol.</p>
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Añadir botones de scroll para móviles en los himnos
+        document.querySelectorAll('#himnos-book .page-front > div[style*="overflow-y: auto"]').forEach(container => {
+            container.classList.add('no-scrollbar');
+            const btnWrap = document.createElement('div');
+            btnWrap.className = 'mobile-scroll-btns';
+            btnWrap.innerHTML = `
+                <button onclick="this.parentElement.previousElementSibling.scrollBy({top:-120, behavior:'smooth'})">↑</button>
+                <button onclick="this.parentElement.previousElementSibling.scrollBy({top:120, behavior:'smooth'})">↓</button>
+            `;
+            container.parentElement.appendChild(btnWrap);
+        });
+
         const nextBtn = document.getElementById('bookNextBtn');
         const prevBtn = document.getElementById('bookPrevBtn');
         
