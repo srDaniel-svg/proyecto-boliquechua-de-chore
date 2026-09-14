@@ -302,13 +302,28 @@ class QuechuaController extends Controller
     }
 
     /**
-     * Añadir una vida al usuario como recompensa.
+     * Añadir una vida al usuario como recompensa por práctica (1 por modo, por día).
      */
-    public function ganarVida(): JsonResponse
+    public function ganarVida(Request $request): JsonResponse
     {
         /** @var \App\Models\User $usuario */
         $usuario = auth()->user();
         if ($usuario) {
+            $modo = $request->input('modo', 'general');
+            $cacheKey = "practica_{$usuario->id}_{$modo}_" . date('Y-m-d');
+
+            if (\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+                // Ya completó esta práctica hoy
+                return response()->json([
+                    'success' => true, 
+                    'granted' => false, 
+                    'message' => 'Ya recibiste tu corazón por este modo hoy.'
+                ]);
+            }
+
+            // Marcar como completado hoy
+            \Illuminate\Support\Facades\Cache::put($cacheKey, true, now()->endOfDay());
+
             if ($usuario->vidas < 5) {
                 $usuario->vidas++;
                 if ($usuario->vidas == 5) {
@@ -316,7 +331,12 @@ class QuechuaController extends Controller
                 }
                 $usuario->save();
             }
-            return response()->json(['success' => true, 'vidas' => $usuario->vidas]);
+
+            return response()->json([
+                'success' => true, 
+                'granted' => true, 
+                'vidas' => $usuario->vidas
+            ]);
         }
         return response()->json(['success' => false], 401);
     }

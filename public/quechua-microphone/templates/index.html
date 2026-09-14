@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rimasun · Aprende quechua hablando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EAF6F2;
+    --surface:#FFFFFF;
+    --ink:#16302A;
+    --ink-soft:#4A6B62;
+    --turquoise:#1CADA8;
+    --turquoise-dark:#0F8C87;
+    --turquoise-pale:#D3F0EC;
+    --maiz:#FFC93C;
+    --achiote:#E8572E;
+    --quinoa:#3AA655;
+    --line:#D9ECE7;
+    --shadow: 0 8px 0 rgba(15,140,135,0.18);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  html,body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Nunito',sans-serif;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo 2',sans-serif;
+    margin:0;
+  }
+
+  /* Franja textil andina — el único lugar donde usamos el motivo tejido */
+  .textile-band{
+    height:14px;
+    width:100%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--turquoise) 0 18px,
+      var(--maiz) 18px 26px,
+      var(--achiote) 26px 30px,
+      var(--turquoise) 30px 48px
+    );
+  }
+
+  .app{
+    max-width:520px;
+    margin:0 auto;
+    min-height:100vh;
+    background:var(--surface);
+    display:flex;
+    flex-direction:column;
+    box-shadow: 0 0 40px rgba(15,60,55,0.08);
+  }
+
+  /* ---------- Barra superior ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px 10px;
+    gap:12px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(160deg, var(--turquoise), var(--turquoise-dark));
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:18px;
+  }
+  .brand-name{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:19px;color:var(--turquoise-dark);}
+  .stats{display:flex; gap:14px; align-items:center;}
+  .stat{
+    display:flex; align-items:center; gap:5px;
+    font-weight:800; font-family:'Baloo 2',sans-serif; font-size:15px;
+  }
+  .stat-icon{font-size:17px;}
+  .stat.hearts{color:var(--achiote);}
+  .stat.xp{color:#C98A00;}
+  .stat.streak{color:var(--turquoise-dark);}
+
+  .progress-wrap{
+    padding:2px 20px 16px;
+  }
+  .progress-track{
+    height:12px; border-radius:999px; background:var(--line); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; width:0%; background:linear-gradient(90deg,var(--turquoise),var(--quinoa));
+    border-radius:999px; transition:width .5s cubic-bezier(.2,.8,.3,1);
+  }
+
+  /* ---------- Pantallas ---------- */
+  .screen{ flex:1; display:flex; flex-direction:column; }
+  .hidden{ display:none !important; }
+
+  /* Pantalla de bienvenida */
+  .welcome{
+    flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; padding:40px 28px; gap:18px;
+  }
+  .welcome .glyph{
+    font-size:64px; line-height:1;
+  }
+  .welcome h1{ font-size:30px; color:var(--ink); }
+  .welcome p{ color:var(--ink-soft); font-size:16px; line-height:1.5; max-width:340px; }
+  .unit-list{ width:100%; display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+  .unit-card{
+    display:flex; align-items:center; gap:14px;
+    border:2px solid var(--line); border-radius:16px; padding:14px 16px;
+    background:var(--surface); cursor:pointer; text-align:left;
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .unit-card:hover{ border-color:var(--turquoise); transform:translateY(-2px); }
+  .unit-card .n{
+    width:40px;height:40px;border-radius:12px;background:var(--turquoise-pale);
+    color:var(--turquoise-dark); font-family:'Baloo 2',sans-serif; font-weight:800;
+    display:flex;align-items:center;justify-content:center; flex-shrink:0;
+  }
+  .unit-card .t strong{ display:block; font-family:'Baloo 2',sans-serif; font-size:16px; }
+  .unit-card .t span{ color:var(--ink-soft); font-size:13.5px; }
+
+  /* Pantalla de ejercicio */
+  .exercise{
+    flex:1; display:flex; flex-direction:column; padding:10px 26px 26px;
+  }
+  .exercise-prompt{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:14px; padding-bottom:10px;
+  }
+  .instruction{
+    color:var(--ink-soft); font-weight:700; font-size:13.5px; letter-spacing:.2px;
+  }
+  .quechua-word{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:44px; color:var(--ink);
+    line-height:1.1;
+  }
+  .phonetic{ color:var(--turquoise-dark); font-weight:700; font-size:15px; }
+  .translation{ color:var(--ink-soft); font-size:16px; }
+  .listen-btn{
+    margin-top:6px;
+    display:inline-flex; align-items:center; gap:8px;
+    border:2px solid var(--turquoise-pale); background:var(--turquoise-pale);
+    color:var(--turquoise-dark); font-weight:800; font-family:'Baloo 2',sans-serif;
+    padding:9px 18px; border-radius:999px; cursor:pointer; font-size:14px;
+  }
+  .listen-btn:active{ transform:scale(.97); }
+  .listen-note{
+    font-size:12px; color:var(--ink-soft); max-width:300px; opacity:.85;
+  }
+
+  /* --- Zona de grabación estilo WhatsApp --- */
+  .record-zone{
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    padding-top:8px;
+  }
+  .wave-bubble{
+    width:100%;
+    max-width:400px;
+    min-height:64px;
+    border-radius:20px;
+    background:var(--turquoise-pale);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    opacity:0;
+    transform:translateY(6px) scale(.98);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .wave-bubble.visible{ opacity:1; transform:translateY(0) scale(1); }
+  .wave-bubble .play-btn{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--turquoise); color:white; border:none;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    cursor:pointer; font-size:15px;
+  }
+  .wave-bubble canvas{ flex:1; height:44px; display:block; }
+  .wave-bubble .duration{
+    font-size:12px; font-weight:700; color:var(--turquoise-dark); flex-shrink:0;
+  }
+
+  .mic-row{
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .mic-btn{
+    width:84px; height:84px; border-radius:50%;
+    background:var(--turquoise); border:none; color:white; font-size:32px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: var(--shadow);
+    cursor:pointer; user-select:none; -webkit-user-select:none;
+    transition:transform .1s ease, background .15s ease, box-shadow .1s ease;
+    touch-action:none;
+  }
+  .mic-btn:active{ transform:translateY(3px); box-shadow:0 4px 0 rgba(15,140,135,.18); }
+  .mic-btn.recording{
+    background:var(--achiote);
+    box-shadow: 0 8px 0 rgba(180,60,30,0.25);
+    animation:pulse 1.1s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.06); }
+  }
+  .mic-hint{ font-size:13px; color:var(--ink-soft); font-weight:700; }
+  .rec-timer{
+    font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--achiote); font-size:14px;
+    min-height:18px;
+  }
+
+  /* Barra de feedback inferior tipo Duolingo */
+  .feedback-bar{
+    position:sticky; bottom:0;
+    padding:16px 20px 20px;
+    border-top:2px solid var(--line);
+    display:flex; flex-direction:column; gap:12px;
+    background:var(--surface);
+  }
+  .feedback-bar.state-correct{ background:#EAF9EE; border-color:#BFE8C7; }
+  .feedback-bar.state-retry{ background:#FDECE7; border-color:#F3C3B4; }
+  .feedback-text{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:16px;
+  }
+  .feedback-bar.state-correct .feedback-text{ color:#1E7A34; }
+  .feedback-bar.state-retry .feedback-text{ color:#B23E1E; }
+  .continue-btn{
+    width:100%; border:none; border-radius:14px; padding:14px;
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:16px;
+    color:white; background:var(--ink-soft); cursor:not-allowed;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.12);
+  }
+  .continue-btn.ready{
+    background:var(--turquoise); cursor:pointer; box-shadow: 0 5px 0 var(--turquoise-dark);
+  }
+  .continue-btn.ready.retry-mode{
+    background:var(--achiote); box-shadow: 0 5px 0 #B23E1E;
+  }
+  .continue-btn:active.ready{ transform:translateY(4px); box-shadow:none; }
+
+  /* Pantalla de resultado de unidad */
+  .complete{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:40px 30px; gap:10px;
+  }
+  .complete .glyph{ font-size:70px; }
+  .complete h2{ font-size:26px; }
+  .complete-stats{ display:flex; gap:22px; margin:18px 0; }
+  .complete-stat{ text-align:center; }
+  .complete-stat b{ display:block; font-family:'Baloo 2',sans-serif; font-size:24px; color:var(--turquoise-dark); }
+  .complete-stat span{ font-size:12px; color:var(--ink-soft); font-weight:700; }
+  .primary-btn{
+    border:none; border-radius:14px; padding:14px 26px; margin-top:8px;
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:15px;
+    color:white; background:var(--turquoise); box-shadow:0 5px 0 var(--turquoise-dark);
+    cursor:pointer;
+  }
+  .primary-btn:active{ transform:translateY(4px); box-shadow:none; }
+
+  .top-exit{
+    background:none;border:none;color:var(--ink-soft);font-size:22px;cursor:pointer;
+    padding:4px;line-height:1;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .mic-btn.recording{ animation:none; }
+    .progress-fill, .wave-bubble{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="textile-band"></div>
+
+  <!-- ============ PANTALLA: BIENVENIDA ============ -->
+  <section id="screen-welcome" class="screen">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark">Q</div>
+        <div class="brand-name">Rimasun</div>
+      </div>
+    </div>
+    <div class="welcome">
+      <div class="glyph">🎙️</div>
+      <h1>Rimasun</h1>
+      <p><strong>"Hablemos"</strong> en quechua. Escucha cada palabra, mantén presionado el micrófono como en WhatsApp, y practica tu pronunciación en voz alta.</p>
+      <div class="unit-list" id="unit-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANTALLA: EJERCICIO ============ -->
+  <section id="screen-exercise" class="screen hidden">
+    <div class="topbar">
+      <button class="top-exit" id="btn-exit">✕</button>
+      <div class="progress-wrap" style="flex:1;padding:0 14px;">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+      <div class="stats">
+        <div class="stat hearts"><span class="stat-icon">❤️</span><span id="hearts-count">5</span></div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-prompt">
+        <div class="instruction">Escucha y repite en voz alta</div>
+        <div class="quechua-word" id="word-quechua">—</div>
+        <div class="phonetic" id="word-phonetic">—</div>
+        <div class="translation" id="word-translation">—</div>
+        <button class="listen-btn" id="btn-listen">🔊 Escuchar pronunciación</button>
+        <div class="listen-note">Voz aproximada (no hay síntesis de voz nativa en quechua en los navegadores). Úsala solo como guía de referencia.</div>
+      </div>
+
+      <div class="record-zone">
+        <div class="wave-bubble" id="wave-bubble">
+          <button class="play-btn" id="btn-play">▶</button>
+          <canvas id="wave-canvas-frozen" width="300" height="44"></canvas>
+          <div class="duration" id="rec-duration">0.0s</div>
+        </div>
+        <div class="mic-row">
+          <div class="rec-timer" id="rec-timer"></div>
+          <button class="mic-btn" id="mic-btn">🎤</button>
+          <div class="mic-hint" id="mic-hint">Mantén presionado para hablar</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback-bar hidden" id="feedback-bar">
+      <div class="feedback-text" id="feedback-text"></div>
+      <button class="continue-btn" id="btn-continue">Continuar</button>
+    </div>
+  </section>
+
+  <!-- ============ PANTALLA: UNIDAD COMPLETA ============ -->
+  <section id="screen-complete" class="screen hidden">
+    <div class="complete">
+      <div class="glyph">🏔️</div>
+      <h2>¡Unidad completada!</h2>
+      <div class="complete-stats">
+        <div class="complete-stat"><b id="final-xp">0</b><span>XP GANADOS</span></div>
+        <div class="complete-stat"><b id="final-hearts">5</b><span>CORAZONES</span></div>
+        <div class="complete-stat"><b id="final-streak">0</b><span>RACHA</span></div>
+      </div>
+      <button class="primary-btn" id="btn-restart">Volver a las unidades</button>
+    </div>
+  </section>
+</div>
+
+<script>
+/* =========================================================
+   RIMASUN — datos de las unidades (palabras/frases en quechua)
+   ========================================================= */
+const UNITS = [
+  {
+    title: "Saludos",
+    subtitle: "Kachi kachi rimay",
+    words: [
+      { q: "Allillanchu", ph: "a-yi-YAN-chu", es: "¿Cómo estás? / Hola" },
+      { q: "Ari", ph: "A-ri", es: "Sí" },
+      { q: "Mana", ph: "MA-na", es: "No" },
+      { q: "Sulpayki", ph: "sul-PAY-ki", es: "Gracias" },
+      { q: "Tupananchiskama", ph: "tu-pa-nan-chis-KA-ma", es: "Hasta luego" },
+    ]
+  },
+  {
+    title: "Familia y vida",
+    subtitle: "Ayllu rimay",
+    words: [
+      { q: "Wasi", ph: "WA-si", es: "Casa" },
+      { q: "Mama", ph: "MA-ma", es: "Madre" },
+      { q: "Tayta", ph: "TAY-ta", es: "Padre" },
+      { q: "Wawa", ph: "WA-wa", es: "Niño/bebé" },
+      { q: "Rimay", ph: "RI-may", es: "Hablar" },
+    ]
+  },
+  {
+    title: "Naturaleza",
+    subtitle: "Pacha rimay",
+    words: [
+      { q: "Inti", ph: "IN-ti", es: "Sol" },
+      { q: "Killa", ph: "KI-lla", es: "Luna" },
+      { q: "Yaku", ph: "YA-ku", es: "Agua" },
+      { q: "Urqu", ph: "UR-qu", es: "Montaña" },
+      { q: "Sacha", ph: "SA-cha", es: "Árbol" },
+    ]
+  }
+];
+
+/* =========================================================
+   Estado del juego
+   ========================================================= */
+const state = {
+  unitIndex: 0,
+  wordIndex: 0,
+  hearts: 5,
+  xp: parseInt(localStorage.getItem('rimasun_xp') || '0', 10),
+  streak: parseInt(localStorage.getItem('rimasun_streak') || '0', 10),
+  xpThisSession: 0,
+  lastResultOk: false,
+  recordedBlobUrl: null,
+  recordedDurationSec: 0,
+  recordedAmplitudeHistory: [],
+};
+
+/* =========================================================
+   Navegación entre pantallas
+   ========================================================= */
+const screens = {
+  welcome: document.getElementById('screen-welcome'),
+  exercise: document.getElementById('screen-exercise'),
+  complete: document.getElementById('screen-complete'),
+};
+function showScreen(name){
+  Object.values(screens).forEach(s => s.classList.add('hidden'));
+  screens[name].classList.remove('hidden');
+}
+
+function renderUnitList(){
+  const list = document.getElementById('unit-list');
+  list.innerHTML = '';
+  UNITS.forEach((u, i) => {
+    const card = document.createElement('button');
+    card.className = 'unit-card';
+    card.innerHTML = `<div class="n">${i+1}</div><div class="t"><strong>${u.title}</strong><span>${u.subtitle} · ${u.words.length} palabras</span></div>`;
+    card.addEventListener('click', () => startUnit(i));
+    list.appendChild(card);
+  });
+}
+
+function startUnit(i){
+  state.unitIndex = i;
+  state.wordIndex = 0;
+  state.hearts = 5;
+  state.xpThisSession = 0;
+  loadWord();
+  showScreen('exercise');
+}
+
+function loadWord(){
+  const unit = UNITS[state.unitIndex];
+  const w = unit.words[state.wordIndex];
+  document.getElementById('word-quechua').textContent = w.q;
+  document.getElementById('word-phonetic').textContent = w.ph;
+  document.getElementById('word-translation').textContent = w.es;
+  document.getElementById('hearts-count').textContent = state.hearts;
+  const pct = (state.wordIndex / unit.words.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // reset zona de grabación
+  document.getElementById('wave-bubble').classList.remove('visible');
+  document.getElementById('feedback-bar').classList.add('hidden');
+  document.getElementById('rec-timer').textContent = '';
+  document.getElementById('mic-hint').textContent = 'Mantén presionado para hablar';
+  state.recordedBlobUrl = null;
+  state.recordedAmplitudeHistory = [];
+}
+
+document.getElementById('btn-exit').addEventListener('click', () => showScreen('welcome'));
+document.getElementById('btn-restart').addEventListener('click', () => showScreen('welcome'));
+
+/* =========================================================
+   Botón "Escuchar pronunciación" — TTS del navegador (aproximado)
+   ========================================================= */
+document.getElementById('btn-listen').addEventListener('click', () => {
+  const unit = UNITS[state.unitIndex];
+  const w = unit.words[state.wordIndex];
+  if (!('speechSynthesis' in window)) return;
+  const utter = new SpeechSynthesisUtterance(w.q);
+  const voices = speechSynthesis.getVoices();
+  const esVoice = voices.find(v => v.lang && v.lang.startsWith('es'));
+  if (esVoice) utter.voice = esVoice;
+  utter.rate = 0.8;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
+});
+
+/* =========================================================
+   Grabación con micrófono + forma de onda tipo WhatsApp
+   ========================================================= */
+let mediaStream = null;
+let mediaRecorder = null;
+let audioContext = null;
+let analyser = null;
+let recordedChunks = [];
+let recording = false;
+let recordStartTime = 0;
+let timerInterval = null;
+let liveAnalysisRAF = null;
+
+const micBtn = document.getElementById('mic-btn');
+const recTimer = document.getElementById('rec-timer');
+const waveBubble = document.getElementById('wave-bubble');
+const frozenCanvas = document.getElementById('wave-canvas-frozen');
+
+async function ensureMic(){
+  if (mediaStream) return true;
+  try{
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    return true;
+  }catch(err){
+    document.getElementById('mic-hint').textContent = 'No se pudo acceder al micrófono. Revisa los permisos del navegador.';
+    return false;
+  }
+}
+
+async function startRecording(){
+  const ok = await ensureMic();
+  if (!ok) return;
+
+  recordedChunks = [];
+  state.recordedAmplitudeHistory = [];
+  mediaRecorder = new MediaRecorder(mediaStream);
+  mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+  mediaRecorder.onstop = onRecordingStop;
+  mediaRecorder.start();
+
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioContext.createMediaStreamSource(mediaStream);
+  analyser = audioContext.createAnalyser();
+  analyser.fftSize = 256;
+  source.connect(analyser);
+
+  recording = true;
+  recordStartTime = Date.now();
+  micBtn.classList.add('recording');
+  micBtn.textContent = '●';
+  document.getElementById('mic-hint').textContent = 'Grabando… suelta para terminar';
+  // Oculta cualquier grabación/resultado anterior apenas empieza el nuevo intento
+  waveBubble.classList.remove('visible');
+  document.getElementById('feedback-bar').classList.add('hidden');
+  document.getElementById('rec-duration').textContent = '';
+
+  timerInterval = setInterval(() => {
+    const secs = ((Date.now() - recordStartTime) / 1000).toFixed(1);
+    recTimer.textContent = secs + 's';
+  }, 100);
+
+  sampleAmplitudeLoop();
+}
+
+function sampleAmplitudeLoop(){
+  if (!recording) return;
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteTimeDomainData(data);
+  let sum = 0;
+  for (let i = 0; i < data.length; i++){
+    const v = (data[i] - 128) / 128;
+    sum += v * v;
+  }
+  const rms = Math.sqrt(sum / data.length);
+  state.recordedAmplitudeHistory.push(Math.min(1, rms * 4));
+  liveAnalysisRAF = requestAnimationFrame(sampleAmplitudeLoop);
+}
+
+function stopRecording(){
+  if (!recording) return;
+  recording = false;
+  clearInterval(timerInterval);
+  cancelAnimationFrame(liveAnalysisRAF);
+  micBtn.classList.remove('recording');
+  micBtn.textContent = '🎤';
+  state.recordedDurationSec = (Date.now() - recordStartTime) / 1000;
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (audioContext) audioContext.close();
+}
+
+function onRecordingStop(){
+  const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+  state.recordedBlobUrl = URL.createObjectURL(blob);
+  drawFrozenWaveform();
+  waveBubble.classList.add('visible');
+  document.getElementById('rec-duration').textContent = state.recordedDurationSec.toFixed(1) + 's';
+  recTimer.textContent = '';
+  document.getElementById('mic-hint').textContent = 'Mantén presionado para grabar de nuevo';
+  evaluateAttemptAsync(blob);
+}
+
+function drawFrozenWaveform(){
+  const ctx = frozenCanvas.getContext('2d');
+  const w = frozenCanvas.width, h = frozenCanvas.height;
+  ctx.clearRect(0, 0, w, h);
+  const hist = state.recordedAmplitudeHistory;
+  if (hist.length === 0) return;
+  const barCount = 40;
+  const step = Math.max(1, Math.floor(hist.length / barCount));
+  const barWidth = w / barCount;
+  const colors = ['#1CADA8', '#FFC93C', '#0F8C87'];
+  for (let i = 0; i < barCount; i++){
+    const idx = Math.min(hist.length - 1, i * step);
+    const amp = hist[idx] || 0.05;
+    const barH = Math.max(3, amp * h);
+    const x = i * barWidth + barWidth * 0.2;
+    const y = (h - barH) / 2;
+    ctx.fillStyle = colors[i % colors.length];
+    roundedRect(ctx, x, y, barWidth * 0.6, barH, 2);
+    ctx.fill();
+  }
+}
+function roundedRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+// Push-to-record: mouse y touch, igual que el micrófono de WhatsApp
+micBtn.addEventListener('mousedown', startRecording);
+micBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startRecording(); });
+micBtn.addEventListener('mouseup', stopRecording);
+micBtn.addEventListener('mouseleave', () => { if (recording) stopRecording(); });
+micBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopRecording(); });
+
+// Reproducir la grabación
+document.getElementById('btn-play').addEventListener('click', () => {
+  if (!state.recordedBlobUrl) return;
+  const audio = new Audio(state.recordedBlobUrl);
+  audio.play();
+});
+
+/* =========================================================
+   Evaluación heurística del intento
+   (no es reconocimiento de voz real: mide si hubo suficiente
+   volumen y duración respecto a la palabra mostrada)
+   ========================================================= */
+// Umbral de amplitud (RMS normalizado 0-1) por debajo del cual se considera
+// silencio o ruido ambiente, no voz. Se calibró para micrófonos de laptop
+// típicos; el ruido de fondo casi nunca supera 0.10-0.12.
+const NOISE_FLOOR = 0.12;
+const PASS_THRESHOLD = 50; // % mínimo para aceptar el intento
+
+const APPROVAL_THRESHOLD = PASS_THRESHOLD;
+
+function computeScore(w){
+  const hist = state.recordedAmplitudeHistory;
+  const duration = state.recordedDurationSec;
+
+  if (hist.length === 0 || duration < 0.15){
+    return { score: 0, voiceRatio: 0, peak: 0 };
+  }
+
+  const activeSamples = hist.filter(v => v > NOISE_FLOOR);
+  const voiceRatio = activeSamples.length / hist.length; // % del clip con voz real
+  const peak = Math.max(...hist);
+
+  // Duración esperada según el número aproximado de sílabas de la palabra
+  const syllables = (w.q.match(/[aeiouáéíóúAEIOUÁÉÍÓÚ]/g) || []).length || 2;
+  const expectedDuration = syllables * 0.28; // ~0.28s por sílaba hablada con calma
+  const minDuration = expectedDuration * 0.55;
+  const maxDuration = expectedDuration * 3.2 + 1;
+
+  let durationScore;
+  if (duration < minDuration) durationScore = Math.max(0, (duration / minDuration) * 100);
+  else if (duration > maxDuration) durationScore = Math.max(0, 100 - (duration - maxDuration) * 15);
+  else durationScore = 100;
+
+  // Necesita que al menos ~45% de los frames tengan voz activa para el máximo puntaje
+  const voiceScore = Math.min(100, voiceRatio * 220);
+  const loudnessScore = Math.min(100, (peak / 0.4) * 100);
+
+  const score = Math.round(durationScore * 0.30 + voiceScore * 0.50 + loudnessScore * 0.20);
+  return { score: Math.max(0, Math.min(100, score)), voiceRatio, peak };
+}
+
+function blobToBase64(blob){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+function showAnalyzing(){
+  const bar = document.getElementById('feedback-bar');
+  const text = document.getElementById('feedback-text');
+  const btn = document.getElementById('btn-continue');
+  bar.classList.remove('hidden', 'state-correct', 'state-retry');
+  btn.classList.remove('ready', 'retry-mode');
+  text.textContent = '⏳ Analizando tu pronunciación…';
+  btn.textContent = 'Continuar';
+}
+
+/* Aplica el resultado final (venga del servidor o del heurístico local)
+   a la interfaz: corazones, XP y el mensaje de la barra inferior. */
+function applyResult(score, reasonIfFail, heardText, engineLabel){
+  const ok = score >= APPROVAL_THRESHOLD;
+  state.lastResultOk = ok;
+
+  const bar = document.getElementById('feedback-bar');
+  const text = document.getElementById('feedback-text');
+  const btn = document.getElementById('btn-continue');
+  bar.classList.remove('state-correct', 'state-retry');
+  btn.classList.remove('ready', 'retry-mode');
+
+  const heardLine = heardText ? ` <span style="opacity:.7;font-weight:700;">(se entendió: "${heardText}")</span>` : '';
+
+  if (ok){
+    bar.classList.add('state-correct');
+    text.innerHTML = `✅ ¡Muy bien! <span style="opacity:.75;font-weight:800;">${score}% de coincidencia</span>${heardLine}`;
+    btn.textContent = 'Continuar';
+    btn.classList.add('ready');
+    state.xp += 10;
+    state.xpThisSession += 10;
+    localStorage.setItem('rimasun_xp', state.xp);
+  } else {
+    bar.classList.add('state-retry');
+    text.innerHTML = `🔁 ${score}% de coincidencia — ${reasonIfFail}${heardLine}`;
+    btn.textContent = 'Intentar de nuevo';
+    btn.classList.add('ready', 'retry-mode');
+    state.hearts = Math.max(0, state.hearts - 1);
+    document.getElementById('hearts-count').textContent = state.hearts;
+  }
+}
+
+function localHeuristicReason(w){
+  const { score, voiceRatio } = computeScore(w);
+  let reason;
+  if (voiceRatio < 0.05) reason = 'No se detectó tu voz (silencio o ruido de fondo).';
+  else if (voiceRatio < 0.25) reason = 'Casi no se escuchó tu voz. Habla más fuerte y cerca del micrófono.';
+  else reason = 'Fue muy breve o poco clara. Intenta pronunciar la palabra completa.';
+  return { score, reason };
+}
+
+/* Verificación principal: intenta el servidor (modelo real de quechua);
+   si no responde o no tiene el modelo listo, usa el heurístico local
+   de volumen/duración para que el juego nunca se quede trabado. */
+async function evaluateAttemptAsync(blob){
+  const unit = UNITS[state.unitIndex];
+  const w = unit.words[state.wordIndex];
+  showAnalyzing();
+
+  try{
+    const base64 = await blobToBase64(blob);
+    const resp = await fetch('/api/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ audio: base64, expected: w.q })
+    });
+    const data = await resp.json();
+
+    if (data.ok && data.engine === 'quechua' && data.score !== null && data.score !== undefined){
+      const reason = data.score < APPROVAL_THRESHOLD
+        ? 'No sonó lo bastante parecido a la palabra esperada. Inténtalo de nuevo.'
+        : '';
+      applyResult(data.score, reason, data.heard, 'quechua');
+      return;
+    }
+    // El servidor respondió pero sin puntaje del modelo de quechua
+    // (todavía cargando, sin ffmpeg, o cayó al respaldo en español):
+    // usamos el heurístico local.
+    const { score, reason } = localHeuristicReason(w);
+    applyResult(score, reason, data.heard || null, 'local');
+  } catch (err){
+    // Sin conexión con el servidor: heurístico local puro.
+    const { score, reason } = localHeuristicReason(w);
+    applyResult(score, reason, null, 'local');
+  }
+}
+
+document.getElementById('btn-continue').addEventListener('click', () => {
+  const btn = document.getElementById('btn-continue');
+  if (!btn.classList.contains('ready')) return;
+
+  if (!state.lastResultOk){
+    if (state.hearts <= 0){
+      // sin corazones: reinicia la unidad
+      state.hearts = 5;
+      state.wordIndex = 0;
+      state.xpThisSession = 0;
+      loadWord();
+      return;
+    }
+    loadWord(); // reintenta la misma palabra
+    return;
+  }
+
+  const unit = UNITS[state.unitIndex];
+  state.wordIndex++;
+  if (state.wordIndex >= unit.words.length){
+    finishUnit();
+  } else {
+    loadWord();
+  }
+});
+
+function finishUnit(){
+  state.streak++;
+  localStorage.setItem('rimasun_streak', state.streak);
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('final-xp').textContent = state.xpThisSession;
+  document.getElementById('final-hearts').textContent = state.hearts;
+  document.getElementById('final-streak').textContent = state.streak;
+  showScreen('complete');
+}
+
+/* Inicio */
+renderUnitList();
+showScreen('welcome');
+</script>
+</body>
+</html>

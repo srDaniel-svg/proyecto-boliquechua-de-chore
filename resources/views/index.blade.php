@@ -10,7 +10,7 @@
             document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Creepster&family=Eater&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Creepster&family=Eater&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* ============================
            BOLIQUECHUA · Futurista Andino
@@ -1240,7 +1240,7 @@
         }
 
         /* ====== CUENTOS VIEW ====== */
-        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('{{ asset("images/fondo de cuentos.svg") }}'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
+        #cuentos-view { display: none; position: fixed; inset: 0; z-index: 500; background-image: url('{{ asset("images/fondo de cuentos.svg") }}'); background-size: cover; background-position: center bottom; background-repeat: no-repeat; overflow: hidden; flex-direction: column; }
         #cuentos-view.active { display: flex; }
         .cuentos-header { position: absolute; top: clamp(16px, 2.5vh, 28px); left: clamp(16px, 3vw, 54px); z-index: 20; }
         .nodo-cuento { position: absolute; width: clamp(50px, 6vw, 65px); height: clamp(50px, 6vw, 65px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; transform: translate(-50%, -50%); z-index: 10; background: var(--pri); border: none; box-shadow: 0 6px 0 var(--pri-dk), 0 8px 15px rgba(0,0,0,0.4); margin-top: 0; }
@@ -1272,7 +1272,8 @@
         
         .page { position: absolute; width: 100%; height: 100%; top: 0; left: 0; transform-origin: left center; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); border-radius: 5px 15px 15px 5px; box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.05); }
         
-        .page-front, .page-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 30px; box-sizing: border-box; border-radius: 5px 15px 15px 5px; background-color: #fdfbf7; border: 1px solid #d3d3d3; color: #333; overflow-y: auto; font-family: 'Rajdhani', sans-serif; }
+        .page-front, .page-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 30px; box-sizing: border-box; border-radius: 5px 15px 15px 5px; background-color: #fdfbf7; border: 1px solid #d3d3d3; color: #333; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; font-family: 'Rajdhani', sans-serif; }
+        .page-front::-webkit-scrollbar, .page-back::-webkit-scrollbar { display: none; }
         
         .page-front::before, .page-back::before { content: ''; position: absolute; top: 0; bottom: 0; width: 30px; background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%); pointer-events: none; }
         .page-front::before { left: 0; }
@@ -1330,6 +1331,20 @@
         #leyendas-view .l-cover { background-color: #2b2b2b; color: #f98b00; justify-content: center; align-items: center; text-align: center; border: 2px solid #1a1a1a; }
         #leyendas-view .l-cover-title { font-family: 'Eater', cursive; font-size: 4.5rem; line-height: 1; margin: 0 0 40px 0; text-shadow: 3px 3px 5px rgba(0,0,0,0.8); font-weight: normal; }
         #leyendas-view .l-cover-subtitle { font-family: 'Creepster', cursive; font-size: 2rem; color: #d1d1d1; margin-bottom: 50px; letter-spacing: 2px; }
+        
+        /* Efecto 3D Estilo "Music" */
+        .fancy-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 56px;
+            color: #ffffff;
+            -webkit-text-stroke: 2px #ffd166;
+            filter: drop-shadow(0px 5px 0px #ff4a10) drop-shadow(0px 10px 15px rgba(0,0,0,0.6));
+            transform: rotate(-3deg);
+            margin: 15px 0;
+            display: inline-block;
+            line-height: 1.3;
+            letter-spacing: 4px;
+        }
 
         /* Botones Duolingo Originales */
         #leyendas-view .l-btn { background-color: #58cc02; color: white; border: none; border-bottom: 5px solid #46a302; border-radius: 15px; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.1s; font-family: 'Rajdhani', sans-serif; z-index: 20; }
@@ -1422,7 +1437,13 @@
         #ordena-view .o-game-over-content img { width: 80px; margin-bottom: 15px; filter: grayscale(100%) opacity(0.8); }
         
         .proximamente-text { font-family: 'Rajdhani', sans-serif; font-size: clamp(2em, 8vw, 4em); font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--pri); margin-top: 20px; animation: bounce 2s infinite; }
-        .proximamente-icon { width: clamp(100px, 30vw, 200px); height: clamp(100px, 30vw, 200px); }
+        .proximamente-icon { 
+            width: clamp(120px, 35vw, 220px); 
+            height: clamp(120px, 35vw, 220px); 
+            /* Difuminar los bordes recortados de la animación */
+            -webkit-mask-image: radial-gradient(ellipse at center, black 60%, transparent 98%);
+            mask-image: radial-gradient(ellipse at center, black 60%, transparent 98%);
+        }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
     </style>
 </head>
@@ -1536,7 +1557,8 @@
 
 <!-- ========== CUENTOS VIEW ========== -->
 <div id="cuentos-view">
-    <video id="cuentos-bg-video" src="{{ asset('images/fondo de arbol modo oscuro.mp4') }}" autoplay loop muted playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; transition: opacity 0.5s ease; opacity: 0;"></video>
+    <!-- Video de fondo (se asigna src por JS) -->
+    <video id="cuentos-bg-video" autoplay loop muted playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; transition: opacity 0.5s ease; opacity: 1;"></video>
     <div class="sm-back" onclick="hideCuentos()" style="z-index: 600;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
     
     <div style="position: absolute; top: clamp(16px, 2.5vh, 28px); right: clamp(16px, 3vw, 54px); z-index: 600;">
@@ -1573,11 +1595,11 @@
                 <span class="nodo-icon">🎧</span>
                 <div class="nodo-label">Dictado</div>
             </div>
-            <div class="nodo-cuento nodo-noche" style="top: 67.4%; left: 24.6%;" onclick="showProximamente()">
+            <div class="nodo-cuento nodo-noche" style="top: 67.4%; left: 24.6%;" onclick="window.location.href='{{ route('juego', ['id' => 1]) }}?modo=hablar&es_practica=1'">
                 <span class="nodo-icon">🎤</span>
                 <div class="nodo-label">Hablar</div>
             </div>
-            <div class="nodo-cuento nodo-noche" style="top: 67.7%; left: 67.1%;" onclick="showProximamente()">
+            <div class="nodo-cuento nodo-noche" style="top: 67.7%; left: 67.1%;" onclick="window.location.href='{{ route('juego', ['id' => 1]) }}?modo=hablar&es_practica=1'">
                 <span class="nodo-icon">🗣️</span>
                 <div class="nodo-label">Pronuncia</div>
             </div>
@@ -1593,7 +1615,7 @@
                 <span class="nodo-icon">🔥</span>
                 <div class="nodo-label">Repaso</div>
             </div>
-            <div class="nodo-cuento nodo-noche" style="top: 59.8%; left: 68.6%;" onclick="showProximamente()">
+            <div class="nodo-cuento nodo-noche" style="top: 59.8%; left: 68.6%;" onclick="window.location.href='{{ route('juego', ['id' => 1]) }}?modo=contrarreloj&es_practica=1'">
                 <span class="nodo-icon">⚡</span>
                 <div class="nodo-label">Rápido</div>
             </div>
@@ -1607,10 +1629,10 @@
             </div>
 
             <!-- ================= NODOS DÍA (10) ================= -->
-            <div class="nodo-cuento nodo-dia nodo-actual" style="top: 65.9%; left: 46.5%;" onclick="showOrdenaGame()">
+            <div class="nodo-cuento nodo-dia nodo-actual" style="top: 65.9%; left: 46.5%;" onclick="window.location.href='{{ route('juego', ['id' => 1]) }}?modo=completar&es_practica=1'">
                 <img src="{{ asset('animaciones condorio en gif/condorio esperando_processed.gif') }}" class="indicador-pajaro" alt="Indicador">
                 <span class="nodo-icon">🧩</span>
-                <div class="nodo-label">Ordena</div>
+                <div class="nodo-label">Completar</div>
             </div>
             <div class="nodo-cuento nodo-dia" style="top: 54.2%; left: 27.3%;" onclick="showProximamente()">
                 <span class="nodo-icon">🖼️</span>
@@ -1650,7 +1672,6 @@
             </div>
             <!-- Condorio animado sin fondo -->
             <img id="condorio-video" src="{{ asset('animaciones condorio en gif/condorio_amable_processed.gif') }}" alt="Condorio" style="position: absolute; top: 89.07%; left: 109.64%; transform: translate(-50%, -50%); width: 22.09%; height: auto; z-index: 15; pointer-events: none;">
-            <audio id="cuentos-audio" src="{{ asset('animaciones condorio en gif/condorio amable.mp4') }}" loop preload="auto"></audio>
             
             <!-- Llama -->
             <img id="llama-img" src="{{ asset('animaciones condorio en gif/llama_processed.png') }}" style="position: absolute; top: 83.42%; left: 70.2%; transform: translate(-50%, -50%) scale(3) rotate(0deg); width: 10%; height: auto; z-index: 16; pointer-events: auto;">
@@ -1672,7 +1693,7 @@
             <div class="page" id="himno-page-0" style="z-index: 4;">
                 <div class="page-front">
                     <img src="{{ asset('nuevo_icono_transparent.png') }}" alt="Icono Boliquechua">
-                    <h2 style="margin:0; font-size:28px;">Cancionero</h2>
+                    <h2 class="fancy-title">Cancionero</h2>
                 </div>
                 <div class="page-back"></div>
             </div>
@@ -1985,6 +2006,7 @@
         <div class="profile-name">{{ $nombreUsuario }}</div>
         <div class="profile-stats"><div class="ps-item"><span class="ps-val">{{ $puntuacion }}</span><span class="ps-lbl">Puntos</span></div><div class="ps-item"><span class="ps-val">{{ $racha }}</span><span class="ps-lbl">Racha</span></div><div class="ps-item"><span class="ps-val">{{ $vidas }}</span><span class="ps-lbl">Vidas</span></div></div>
         <hr class="sh-divider">
+        <button type="button" class="sh-btn" id="toggleMusicBtn" onclick="toggleMusic()">🔊 Silenciar Música</button>
         <button type="button" class="sh-btn" onclick="toggleTheme()">🌓 Alternar Modo Claro / Oscuro</button>
         <button type="button" class="sh-btn" style="background: linear-gradient(135deg, var(--pri), var(--pri-dk)); color: #fff; font-weight: 700;" onclick="window.location.href='{{ route('profile.edit') }}'">🌟 Ver Perfil Completo y Avatar</button>
         <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="sh-btn" style="color: #ff7676;">Cerrar sesión</button></form>
@@ -2076,12 +2098,18 @@
         const cuentosVideo = document.getElementById('cuentos-bg-video');
         if (cuentosVideo) {
             if (theme === 'dark') {
-                cuentosVideo.style.opacity = '1';
-                cuentosVideo.play().catch(e => console.log('Video play:', e));
+                if (cuentosVideo.getAttribute('data-current-theme') !== 'dark') {
+                    cuentosVideo.src = "{{ asset('images/fondo de arbol modo oscuro.mp4') }}";
+                    cuentosVideo.setAttribute('data-current-theme', 'dark');
+                }
             } else {
-                cuentosVideo.style.opacity = '0';
-                cuentosVideo.pause();
+                if (cuentosVideo.getAttribute('data-current-theme') !== 'light') {
+                    cuentosVideo.src = "{{ asset('images/fond de arbol modo claro.mp4') }}";
+                    cuentosVideo.setAttribute('data-current-theme', 'light');
+                }
             }
+            cuentosVideo.style.opacity = '1'; // Siempre visible
+            cuentosVideo.play().catch(e => console.log('Video play:', e));
         }
     }
 
@@ -2110,24 +2138,89 @@
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         updateThemeUI(currentTheme);
         
-        // Reproducir la música de fondo de Cuentos
-        const audio = document.getElementById('cuentos-audio');
-        if (audio) {
-            audio.currentTime = 0;
-            audio.play().catch(e => console.log('Autoplay con sonido bloqueado:', e));
-        }
+        // Cambiar música de fondo al tema del árbol
+        switchMusicTo('tree');
     }
     
     function hideCuentos() {
         document.getElementById('cuentos-view').classList.remove('active');
         document.getElementById('app').style.display = 'flex';
         
-        // Detener la música de fondo al salir de Cuentos
-        const audio = document.getElementById('cuentos-audio');
-        if (audio) {
-            audio.pause();
+        // Volver a la música del menú principal
+        switchMusicTo('main');
+    }
+    
+    // ====== LÓGICA DE MÚSICA DE FONDO ======
+    let isMusicMuted = localStorage.getItem('boliquechua_music_muted') === 'true';
+    let currentActiveMusic = 'main'; // 'main' o 'tree'
+
+    function updateMusicUI() {
+        const btn = document.getElementById('toggleMusicBtn');
+        if (btn) {
+            btn.innerHTML = isMusicMuted ? '🔇 Activar Música' : '🔊 Silenciar Música';
+            if (isMusicMuted) {
+                btn.style.background = '#e74c3c';
+                btn.style.color = '#fff';
+            } else {
+                btn.style.background = 'var(--card)';
+                btn.style.color = 'var(--text)';
+            }
+        }
+        
+        const mainAudio = document.getElementById('bg-music-main');
+        const treeAudio = document.getElementById('bg-music-tree');
+        
+        if (mainAudio) mainAudio.muted = isMusicMuted;
+        if (treeAudio) treeAudio.muted = isMusicMuted;
+        
+        if (!isMusicMuted && currentActiveMusic) {
+            const activeAudio = currentActiveMusic === 'main' ? mainAudio : treeAudio;
+            if (activeAudio) activeAudio.play().catch(e => console.log('Autoplay blocked:', e));
+        } else {
+            if (mainAudio) mainAudio.pause();
+            if (treeAudio) treeAudio.pause();
         }
     }
+
+    function toggleMusic() {
+        isMusicMuted = !isMusicMuted;
+        localStorage.setItem('boliquechua_music_muted', isMusicMuted);
+        updateMusicUI();
+    }
+
+    function switchMusicTo(mode) {
+        currentActiveMusic = mode;
+        const mainAudio = document.getElementById('bg-music-main');
+        const treeAudio = document.getElementById('bg-music-tree');
+        
+        if (mode === 'main') {
+            if (treeAudio) treeAudio.pause();
+            if (!isMusicMuted && mainAudio) mainAudio.play().catch(e => console.log('Autoplay blocked:', e));
+        } else if (mode === 'tree') {
+            if (mainAudio) mainAudio.pause();
+            if (!isMusicMuted && treeAudio) treeAudio.play().catch(e => console.log('Autoplay blocked:', e));
+        }
+    }
+
+    // Intentar reanudar la música en cualquier interacción si el navegador la bloqueó al inicio
+    const resumeAudioContext = () => {
+        if (!isMusicMuted && currentActiveMusic) {
+            const audioEl = currentActiveMusic === 'main' ? document.getElementById('bg-music-main') : document.getElementById('bg-music-tree');
+            if (audioEl && audioEl.paused) {
+                audioEl.play().catch(e => console.log('Autoplay bloqueado (intentando reanudar):', e));
+            }
+        }
+    };
+    
+    ['click', 'touchstart', 'keydown'].forEach(evt => {
+        document.addEventListener(evt, resumeAudioContext, { passive: true });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateMusicUI();
+        const isTreeActive = document.getElementById('cuentos-view') && document.getElementById('cuentos-view').classList.contains('active');
+        switchMusicTo(isTreeActive ? 'tree' : 'main');
+    });
     
     function showProximamente() {
         document.getElementById('proximamente-view').classList.add('active');
@@ -2208,18 +2301,37 @@
             });
         }
 
-        // ====== GESTOS TÁCTILES (SWIPE) ======
+        // ====== GESTOS TÁCTILES Y DE RATÓN (SWIPE) ======
         let touchStartX = 0;
         let touchEndX = 0;
+        let isDraggingBook = false;
         const himnosBook = document.getElementById('himnos-book');
         
         if (himnosBook) {
+            // Móvil (Táctil)
             himnosBook.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
             }, {passive: true});
 
             himnosBook.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
+                handleHimnoSwipe();
+            }, {passive: true});
+            
+            // PC (Ratón)
+            himnosBook.addEventListener('mousedown', e => {
+                isDraggingBook = true;
+                touchStartX = e.screenX;
+            });
+            
+            window.addEventListener('mouseup', e => {
+                if (!isDraggingBook) return;
+                isDraggingBook = false;
+                touchEndX = e.screenX;
+                handleHimnoSwipe();
+            });
+
+            function handleHimnoSwipe() {
                 if (touchEndX < touchStartX - 50) {
                     // Swipe Izquierda -> Siguiente página
                     if(nextBtn && !nextBtn.disabled) nextBtn.click();
@@ -2228,7 +2340,7 @@
                     // Swipe Derecha -> Página anterior
                     if(prevBtn && !prevBtn.disabled) prevBtn.click();
                 }
-            }, {passive: true});
+            }
         }
     });
 
@@ -2730,6 +2842,10 @@
     }
 </script>
 
+
+    <!-- Background Music Elements -->
+    <audio id="bg-music-main" src="{{ asset('canciones de fondo/tema principal.mp3') }}" loop preload="auto"></audio>
+    <audio id="bg-music-tree" src="{{ asset('canciones de fondo/tema del arbol.mp3') }}" loop preload="auto"></audio>
 
 </body>
 </html>

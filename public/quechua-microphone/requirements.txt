@@ -1,0 +1,13 @@
+Flask==3.0.3
+SpeechRecognition==3.10.4
+
+# --- Reconocimiento de voz en quechua (modelo real) ---
+# torch: motor de inferencia. Instala la versión CPU (más liviana) con:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch==2.4.1
+transformers==4.44.2
+soundfile==0.12.1
+pydub==0.25.1
+# pydub necesita el binario "ffmpeg" instalado en el sistema (no es un
+# paquete de pip): en Ubuntu/Debian `sudo apt install ffmpeg`, en Mac
+# `brew install ffmpeg`, en Windows descárgalo de ffmpeg.org y agrégalo al PATH.

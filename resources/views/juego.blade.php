@@ -440,6 +440,143 @@
             transform: scale(0.95);
         }
 
+        /* Modo Hablar */
+        .hablar-btn {
+            background: var(--bg-dk);
+            border: 2px solid var(--pri);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            margin: 0 auto 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text);
+            box-shadow: 0 0 15px rgba(232, 69, 10, 0.2);
+        }
+        .hablar-btn.recording {
+            background: rgba(232, 69, 10, 0.2);
+            box-shadow: 0 0 30px rgba(232, 69, 10, 0.6);
+            transform: scale(1.1);
+            animation: pulseRecord 1s infinite;
+        }
+        @keyframes pulseRecord {
+            0% { box-shadow: 0 0 15px rgba(232, 69, 10, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(232, 69, 10, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(232, 69, 10, 0.4); }
+        }
+        .speech-result {
+            text-align: center;
+            font-size: 1.2em;
+            min-height: 30px;
+            color: var(--muted);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Modo Completar */
+        .completar-word {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .comp-box {
+            background: var(--bg-dk);
+            border: 2px dashed var(--muted);
+            border-radius: 12px;
+            width: 45px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .comp-box.filled {
+            border: 2px solid var(--gold);
+            background: rgba(245, 166, 35, 0.1);
+            color: var(--gold-lt);
+        }
+        .comp-box.locked {
+            border: 2px solid transparent;
+            background: transparent;
+            color: var(--text);
+            cursor: default;
+        }
+        .comp-options {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .comp-opt-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--text);
+            cursor: pointer;
+            transition: 0.1s;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+        }
+        .comp-opt-btn:hover {
+            background: var(--pri);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Modo Contrarreloj */
+        .timer-bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .timer-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E53935, var(--pri), var(--gold));
+            width: 100%;
+            border-radius: 10px;
+            transition: width 1s linear;
+        }
+        .time-label {
+            position: absolute;
+            top: -25px;
+            right: 0;
+            font-weight: bold;
+            color: var(--gold);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2em;
+        }
+        .floating-time {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            pointer-events: none;
+            animation: floatFade 1s forwards;
+            z-index: 10;
+        }
+        @keyframes floatFade {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-40px); }
+        }
+
         .feedback {
             margin: 15px 0;
             padding: 10px;
@@ -685,6 +822,28 @@
             color: #6b5344;
         }
 
+        html[data-theme="light"] .hablar-btn {
+            background: #ffffff;
+            border-color: rgba(214, 60, 10, 0.4);
+            color: #23150c;
+        }
+        html[data-theme="light"] .comp-box {
+            background: #ffffff;
+            border-color: #6b5344;
+            color: #23150c;
+        }
+        html[data-theme="light"] .comp-box.locked {
+            background: transparent;
+        }
+        html[data-theme="light"] .comp-opt-btn {
+            background: #ffffff;
+            border-color: rgba(214, 60, 10, 0.2);
+            color: #23150c;
+        }
+        html[data-theme="light"] .timer-bar-container {
+            background: rgba(0,0,0,0.1);
+        }
+
         html[data-theme="light"] .modal-sheet {
             background: #ffffff;
             border: 1px solid rgba(214, 60, 10, 0.2);
@@ -882,6 +1041,9 @@
         <button class="mode-btn" data-mode="flashcards">🃏 Flashcards</button>
         <button class="mode-btn" data-mode="match">🔗 Relacionar</button>
         <button class="mode-btn" data-mode="escribir">✍️ ¿Cómo se dice?</button>
+        <button class="mode-btn" data-mode="hablar">🎤 Hablar</button>
+        <button class="mode-btn" data-mode="completar">🧩 Completar</button>
+        <button class="mode-btn" data-mode="contrarreloj">⏱️ Contrarreloj</button>
     </div>
 
     <div class="progress-section">
@@ -926,12 +1088,6 @@
     const palabras = @json($palabras);
     let currentIndex = 0;
     let puntos = 0;
-    let vidas = {{ $vidas }};
-    const vidasIniciales = {{ $vidas }};
-    const dificultadJuego = {{ $dificultad ?? 1 }};
-    let waitingResponse = false;
-    let progresoGuardado = false;
-
     // Detectar modo de juego desde la URL (?modo=...)
     const urlParams = new URLSearchParams(window.location.search);
     let urlMode = (urlParams.get('modo') || '').toLowerCase();
@@ -939,21 +1095,32 @@
     if (urlMode === 'relacionar') urlMode = 'match';
     if (urlMode === 'comodice') urlMode = 'escribir';
 
-    const validModes = ['multiple', 'flashcards', 'match', 'escribir', 'mixto'];
+    const validModes = ['multiple', 'flashcards', 'match', 'escribir', 'mixto', 'hablar', 'completar', 'contrarreloj'];
     let currentMode = validModes.includes(urlMode) ? urlMode : 'multiple';
+    let isPractica = urlParams.get('es_practica') === '1' || currentMode !== 'mixto';
 
-    // Ocultar selector si es mixto
-    if (currentMode === 'mixto') {
-        document.getElementById('modeSelector').style.display = 'none';
-    } else {
-        document.querySelectorAll('.mode-btn').forEach(btn => {
-            if (btn.dataset.mode === currentMode) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
+    let vidas = isPractica ? 3 : {{ $vidas }};
+    const vidasIniciales = {{ $vidas }};
+    const dificultadJuego = {{ $dificultad ?? 1 }};
+    let waitingResponse = false;
+    let progresoGuardado = false;
+
+    // Ocultar selector SIEMPRE
+    let ms = document.getElementById('modeSelector');
+    if (ms) ms.style.display = 'none';
+
+    function checkAndHideVidasForPractice() {
+        let vd = document.getElementById('vidasDisplay');
+        if (vd) vd.innerText = vidas;
+        
+        // Cambiar el icono de corazón a azul si es práctica
+        let heartContainer = document.querySelector('.stat-mini:first-child');
+        if (heartContainer && isPractica) {
+            heartContainer.innerHTML = '💙 <span id="vidasDisplay">' + vidas + '</span>';
+        }
     }
+    
+    checkAndHideVidasForPractice();
 
     let currentStreak = 0; // Para animación de racha
 
@@ -1213,6 +1380,64 @@
         .catch(err => console.error('Error guardando progreso:', err));
     }
 
+    function showVictoriaPracticaModal() {
+        document.getElementById('modalMessage').innerHTML = `
+            <div style="font-size:3em; margin-bottom:10px;">💖</div>
+            <div style="font-size:1.5em; color:var(--gold); font-weight:bold;">¡Práctica completada!</div>
+            <br>
+            Has repasado este modo con éxito.
+            <div id="saveNotice" style="margin-top:15px; font-size:0.9em; color:var(--muted);">Ganando vida...</div>
+            <div style="margin-top:20px;">
+                <button class="sh-btn" onclick="window.location.href='{{ route('categorias') }}'" style="background:var(--card); color:var(--text); width: 100%;">Volver a Categorías</button>
+            </div>
+        `;
+        document.getElementById('btnRejugar').style.display = 'none';
+        document.getElementById('resultModal').style.display = 'flex';
+        
+        const nextBtn = document.querySelector('#resultModal .sh-btn');
+        if(nextBtn && nextBtn.innerText.includes('Siguiente')) {
+             nextBtn.style.display = 'none';
+        }
+        
+        fetch('{{ route("ganar.vida") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ modo: currentMode })
+        }).then(r => r.json()).then(data => {
+            if (data.success && data.granted) {
+                document.getElementById('saveNotice').innerHTML = '✅ <span style="color:#4CAF50; font-weight:bold;">¡Has recuperado 1 vida global!</span>';
+            } else if (data.success && !data.granted) {
+                document.getElementById('saveNotice').innerHTML = `✅ <span style="color:var(--gold);">${data.message}</span>`;
+            } else {
+                document.getElementById('saveNotice').innerText = '✅ Ya tienes todas tus vidas completas.';
+            }
+        }).catch(err => {
+            document.getElementById('saveNotice').innerText = 'Ocurrió un error al guardar.';
+        });
+    }
+
+    function showGameOverPracticaModal() {
+        document.getElementById('modalMessage').innerHTML = `
+            <div style="font-size:3em; margin-bottom:10px;">💔</div>
+            <div style="font-size:1.2em; color:#e74c3c; font-weight:bold;">¡Práctica Fallida!</div>
+            <br>
+            Cometiste demasiados errores. Vuelve a intentarlo para ganar tu corazón.
+            <div style="margin-top:20px;">
+                <button class="sh-btn" onclick="window.location.href='{{ route('categorias') }}'" style="background:var(--card); color:var(--text); width: 100%;">Volver al Mapa</button>
+            </div>
+        `;
+        document.getElementById('btnRejugar').style.display = 'none';
+        document.getElementById('resultModal').style.display = 'flex';
+        
+        const nextBtn = document.querySelector('#resultModal .sh-btn');
+        if(nextBtn && nextBtn.innerText.includes('Siguiente')) {
+             nextBtn.style.display = 'none';
+        }
+    }
+
     function showVictoriaModal(xpFinal, base, bono) {
         document.getElementById('modalMessage').innerHTML = `
             <div style="font-size:3em; margin-bottom:10px;">🏆</div>
@@ -1254,16 +1479,24 @@
 
     function gameOver() {
         if (vidas <= 0) {
-            showGameOverModal();
+            if (isPractica) {
+                showGameOverPracticaModal();
+            } else {
+                showGameOverModal();
+            }
         } else {
-            // Calcular XP si ganó
-            let baseXP = 10;
-            let bonoXP = 0;
-            if (vidas === 5) bonoXP = 5; // Perfecto
-            else if (vidas >= 1) bonoXP = 3; // Sobrevivió con errores
-            
-            let xpFinal = baseXP + bonoXP;
-            showVictoriaModal(xpFinal, baseXP, bonoXP);
+            if (isPractica) {
+                showVictoriaPracticaModal();
+            } else {
+                // Calcular XP si ganó
+                let baseXP = 10;
+                let bonoXP = 0;
+                if (vidas === 5) bonoXP = 5; // Perfecto
+                else if (vidas >= 1) bonoXP = 3; // Sobrevivió con errores
+                
+                let xpFinal = baseXP + bonoXP;
+                showVictoriaModal(xpFinal, baseXP, bonoXP);
+            }
         }
     }
 
@@ -1622,10 +1855,324 @@
         document.querySelectorAll('.option-btn').forEach(btn => btn.style.pointerEvents = 'none');
     };
 
+    // ===================== MODO HABLAR =====================
+    function cargarHablar() {
+        if (!palabras || palabras.length === 0) return;
+        const palabra = palabras[currentIndex];
+        
+        let html = `
+            <div style="text-align:center; color:var(--muted); font-size:0.9em; margin-bottom:20px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Pronuncia la palabra</div>
+            <div class="question-word">${palabra.palabra_quechua}</div>
+            <div class="hablar-btn" id="btnHablar" onclick="iniciarReconocimientoVoz('${palabra.palabra_quechua.replace(/'/g, "\\'")}')">🎤</div>
+            <div class="speech-result" id="speechResult">Presiona el micrófono y habla</div>
+        `;
+        document.getElementById('gameContent').innerHTML = html;
+        actualizarUI();
+    }
+
+    function iniciarReconocimientoVoz(palabraEsperada) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            document.getElementById('speechResult').innerHTML = '<span style="color:#EF5350">Tu navegador no soporta reconocimiento de voz.</span>';
+            setTimeout(() => {
+                // Simular éxito para no trancar el juego en navegadores sin soporte
+                handleSuccess(palabras[currentIndex]);
+            }, 2000);
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'es-BO'; // Usamos español como base para reconocimiento
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        const btnHablar = document.getElementById('btnHablar');
+        const resDiv = document.getElementById('speechResult');
+
+        recognition.onstart = function() {
+            btnHablar.classList.add('recording');
+            resDiv.innerHTML = "Escuchando...";
+            resDiv.style.color = 'var(--gold)';
+        };
+
+        recognition.onspeechend = function() {
+            recognition.stop();
+        };
+
+        recognition.onresult = function(event) {
+            btnHablar.classList.remove('recording');
+            const transcript = event.results[0][0].transcript.toLowerCase().trim();
+            resDiv.innerHTML = `Escuchado: "${transcript}"`;
+            
+            // Lógica simple: Como el reconocimiento no es perfecto en quechua, damos mucho margen
+            // o verificamos si algunas letras coinciden.
+            const expected = palabraEsperada.toLowerCase().trim();
+            
+            // Similitud simple o si incluye parte de la palabra
+            let isCorrect = false;
+            if (transcript === expected || transcript.includes(expected) || expected.includes(transcript)) {
+                isCorrect = true;
+            } else if (levenshteinDistance(transcript, expected) <= Math.max(2, expected.length * 0.4)) {
+                isCorrect = true;
+            }
+
+            if (isCorrect) {
+                resDiv.style.color = '#4CAF50';
+                handleSuccess(palabras[currentIndex]);
+            } else {
+                resDiv.style.color = '#E53935';
+                let pError = {...palabras[currentIndex]};
+                pError.palabra_espanol = "Pronunciación fallida";
+                handleError(pError);
+            }
+        };
+
+        recognition.onerror = function(event) {
+            btnHablar.classList.remove('recording');
+            resDiv.innerHTML = '<span style="color:#EF5350">Error al escuchar. Intenta de nuevo.</span>';
+        };
+
+        recognition.start();
+    }
+
+    // Levenshtein para calcular similitud de strings (útil para quechua reconocido como español)
+    function levenshteinDistance(a, b) {
+        if (a.length === 0) return b.length;
+        if (b.length === 0) return a.length;
+        let matrix = [];
+        for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+        for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i-1) == a.charAt(j-1)) {
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
+    // ===================== MODO COMPLETAR =====================
+    function cargarCompletar() {
+        if (!palabras || palabras.length === 0) return;
+        const palabra = palabras[currentIndex];
+        
+        let pQ = palabra.palabra_quechua;
+        
+        // Vamos a elegir 1 o 2 caracteres al azar para ocultar (si la palabra es suficientemente larga)
+        let indexesToHide = [];
+        let numHides = pQ.length > 5 ? 2 : 1;
+        while(indexesToHide.length < numHides) {
+            let rnd = Math.floor(Math.random() * pQ.length);
+            // Evitar espacios o apóstrofes
+            if (pQ[rnd] !== ' ' && pQ[rnd] !== "'" && !indexesToHide.includes(rnd)) {
+                indexesToHide.push(rnd);
+            }
+        }
+        
+        // Ordenar los índices para que el jugador los complete de izquierda a derecha
+        indexesToHide.sort((a, b) => a - b);
+        
+        let hiddenChars = indexesToHide.map(i => pQ[i]);
+        
+        // Generar opciones falsas
+        let alphabet = "abcdefghiklmnopqrstuwyaeiou"; // letras comunes en quechua
+        let fakeOptions = [];
+        for(let i = 0; i < 3; i++) {
+            fakeOptions.push(alphabet[Math.floor(Math.random() * alphabet.length)]);
+        }
+        
+        let allOptions = [...hiddenChars, ...fakeOptions].sort(() => 0.5 - Math.random());
+        window.completarEsperados = hiddenChars;
+        window.completarActual = 0;
+        window.completarIdxs = indexesToHide;
+        
+        let boxesHtml = '';
+        for(let i=0; i<pQ.length; i++) {
+            if(indexesToHide.includes(i)) {
+                boxesHtml += `<div class="comp-box" id="cbox-${i}" data-expected="${pQ[i]}"></div>`;
+            } else if (pQ[i] === ' ') {
+                boxesHtml += `<div style="width: 20px;"></div>`;
+            } else {
+                boxesHtml += `<div class="comp-box locked">${pQ[i]}</div>`;
+            }
+        }
+
+        let html = `
+            <div style="text-align:center; color:var(--muted); font-size:0.9em; margin-bottom:20px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Completa la palabra: ${palabra.palabra_espanol}</div>
+            <div class="completar-word">${boxesHtml}</div>
+            <div class="comp-options">
+                ${allOptions.map((opt, i) => `<div class="comp-opt-btn" id="copt-${i}" onclick="seleccionarLetraCompletar('${opt}', this)">${opt}</div>`).join('')}
+            </div>
+        `;
+        document.getElementById('gameContent').innerHTML = html;
+        actualizarUI();
+    }
+
+    window.seleccionarLetraCompletar = function(letra, el) {
+        if (waitingResponse) return;
+        
+        let idx = window.completarIdxs[window.completarActual];
+        let box = document.getElementById(`cbox-${idx}`);
+        
+        if (letra.toLowerCase() === box.dataset.expected.toLowerCase()) {
+            box.innerText = letra;
+            box.classList.add('filled');
+            el.style.visibility = 'hidden'; // Ocultar el botón
+            window.completarActual++;
+            
+            if (window.completarActual >= window.completarEsperados.length) {
+                // Completó la palabra
+                handleSuccess(palabras[currentIndex]);
+            }
+        } else {
+            // Error
+            el.style.backgroundColor = '#E53935';
+            el.style.color = 'white';
+            setTimeout(() => {
+                el.style.backgroundColor = '';
+                el.style.color = '';
+            }, 500);
+            
+            let pError = {...palabras[currentIndex]};
+            pError.palabra_espanol = palabras[currentIndex].palabra_quechua;
+            handleError(pError);
+        }
+    };
+
+    // ===================== MODO CONTRARRELOJ =====================
+    let contrarrelojTime = 0;
+    let contrarrelojTimer = null;
+    function cargarContrarreloj() {
+        if (!palabras || palabras.length === 0) return;
+        
+        // Iniciar timer si no existe
+        if (!contrarrelojTimer) {
+            contrarrelojTime = 30; // 30 segundos
+            document.getElementById('gameContent').innerHTML = `
+                <div style="text-align:center; margin-bottom:20px;">
+                    <h2 style="color:var(--pri); font-size:2em; font-family:'Rajdhani'">¡MODO CONTRARRELOJ!</h2>
+                    <p style="color:var(--text)">Responde rápido para ganar tiempo.</p>
+                </div>
+                <div class="timer-bar-container">
+                    <div class="timer-bar-fill" id="timerFill"></div>
+                    <div class="time-label" id="timeLabel">${contrarrelojTime}s</div>
+                </div>
+                <div id="ctrContent"></div>
+            `;
+            
+            contrarrelojTimer = setInterval(() => {
+                if(waitingResponse) return; // Pausa el timer durante los banners
+                contrarrelojTime--;
+                actualizarContrarrelojUI();
+                if(contrarrelojTime <= 0) {
+                    clearInterval(contrarrelojTimer);
+                    contrarrelojTimer = null;
+                    mostrarFeedbackBanner(false, '¡Se acabó el tiempo!', gameOver);
+                }
+            }, 1000);
+        }
+        
+        const palabra = palabras[currentIndex];
+        let opciones = [palabra.palabra_espanol];
+        let otras = palabras.filter((_, i) => i !== currentIndex);
+        otras.sort(() => Math.random() - 0.5);
+        for (let i = 0; i < Math.min(3, otras.length); i++) {
+            opciones.push(otras[i].palabra_espanol);
+        }
+        opciones.sort(() => Math.random() - 0.5);
+
+        let html = `
+            <div class="question-word">❓ ${palabra.palabra_quechua}</div>
+            <div class="options-grid">
+                ${opciones.map(op => `<div class="option-btn" onclick="checkContrarreloj('${op.replace(/'/g, "\\'")}', this)">${escapeHtml(op)}</div>`).join('')}
+            </div>
+        `;
+        
+        // Reemplazar solo el contenido del ctrContent
+        let ctrContent = document.getElementById('ctrContent');
+        if (ctrContent) {
+            ctrContent.innerHTML = html;
+        } else {
+            // Failsafe por si se borró
+            clearInterval(contrarrelojTimer);
+            contrarrelojTimer = null;
+            cargarContrarreloj(); 
+        }
+        actualizarUI();
+    }
+
+    function actualizarContrarrelojUI() {
+        let label = document.getElementById('timeLabel');
+        let fill = document.getElementById('timerFill');
+        if(label) label.innerText = contrarrelojTime + 's';
+        if(fill) {
+            let pct = Math.max(0, Math.min(100, (contrarrelojTime / 30) * 100));
+            fill.style.width = pct + '%';
+            if(pct < 30) fill.style.background = '#E53935';
+            else fill.style.background = 'linear-gradient(90deg, #E53935, var(--pri), var(--gold))';
+        }
+    }
+
+    window.checkContrarreloj = function(selected, el) {
+        if (waitingResponse) return;
+        const palabra = palabras[currentIndex];
+        if (selected === palabra.palabra_espanol) {
+            el.classList.add('correct');
+            // Ganar tiempo
+            contrarrelojTime = Math.min(60, contrarrelojTime + 3);
+            mostrarFloatingText('+3s', '#4CAF50', el);
+            actualizarContrarrelojUI();
+            
+            puntos += 15;
+            currentIndex++;
+            if (currentIndex >= palabras.length) {
+                clearInterval(contrarrelojTimer);
+                contrarrelojTimer = null;
+                mostrarFeedbackBanner(true, '¡Modo completado!', gameOver); // Termina el juego o nivel
+            } else {
+                setTimeout(cargarContrarreloj, 400); // Carga siguiente sin banner
+            }
+        } else {
+            el.classList.add('incorrect');
+            // Perder tiempo
+            contrarrelojTime -= 5;
+            mostrarFloatingText('-5s', '#E53935', el);
+            actualizarContrarrelojUI();
+            
+            vidas--;
+            actualizarUI();
+            if (vidas <= 0) {
+                clearInterval(contrarrelojTimer);
+                contrarrelojTimer = null;
+                mostrarFeedbackBanner(false, '¡Te quedaste sin vidas!', gameOver);
+            } else {
+                setTimeout(cargarContrarreloj, 600);
+            }
+        }
+        document.querySelectorAll('.option-btn').forEach(btn => btn.style.pointerEvents = 'none');
+    };
+
+    function mostrarFloatingText(text, color, element) {
+        let floating = document.createElement('div');
+        floating.className = 'floating-time';
+        floating.innerText = text;
+        floating.style.color = color;
+        
+        let rect = element.getBoundingClientRect();
+        floating.style.left = (rect.left + rect.width/2 - 20) + 'px';
+        floating.style.top = (rect.top - 10) + 'px';
+        
+        document.body.appendChild(floating);
+        setTimeout(() => floating.remove(), 1000);
+    }
+
     // ===================== CONTROL PRINCIPAL =====================
     function cargarJuego() {
         waitingResponse = false;
-        if (vidas <= 0) {
+        if (vidas <= 0 && !isPractica) {
             gameOver();
             return;
         }
@@ -1644,8 +2191,8 @@
                 // Intermedios: Todo lo anterior + Flashcards
                 randomModes = ['multiple', 'escucha', 'match', 'flashcards'];
             } else {
-                // Avanzados: Todo lo anterior + Escribir
-                randomModes = ['multiple', 'escucha', 'match', 'flashcards', 'escribir'];
+                // Avanzados: Todo lo anterior + Escribir, Completar, Hablar, Contrarreloj
+                randomModes = ['multiple', 'escucha', 'match', 'flashcards', 'escribir', 'hablar', 'completar', 'contrarreloj'];
             }
             
             // Elegir aleatoriamente
@@ -1657,6 +2204,9 @@
         else if (modeToPlay === 'match') cargarMatch();
         else if (modeToPlay === 'escribir') cargarEscribir();
         else if (modeToPlay === 'escucha') cargarEscucha();
+        else if (modeToPlay === 'hablar') cargarHablar();
+        else if (modeToPlay === 'completar') cargarCompletar();
+        else if (modeToPlay === 'contrarreloj') cargarContrarreloj();
         
         actualizarUI();
     }
@@ -1666,6 +2216,8 @@
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentMode = btn.dataset.mode;
+            isPractica = urlParams.get('es_practica') === '1' || currentMode !== 'mixto';
+            checkAndHideVidasForPractice();
             currentIndex = 0;
             puntos = 0;
             waitingResponse = false;

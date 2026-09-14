@@ -371,6 +371,7 @@
             color: rgba(255,255,255,.92);
             line-height: 1;
             text-shadow: 0 0 18px rgba(255, 74, 16, 0.18);
+            white-space: nowrap;
         }
         .logo span { color: var(--pri); text-shadow: 0 0 18px rgba(255, 74, 16, .35); }
         .tagline { font-family:'Rajdhani',sans-serif;font-size:clamp(.56em,.75vw,.74em);letter-spacing:3.2px;color:var(--muted2);text-transform:uppercase;margin-top:4px; }
@@ -821,6 +822,18 @@
             box-shadow: 0 0 12px rgba(255, 74, 16, 0.35);
             opacity: .85;
         }
+        .topbar-back-btn {
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
         .nb-btn {
             position: relative;
             display: flex;
@@ -1041,6 +1054,12 @@
             background: rgba(251, 248, 243, 0.90);
             border-bottom: 1px solid rgba(214, 60, 10, 0.16);
         }
+        html[data-theme="light"] .topbar-back-btn {
+            background: rgba(214, 60, 10, 0.08);
+            border-color: rgba(214, 60, 10, 0.18);
+            color: #23150c;
+        }
+
         html[data-theme="light"] #navbar {
             background: rgba(251, 248, 243, 0.92);
             border-top: 1px solid rgba(214, 60, 10, 0.16);
@@ -1059,6 +1078,19 @@
         html[data-theme="light"] .sm-chip {
             background: rgba(255, 255, 255, 0.92);
             border-color: rgba(214, 60, 10, 0.16);
+        }
+
+        html[data-theme="light"] .stat-chip-val,
+        html[data-theme="light"] .sm-chip-val {
+            color: var(--text);
+        }
+
+        html[data-theme="light"] .nb-lbl {
+            color: var(--muted);
+        }
+
+        html[data-theme="light"] .nb-btn.active .nb-lbl {
+            color: rgba(214, 60, 10, 0.92);
         }
 
         html[data-theme="light"] .cat-card {
@@ -1143,6 +1175,12 @@
         html[data-theme="light"] .logro-name {
             color: #23150c;
         }
+        html[data-theme="light"] .logro-desc {
+            color: var(--muted);
+        }
+        html[data-theme="light"] .ps-lbl {
+            color: var(--muted);
+        }
         html[data-theme="light"] .sh-btn {
             background: rgba(240, 231, 219, 0.85);
             border-color: rgba(214, 60, 10, 0.2);
@@ -1197,8 +1235,8 @@
 <div id="app">
     <div id="lp"></div>
     <header id="topbar">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'" class="sh-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+            <button onclick="window.location.href='<?php echo e(route('categorias')); ?>'" class="sh-btn topbar-back-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
                 Volver
             </button>
@@ -1209,7 +1247,7 @@
             <div class="stat-chip str"><svg viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="stat-chip-val"><?php echo e($racha); ?></span></div>
             <div class="stat-chip pts"><svg viewBox="0 0 24 24" fill="#00C9A7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="stat-chip-val"><?php echo e($puntuacion); ?></span></div>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end;">
             <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
                   <script>
         window.addEventListener('load', () => {
